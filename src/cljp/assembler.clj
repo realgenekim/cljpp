@@ -10,14 +10,16 @@
     :unclosed - EOF with non-empty stack
     :map-odd-arity - Closing a map with odd number of elements
     :no-container - Atom at top-level without open container"
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [clojure.pprint]))
 
 (defn- open-container [opener]
-  "Create an empty container for the given opener."
+  "Create an empty container for the given opener.
+  Maps are represented as vectors during assembly."
   (case opener
     "(" (list)
     "[" []
-    "{" {}
+    "{" [] ; Maps accumulate as vectors, converted on close
     (throw (ex-info "Unknown opener" {:code :internal :opener opener}))))
 
 (defn- container-type [opener]
@@ -69,29 +71,28 @@
 
 (defn- emit-into
   "Add an element to a container.
-  Lists: append to end
-  Vectors: conj
-  Maps: accumulate as flat sequence, will be validated at close time"
+  All containers (lists, vectors, maps) are vectors during assembly."
   [coll x]
   (cond
-    (list? coll) (concat coll (list x))
+    (or (list? coll) (seq? coll)) (apply list (concat coll (list x)))
     (vector? coll) (conj coll x)
-    (map? coll) (let [kvs (vec (mapcat identity coll))
-                      kvs' (conj kvs x)]
-                  (into {} (partition-all 2 kvs')))
     :else (throw (ex-info "Unknown container type"
                           {:code :internal :type (type coll)}))))
 
-(defn- finalize-map!
-  "Validate and finalize a map. Throws if odd arity."
-  [m]
-  (let [kvs (vec (mapcat identity m))]
-    (when (odd? (count kvs))
-      (throw (ex-info "Map has odd arity"
-                      {:code :map-odd-arity
-                       :kvs kvs
-                       :count (count kvs)})))
-    m))
+(defn- finalize-container!
+  "Finalize a container based on its type.
+  Maps need conversion from vector and arity validation."
+  [type coll]
+  (case type
+    :list (apply list coll)
+    :vec coll
+    :map (let [kvs coll]
+           (when (odd? (count kvs))
+             (throw (ex-info "Map has odd arity"
+                             {:code :map-odd-arity
+                              :kvs kvs
+                              :count (count kvs)})))
+           (apply hash-map kvs))))
 
 (defn assemble
   "Assemble tokens into Clojure forms.
@@ -135,7 +136,7 @@
                        :pos (count tokens)}}
               (let [{:keys [type coll]} (peek stack)]
                 ;; Finalize the container
-                (let [coll' (if (= type :map) (finalize-map! coll) coll)]
+                (let [coll' (finalize-container! type coll)]
                   (if (= 1 (count stack))
                     ;; Closing a top-level form
                     (recur (rest ts) [] (conj forms coll'))

@@ -5,19 +5,19 @@
 (deftest tokenize-push-operations
   (testing "PUSH with open paren"
     (is (= [[:push "("]]
-           (tokenizer/tokenize "PUSH ("))))
+           (tokenizer/tokenize "PUSH-("))))
 
   (testing "PUSH with open bracket"
     (is (= [[:push "["]]
-           (tokenizer/tokenize "PUSH ["))))
+           (tokenizer/tokenize "PUSH-["))))
 
   (testing "PUSH with open brace"
     (is (= [[:push "{"]]
-           (tokenizer/tokenize "PUSH {"))))
+           (tokenizer/tokenize "PUSH-{"))))
 
   (testing "Multiple PUSH operations"
     (is (= [[:push "("] [:push "["] [:push "{"]]
-           (tokenizer/tokenize "PUSH ( PUSH [ PUSH {")))))
+           (tokenizer/tokenize "PUSH-( PUSH-[ PUSH-{")))))
 
 (deftest tokenize-pop-operations
   (testing "Single POP"
@@ -81,51 +81,51 @@
 (deftest tokenize-simple-forms
   (testing "Simple list"
     (is (= [[:push "("] [:atom "defn"] [:atom "foo"] [:pop]]
-           (tokenizer/tokenize "PUSH ( defn foo POP"))))
+           (tokenizer/tokenize "PUSH-( defn foo POP"))))
 
   (testing "List with vector"
     (is (= [[:push "("] [:atom "defn"] [:atom "foo"]
             [:push "["] [:atom "x"] [:pop]
             [:pop]]
-           (tokenizer/tokenize "PUSH ( defn foo PUSH [ x POP POP"))))
+           (tokenizer/tokenize "PUSH-( defn foo PUSH-[ x POP POP"))))
 
   (testing "Nested calls"
     (is (= [[:push "("] [:atom "+"]
             [:push "("] [:atom "+"] [:atom "a"] [:atom "b"] [:pop]
             [:atom "c"] [:pop]]
-           (tokenizer/tokenize "PUSH ( + PUSH ( + a b POP c POP")))))
+           (tokenizer/tokenize "PUSH-( + PUSH-( + a b POP c POP")))))
 
 (deftest tokenize-whitespace-handling
   (testing "Multiple spaces"
     (is (= [[:push "("] [:atom "defn"] [:atom "foo"] [:pop]]
-           (tokenizer/tokenize "PUSH (    defn   foo   POP"))))
+           (tokenizer/tokenize "PUSH-(    defn   foo   POP"))))
 
   (testing "Tabs and newlines"
     (is (= [[:push "("] [:atom "defn"] [:atom "foo"] [:pop]]
-           (tokenizer/tokenize "PUSH (\n\tdefn\n\tfoo\nPOP"))))
+           (tokenizer/tokenize "PUSH-(\n\tdefn\n\tfoo\nPOP"))))
 
   (testing "Leading and trailing whitespace"
     (is (= [[:push "("] [:atom "defn"] [:pop]]
-           (tokenizer/tokenize "  PUSH ( defn POP  ")))))
+           (tokenizer/tokenize "  PUSH-( defn POP  ")))))
 
 (deftest tokenize-comments
   (testing "Line comment"
     (is (= [[:push "("] [:atom "defn"] [:pop]]
-           (tokenizer/tokenize "PUSH ( defn POP ; this is a comment"))))
+           (tokenizer/tokenize "PUSH-( defn POP ; this is a comment"))))
 
   (testing "Multiple comments"
     (is (= [[:push "("] [:atom "defn"] [:atom "foo"] [:pop]]
-           (tokenizer/tokenize "PUSH ( ; open list\ndefn foo ; function\nPOP ; close"))))
+           (tokenizer/tokenize "PUSH-( ; open list\ndefn foo ; function\nPOP ; close"))))
 
   (testing "Comment at start"
     (is (= [[:push "("] [:atom "defn"] [:pop]]
-           (tokenizer/tokenize "; comment\nPUSH ( defn POP")))))
+           (tokenizer/tokenize "; comment\nPUSH-( defn POP")))))
 
 (deftest tokenize-complex-example
   (testing "Function with let and map"
-    (let [source "PUSH ( defn process PUSH [ data POP
-                    PUSH ( let PUSH [ m PUSH { :a 1 :b 2 POP POP
-                      PUSH ( println m POP
+    (let [source "PUSH-( defn process PUSH-[ data POP
+                    PUSH-( let PUSH-[ m PUSH-{ :a 1 :b 2 POP POP
+                      PUSH-( println m POP
                     POP
                   POP"]
       (is (= [[:push "("] [:atom "defn"] [:atom "process"]
@@ -143,12 +143,12 @@
   (testing "Bracket ] is invalid"
     (is (thrown-with-msg? clojure.lang.ExceptionInfo
                           #"Invalid closer '\]'"
-                          (tokenizer/tokenize "PUSH [ x POP ]"))))
+                          (tokenizer/tokenize "PUSH-[ x POP ]"))))
 
   (testing "Brace } is invalid"
     (is (thrown-with-msg? clojure.lang.ExceptionInfo
                           #"Invalid closer '\}'"
-                          (tokenizer/tokenize "PUSH { :a 1 POP }")))))
+                          (tokenizer/tokenize "PUSH-{ :a 1 POP }")))))
 
 (deftest tokenize-error-missing-push
   (testing "Open paren without PUSH"
@@ -164,12 +164,12 @@
 (deftest tokenize-error-missing-pop
   (testing "Close paren without POP"
     (is (thrown-with-msg? clojure.lang.ExceptionInfo
-                          #"must be preceded by POP"
-                          (tokenizer/tokenize "PUSH ( defn )"))))
+                          #"Invalid closer"
+                          (tokenizer/tokenize "PUSH-( defn )"))))
 
   (testing "Standalone close paren"
     (is (thrown-with-msg? clojure.lang.ExceptionInfo
-                          #"must be preceded by POP"
+                          #"Invalid closer"
                           (tokenizer/tokenize ")")))))
 
 (deftest tokenize-error-unclosed-string
@@ -190,7 +190,7 @@
 
 (deftest format-token-test
   (testing "Format PUSH token"
-    (is (= "PUSH (" (tokenizer/format-token [:push "("]))))
+    (is (= "PUSH-(" (tokenizer/format-token [:push "("]))))
 
   (testing "Format POP token"
     (is (= "POP" (tokenizer/format-token [:pop]))))

@@ -1,5 +1,18 @@
 # CLJP File Format Specification v1.0
 
+## Important Note: CLJP is NOT Valid EDN
+
+**CLJP is an intermediate format that looks similar to Clojure/EDN but is NOT valid EDN or Clojure syntax.**
+
+Key differences:
+- Uses explicit `PUSH` and `POP` keywords for structure
+- Only `)` appears as a closer (never `]` or `}`)
+- Requires transpilation to `.clj` before use
+- Cannot be read by `clojure.edn/read-string`
+- Cannot be evaluated directly by Clojure
+
+**CLJP is designed to be quickly and deterministically converted to valid EDN/Clojure code.**
+
 ## Overview
 
 CLJP (Clojure Push/Pop) is an intermediate file format designed to make it easier for Large Language Models to generate syntactically balanced Clojure code by offloading delimiter balancing to a deterministic assembler.
@@ -22,14 +35,19 @@ CLJP provides explicit stack operations (`PUSH` and `POP`) that:
 
 | Token | Syntax | Semantics |
 |-------|--------|-----------|
-| **PUSH** | `PUSH (` or `PUSH [` or `PUSH {` | Opens a new container; pushes onto stack |
+| **PUSH-(** | `PUSH-(` | Opens a list; pushes onto stack |
+| **PUSH-[** | `PUSH-[` | Opens a vector; pushes onto stack |
+| **PUSH-{** | `PUSH-{` | Opens a map; pushes onto stack |
 | **POP** | `POP` | Closes current container; pops from stack |
 
-**Critical rule**: `POP` takes no arguments. The assembler determines the correct closing delimiter (`), ]`, or `}`) based on stack state.
+**Critical rules**:
+- `PUSH-(`, `PUSH-[`, and `PUSH-{` are single tokens (hyphenated keywords)
+- `POP` takes no arguments
+- The assembler determines the correct closing delimiter (`), ]`, or `}`) based on stack state
 
 ### Atom Tokens
 
-Everything that is not `PUSH` or `POP` is treated as an atom:
+Everything that is not `PUSH-(`, `PUSH-[`, `PUSH-{`, or `POP` is treated as an atom:
 - **Symbols**: `defn`, `foo`, `my-var`, `+`
 - **Keywords**: `:name`, `:ns/qualified`
 - **Strings**: `"hello world"`, `"escaped \"quotes\""`
@@ -47,8 +65,9 @@ Everything that is not `PUSH` or `POP` is treated as an atom:
 
 ```ebnf
 stream   := { token }
-token    := "PUSH" opener | "POP" | atom
-opener   := "(" | "[" | "{"
+token    := push-token | pop-token | atom
+push-token := "PUSH-(" | "PUSH-[" | "PUSH-{"
+pop-token  := "POP"
 atom     := symbol | keyword | string | number | boolean | nil
 ```
 
@@ -78,7 +97,7 @@ atom     := symbol | keyword | string | number | boolean | nil
 | `:underflow` | `POP` with empty stack | Report position; request more `PUSH` |
 | `:unclosed` | EOF with non-empty stack | Report depth; request more `POP` |
 | `:map-odd-arity` | Closing `{` container with odd element count | Report last key; request value |
-| `:no-container` | Atom at top-level (v1 disallows) | Request wrapping `PUSH (` |
+| `:no-container` | Atom at top-level (v1 disallows) | Request wrapping `PUSH-(` |
 | `:tokenize` | Malformed string, unknown syntax | Report position; request fix |
 
 ## Examples
@@ -87,8 +106,8 @@ atom     := symbol | keyword | string | number | boolean | nil
 
 **Input (example1.cljp)**:
 ```clojure
-PUSH ( ns demo.core POP
-PUSH ( defn foo PUSH [ x POP PUSH ( inc x POP POP
+PUSH-( ns demo.core POP
+PUSH-( defn foo PUSH-[ x POP PUSH-( inc x POP POP
 ```
 
 **Output (example1.clj)**:
@@ -101,11 +120,11 @@ PUSH ( defn foo PUSH [ x POP PUSH ( inc x POP POP
 
 **Input (example2.cljp)**:
 ```clojure
-PUSH ( let
-  PUSH [ m
-    PUSH { :a 1 :b 2 POP
+PUSH-( let
+  PUSH-[ m
+    PUSH-{ :a 1 :b 2 POP
   POP
-  PUSH ( println m POP
+  PUSH-( println m POP
 POP
 ```
 
@@ -119,9 +138,9 @@ POP
 
 **Input (example3.cljp)**:
 ```clojure
-PUSH ( defn sum3
-  PUSH [ a b c POP
-  PUSH ( + PUSH ( + a b POP c POP
+PUSH-( defn sum3
+  PUSH-[ a b c POP
+  PUSH-( + PUSH-( + a b POP c POP
 POP
 ```
 
@@ -135,11 +154,11 @@ POP
 
 **Input (example4.cljp)**:
 ```clojure
-PUSH ( def data
-  PUSH [
+PUSH-( def data
+  PUSH-[
     :k1 42 "hello" true false nil
-    PUSH { :x 9 :y 10 POP
-    PUSH ( 1 2 3 POP
+    PUSH-{ :x 9 :y 10 POP
+    PUSH-( 1 2 3 POP
   POP
 POP
 ```
@@ -156,10 +175,10 @@ POP
 
 **Input (example5.cljp)**:
 ```clojure
-PUSH ( ns demo.multi POP
-PUSH ( def x 10 POP
-PUSH ( defn incx PUSH [ n POP PUSH ( + n x POP POP
-PUSH ( println PUSH ( incx 5 POP POP
+PUSH-( ns demo.multi POP
+PUSH-( def x 10 POP
+PUSH-( defn incx PUSH-[ n POP PUSH-( + n x POP POP
+PUSH-( println PUSH-( incx 5 POP POP
 ```
 
 **Output (example5.clj)**:
@@ -174,7 +193,7 @@ PUSH ( println PUSH ( incx 5 POP POP
 
 ### Odd Map Arity
 ```clojure
-PUSH ( def bad PUSH { :a 1 :b POP POP
+PUSH-( def bad PUSH-{ :a 1 :b POP POP
 ```
 → `{:ok? false :error {:code :map-odd-arity :msg "Map has odd arity" ...}}`
 
@@ -186,7 +205,7 @@ POP
 
 ### Unclosed Forms
 ```clojure
-PUSH ( def oops PUSH [ 1 2 3 POP
+PUSH-( def oops PUSH-[ 1 2 3 POP
 ```
 → `{:ok? false :error {:code :unclosed :depth 1 ...}}`
 
@@ -194,7 +213,7 @@ PUSH ( def oops PUSH [ 1 2 3 POP
 
 ### Advantages for LLMs
 
-1. **Explicit Intent**: `PUSH` and `POP` are unambiguous operations
+1. **Explicit Intent**: `PUSH-(`, `PUSH-[`, `PUSH-{`, and `POP` are unambiguous operations
 2. **No Matching Required**: LLM doesn't need to count or balance delimiters
 3. **Linear Token Stream**: Natural fit for autoregressive generation
 4. **Reduced Cognitive Load**: Stack management is delegated to assembler
@@ -216,7 +235,7 @@ While not as compact as native Clojure, CLJP remains readable:
 ## Future Extensions (Post-v1)
 
 ### Sets
-Add support for `#{...}` via `PUSH #{` or reader macro token.
+Add support for `#{...}` via `PUSH-#{` token.
 
 ### Reader Macros
 Explicit tokens for `'`, `` ` ``, `~`, `@`, `#(...)` to avoid expanding by hand.

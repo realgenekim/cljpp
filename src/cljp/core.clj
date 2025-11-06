@@ -78,27 +78,49 @@
   "CLI entry point for CLJP transpiler.
 
   Usage:
-    clojure -M -m cljp.core <input.cljp> [output.clj]
+    clojure -M -m cljp.core <input.cljp> [output.clj] [--force]
 
-  If output path is not specified, writes to sibling .clj file."
+  Options:
+    --force    Overwrite output file even if it's newer than input
+
+  If output path is not specified, writes to sibling .clj file.
+  By default, skips transpilation if .clj is newer than .cljp (use --force to override)."
   [& args]
   (try
     (when (empty? args)
       (binding [*out* *err*]
-        (println "Usage: clojure -M -m cljp.core <input.cljp> [output.clj]")
+        (println "Usage: clojure -M -m cljp.core <input.cljp> [output.clj] [--force]")
+        (println "")
+        (println "Options:")
+        (println "  --force    Overwrite output file even if it's newer than input")
+        (println "")
+        (println "By default, skips transpilation if .clj is newer than .cljp")
         (System/exit 2)))
 
-    (let [input-path (first args)
-          explicit-output (second args)
+    (let [force? (some #{"--force"} args)
+          non-flag-args (remove #(str/starts-with? % "--") args)
+          input-path (first non-flag-args)
+          explicit-output (second non-flag-args)
           output-path (or explicit-output
-                          (str/replace input-path #"\.cljp$" ".clj"))]
+                          (str/replace input-path #"\.cljp$" ".clj"))
+          input-file (io/file input-path)
+          output-file (io/file output-path)]
 
-      (when-not (.exists (io/file input-path))
+      (when-not (.exists input-file)
         (binding [*out* *err*]
           (println "Error: Input file not found:" input-path)
           (System/exit 1)))
 
-      (let [source (slurp input-path)
+      ;; Check if output is newer than input (unless --force)
+      (when (and (.exists output-file)
+                 (not force?)
+                 (> (.lastModified output-file)
+                    (.lastModified input-file)))
+        (println "✓ Skipping (output is newer than input):" output-path)
+        (println "  Use --force to overwrite")
+        (System/exit 0))
+
+      (let [source (slurp input-file)
             result (transpile source)]
         (if (:ok? result)
           (do
