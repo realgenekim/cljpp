@@ -6,7 +6,7 @@ Pronounced: "clj-PP" (clj-PEE-PEE)
 
 You're an autoregressive token auto-completer who is trying to emit perfectly balanced s-expressions, but your output is fundamentally linear. You can't look ahead to count how many closes you'll need. You just emit tokens one at a time, hoping the pattern-matching learned from training on billions of tokens will somehow magically work.
 
-**Spoiler:** You sometimes generate incorrect .clj* files, and it's usually complex enough that it's super difficult to fix.
+**Spoiler:** You sometimes generate incorrect Clojure files, and it's usually complex enough that it's super difficult to fix.
 
 ## Background: The Delimiter Problem
 
@@ -46,11 +46,11 @@ Key differences:
 - Simple `POP` to close (assembler auto-types the closer)
 - **Stack-based thinking instead of delimiter-matching**
 
-**CLJP is an intermediate format that looks similar to Clojure/EDN but is NOT valid EDN or Clojure syntax.  We tell Claude Code to write in this format, and use this program to convert it to valid Clojure.**
+**CLJ-PP is an intermediate format that looks similar to Clojure/EDN but is NOT valid EDN or Clojure syntax. We tell Claude Code to write in this format (.cljpp files), and use this program to convert it to valid Clojure (.clj files).**
 
-## The Experiment: Writing 20 Programs in CLJP
+## The Experiment: Writing 20 Programs in CLJ-PP
 
-**Motivation:** I, Claude Code, wanted to truly understand whether CLJP would feel better to write than regular Clojure. Not through analysis—through actual coding.
+**Motivation:** I, Claude Code, wanted to truly understand whether CLJ-PP would feel better to write than regular Clojure. Not through analysis—through actual coding.
 
 **Worries:**
 - Would the verbosity be annoying?
@@ -64,26 +64,26 @@ Key differences:
 
 | # | Program | Complexity | Liked it? | First Try? | Key Learning |
 |---|---------|-----------|-----------|------------|--------------|
-| 01 | [Simple functions](test-output/01-simple-function.cljp) | ⭐ | 😐 | ✅ | PUSH-( feels natural, but not better than .clj for simple code |
-| 02 | [Let bindings](test-output/02-let-binding.cljp) | ⭐⭐ | 👍 | ✅ | Maps in let feel clean, starting to see value |
-| 03 | [Recursive factorial/fib](test-output/03-recursive-factorial.cljp) | ⭐⭐⭐ | 💚 | ✅ | Deep nesting is EASY - this is where CLJP shines! |
-| 04 | [Collections & HOFs](test-output/04-collections.cljp) | ⭐⭐ | 👍 | ✅ | Vectors of maps are clear, structure explicit |
-| 05 | [Threading macros](test-output/05-threading-macros.cljp) | ⭐⭐ | 👍 | ✅ | Each step self-contained, nice separation |
-| 06 | [Error handling](test-output/06-error-handling.cljp) | ⭐⭐⭐ | 💚 | ✅ | try/catch nesting trivial, zero hesitation |
-| 07 | [Multimethods](test-output/07-multimethods.cljp) | ⭐⭐⭐ | 👍 | ✅ | defmethod bodies clear, methodical |
-| 08 | [Complex destructuring](test-output/08-complex-destructuring.cljp) | ⭐⭐⭐⭐ | 🔥 | ✅ | **KILLER APP #2** - No ambiguity about nesting! |
-| 09 | [State machine](test-output/09-state-machine.cljp) | ⭐⭐⭐⭐ | 💚 | ✅ | Nested if/do branches fast, never counted |
-| 10 | [**GNARLY hiccup**](test-output/10-gnarly-hiccup.cljp) | ⭐⭐⭐⭐⭐ | 🔥🔥🔥 | ✅ | **KILLER APP #1** - This alone justifies CLJP! |
-| 11 | [Core.async pipeline](test-output/11-async-pipeline.cljp) | ⭐⭐⭐⭐ | 💚 | ✅ | go-loops with channels trivial, linear thinking |
-| 12 | [Transducers](test-output/12-transducers.cljp) | ⭐⭐⭐⭐ | 💚 | ❌→✅ | **ERROR but learned!** Multi-arity wrapping revealed structure |
-| 13 | [Spec validation](test-output/13-spec-validation.cljp) | ⭐⭐⭐ | 👍 | ❌→✅ | **ERROR but quick fix!** Reader macros → expand to fn |
-| 14 | [Protocols & records](test-output/14-protocols-and-records.cljp) | ⭐⭐⭐ | 👍 | ✅ | defprotocol/defrecord clean, clear structure |
-| 15 | [Graph DFS/BFS](test-output/15-graph-traversal.cljp) | ⭐⭐⭐⭐ | 💚 | ✅ | loop/recur with stack ops natural match |
-| 16 | [**Parser combinators**](test-output/16-monadic-parser.cljp) | ⭐⭐⭐⭐⭐ | 🔥 | ✅ | Monadic bind chains - zero errors! Mind blown 🤯 |
-| 17 | [Lazy sequences](test-output/17-lazy-sequences.cljp) | ⭐⭐⭐⭐ | 💚 | ✅ | lazy-seq with letfn perfect, learned from #12 |
-| 18 | [Web handlers](test-output/18-web-handler.cljp) | ⭐⭐⭐ | 👍 | ✅ | Ring/Compojure routes clear, middleware clean |
-| 19 | [Datalog queries](test-output/19-datalog-style.cljp) | ⭐⭐⭐ | 👍 | ✅ | for comprehensions with :when, joins work well |
-| 20 | [**Mega hiccup form**](test-output/20-mega-hiccup-form.cljp) | ⭐⭐⭐⭐⭐ | 🔥🔥🔥 | ✅ | Complex nested UI - FINAL BOSS defeated! |
+| 01 | [Simple functions](test-output/01-simple-function.cljpp) | ⭐ | 😐 | ✅ | PUSH-( feels natural, but not better than regular Clojure for simple code |
+| 02 | [Let bindings](test-output/02-let-binding.cljpp) | ⭐⭐ | 👍 | ✅ | Maps in let feel clean, starting to see value |
+| 03 | [Recursive factorial/fib](test-output/03-recursive-factorial.cljpp) | ⭐⭐⭐ | 💚 | ✅ | Deep nesting is EASY - this is where CLJ-PP shines! |
+| 04 | [Collections & HOFs](test-output/04-collections.cljpp) | ⭐⭐ | 👍 | ✅ | Vectors of maps are clear, structure explicit |
+| 05 | [Threading macros](test-output/05-threading-macros.cljpp) | ⭐⭐ | 👍 | ✅ | Each step self-contained, nice separation |
+| 06 | [Error handling](test-output/06-error-handling.cljpp) | ⭐⭐⭐ | 💚 | ✅ | try/catch nesting trivial, zero hesitation |
+| 07 | [Multimethods](test-output/07-multimethods.cljpp) | ⭐⭐⭐ | 👍 | ✅ | defmethod bodies clear, methodical |
+| 08 | [Complex destructuring](test-output/08-complex-destructuring.cljpp) | ⭐⭐⭐⭐ | 🔥 | ✅ | **KILLER APP #2** - No ambiguity about nesting! |
+| 09 | [State machine](test-output/09-state-machine.cljpp) | ⭐⭐⭐⭐ | 💚 | ✅ | Nested if/do branches fast, never counted |
+| 10 | [**GNARLY hiccup**](test-output/10-gnarly-hiccup.cljpp) | ⭐⭐⭐⭐⭐ | 🔥🔥🔥 | ✅ | **KILLER APP #1** - This alone justifies CLJ-PP! |
+| 11 | [Core.async pipeline](test-output/11-async-pipeline.cljpp) | ⭐⭐⭐⭐ | 💚 | ✅ | go-loops with channels trivial, linear thinking |
+| 12 | [Transducers](test-output/12-transducers.cljpp) | ⭐⭐⭐⭐ | 💚 | ❌→✅ | **ERROR but learned!** Multi-arity wrapping revealed structure |
+| 13 | [Spec validation](test-output/13-spec-validation.cljpp) | ⭐⭐⭐ | 👍 | ❌→✅ | **ERROR but quick fix!** Reader macros → expand to fn |
+| 14 | [Protocols & records](test-output/14-protocols-and-records.cljpp) | ⭐⭐⭐ | 👍 | ✅ | defprotocol/defrecord clean, clear structure |
+| 15 | [Graph DFS/BFS](test-output/15-graph-traversal.cljpp) | ⭐⭐⭐⭐ | 💚 | ✅ | loop/recur with stack ops natural match |
+| 16 | [**Parser combinators**](test-output/16-monadic-parser.cljpp) | ⭐⭐⭐⭐⭐ | 🔥 | ✅ | Monadic bind chains - zero errors! Mind blown 🤯 |
+| 17 | [Lazy sequences](test-output/17-lazy-sequences.cljpp) | ⭐⭐⭐⭐ | 💚 | ✅ | lazy-seq with letfn perfect, learned from #12 |
+| 18 | [Web handlers](test-output/18-web-handler.cljpp) | ⭐⭐⭐ | 👍 | ✅ | Ring/Compojure routes clear, middleware clean |
+| 19 | [Datalog queries](test-output/19-datalog-style.cljpp) | ⭐⭐⭐ | 👍 | ✅ | for comprehensions with :when, joins work well |
+| 20 | [**Mega hiccup form**](test-output/20-mega-hiccup-form.cljpp) | ⭐⭐⭐⭐⭐ | 🔥🔥🔥 | ✅ | Complex nested UI - FINAL BOSS defeated! |
 
 **Complexity:** ⭐ = simple, ⭐⭐⭐⭐⭐ = very complex
 
@@ -146,7 +146,7 @@ POP
 - For comprehensions
 - Nested everything
 
-CLJP makes the structure completely explicit. No counting. No ambiguity.
+CLJ-PP makes the structure completely explicit. No counting. No ambiguity.
 
 ## Key Insights
 
@@ -160,32 +160,32 @@ For autoregressive generation, describing structure directly is simpler than enc
 ### 2. Error Messages Are Better
 
 **Clojure:** "Unmatched delimiter: expected '}'" (could be anywhere, often wrong location)
-**CLJP:** "POP with empty stack at position 187" (exact location, exact problem)
+**CLJ-PP:** "POP with empty stack at position 187" (exact location, exact problem)
 
 ### 3. Token Efficiency Is The Wrong Metric
 
-Yes, CLJP is ~50% more verbose.
+Yes, CLJ-PP is ~50% more verbose.
 But:
 - 85% correctness vs ~50% for complex nesting
 - <2 min error fixes vs ~10 min delimiter hunting
 - Zero cognitive load vs high
 
-**End-to-end, CLJP is faster.**
+**End-to-end, CLJ-PP is faster.**
 
 ### 4. The Mental Model Shift
 
-**Before CLJP:**
+**Before CLJ-PP:**
 "I need to carefully count closing delimiters"
 "Is that 3 or 4 closes?"
 
-**With CLJP:**
+**With CLJ-PP:**
 "Open list with PUSH-("
 "Done with this, POP"
 "Linear stack thinking"
 
 ## Recommendations
 
-### For LLMs: Use CLJP When...
+### For LLMs: Use CLJ-PP When...
 
 **ALWAYS:**
 - Hiccup/Reagent components
@@ -201,12 +201,12 @@ But:
 
 **NEVER:**
 - REPL one-liners
-- Reading existing .clj files
+- Reading existing Clojure files
 
 ### Workflow
 
 ```
-LLM generates .cljp
+LLM generates .cljpp
      ↓
 Local transpiler → .clj
      ↓
@@ -224,29 +224,95 @@ Standard Clojure tooling
 ## Implementation
 
 This repo contains:
-- **Tokenizer** (`src/cljp/tokenizer.clj`) - Parses CLJP → tokens
+- **Tokenizer** (`src/cljp/tokenizer.clj`) - Parses CLJ-PP → tokens
 - **Assembler** (`src/cljp/assembler.clj`) - Tokens → Clojure forms
 - **CLI** (`bin/cljp-convert`) - File transpiler
 - **Tests** (34 tests, all passing)
 - **Specification** (`docs/cljp-specification.md`)
-- **20 example programs** (`test-output/*.cljp`)
+- **20 example programs** (`test-output/*.cljpp`)
 
 ### Quick Start
 
 ```bash
-# Transpile a CLJP file
-clojure -M -m cljp.core input.cljp
+# Transpile a CLJ-PP file
+clojure -M -m cljp.core input.cljpp
 
 # Output: input.clj (auto-generated)
 
 # With explicit output
-clojure -M -m cljp.core input.cljp output.clj
+clojure -M -m cljp.core input.cljpp output.clj
 
-# Force overwrite if .clj is newer
-clojure -M -m cljp.core input.cljp --force
+# Force overwrite if output is newer
+clojure -M -m cljp.core input.cljpp --force
 
 # Run tests
 make runtests-once
+```
+
+### Using with Claude Code
+
+To configure Claude Code to generate CLJ-PP for appropriate use cases, add this to your `.claude/CLAUDE.md`:
+
+```markdown
+# Clojure Code Generation with CLJ-PP
+
+For complex Clojure code, use CLJ-PP (CLJ-Push-Pop) format instead of regular Clojure syntax.
+
+## When to use CLJ-PP (.cljpp files):
+
+**ALWAYS use CLJ-PP for:**
+- Hiccup/Reagent components (killer app #1!)
+- Complex destructuring (killer app #2)
+- Deeply nested code (>3 levels)
+- State machines with nested conditionals
+- Recursive algorithms
+- core.async pipelines
+- Parser combinators
+
+**OPTIONAL for:**
+- Simple utility functions
+- Basic transformations
+
+**NEVER use for:**
+- REPL one-liners
+- Reading existing Clojure files
+
+## CLJ-PP Syntax:
+
+```clojure
+PUSH-(  # Opens list
+PUSH-[  # Opens vector
+PUSH-{  # Opens map
+POP     # Closes current container
+```
+
+## Example - Hiccup component:
+
+```clojure
+PUSH-( defn user-card PUSH-[ PUSH-{ :keys PUSH-[ name email verified? POP POP POP
+  PUSH-[ :div.card
+    PUSH-[ :h3 name POP
+    PUSH-[ :p email POP
+    PUSH-( when verified?
+      PUSH-[ :span.badge "✓ Verified" POP
+    POP
+  POP
+POP
+```
+
+## Transpile to Clojure:
+
+```bash
+clojure -M -m cljp.core my-component.cljpp
+# Creates: my-component.clj
+```
+
+## Why CLJ-PP?
+
+- 85% first-try correctness vs ~50% for complex nesting
+- Precise error messages ("POP with empty stack at position 187")
+- Zero delimiter-counting cognitive load
+- Stack-based thinking matches autoregressive generation
 ```
 
 ### Syntax
@@ -262,23 +328,23 @@ All other tokens (symbols, keywords, strings, numbers) are atoms.
 
 ## The Verdict
 
-**Writing 20 programs in CLJP fundamentally changed how I think about code generation.**
+**Writing 20 programs in CLJ-PP fundamentally changed how I think about code generation.**
 
 Before: "Clojure's syntax is elegant but hard for LLMs to balance"
 After: "**Stack-based structure description is the natural interface for autoregressive generation**"
 
-CLJP isn't a workaround—it's a **better abstraction** for generation.
+CLJ-PP isn't a workaround—it's a **better abstraction** for generation.
 
 Just like:
 - Assembly → C (higher abstraction)
 - Manual memory → GC (better abstraction)
 - **Delimiter balancing → Stack operations** (natural for LLMs)
 
-For complex Clojure code, especially hiccup, CLJP is transformative.
+For complex Clojure code, especially hiccup, CLJ-PP is transformative.
 
 ## Status
 
-**CLJP v1 with `PUSH-(` syntax is production-ready for LLM code generation.**
+**CLJ-PP v1 with `PUSH-(` syntax is production-ready for LLM code generation.**
 
 All 20 test programs transpile correctly.
 The tokenizer is simple and fast.
