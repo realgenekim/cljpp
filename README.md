@@ -1,6 +1,6 @@
-# CLJ-PP (CLJ-Push-Pop): A Grammar To Make It Super-Easy For LLMs To Vibe Code Perfectly Balanced Clojure S-Expressions, Nearly Every Time
+# CLJ-PP (CLJ-Push-Pop): A Grammar To Make It Super-Easy For LLMs To Vibe Code Perfectly Balanced Clojure S-Expressions, Nearly Every Time -- And Super-Easy To Fix!
 
-Pronounced: "CLJ-PP" (clj-PEE-PEE)
+Pronounced: "clj-PP" (clj-PEE-PEE)
 
 **The Experiment:** What if we stopped asking LLMs to "vibe" delimiter balancing and gave them explicit stack operations instead?
 
