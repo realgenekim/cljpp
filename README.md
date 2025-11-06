@@ -4,16 +4,43 @@ Pronounced: "clj-PP" (clj-PEE-PEE)
 
 **The Experiment:** What if we stopped asking LLMs to "vibe" delimiter balancing and gave them explicit stack operations instead?
 
-You're an autoregressive token auto-completer who is trying to emit perfectly balanced s-expressions, but your output is fundamentally linear. You can't look ahead to count how many closes you'll need. You just emit tokens one at a time, hoping the pattern-matching learned from training on billions of tokens will somehow magically work.
+You're an autoregressive token auto-completer trying to emit perfectly balanced s-expressions, but your output is fundamentally linear. You can't look ahead to count how many closing delimiters you'll need. You just emit tokens one at a time, hoping the pattern-matching learned from training on billions of tokens will somehow magically work.
 
-**Spoiler:** You sometimes generate incorrect Clojure files, and it's usually complex enough that it's super difficult to fix.
+**Spoiler:** It doesn't always work, and when it fails, it's a nightmare to fix.
 
 ## Background: The Delimiter Problem
 
-I've been using Claude Code extensively for Clojure development, and while it's remarkably good, there's an issue that most of have faced : **delimiter balancing in deeply nested code**.
+I recently had a "nightmare parentheses matching" episode with Claude Code. IntelliJ/Cursive told me I had imbalanced delimiters. What do you actually do when you see this?
+
+`]]])}))))]]]])))`
+
+I tried to figure out the error, but it was a deeply nested hiccup form—something like:
+
+```clojure
+[:div.header
+  [:h2 title]
+  (when verified?
+    [:span.badge "✓"])
+  (for [item items]
+    [:div {:key (:id item)}
+      (render-item item)])]
+```
+
+Was it the `:div` vector? The `when` conditional? The `for` comprehension? The map literal `{:key ...}`? I literally couldn't figure out where the problem was.
+
+**I've watched Claude Code try different strategies:**
+- Sometimes it uses `sed` to fix delimiters (sometimes it works)
+- Once I swear I saw it write a Python program to count parentheses (I wish I'd taken a screenshot)
+- Other times it just... guesses and hopes, regenerating the whole function
+
+**The fact that it tried counting was super interesting.** That's the only way to take the problem out of "guessing mode" and into "calculation mode."
+
+**The deeper problem:** Hiccup mixes data literals `[:div ...]`, function calls `(when ...)`, map literals `{:key value}`, and nested everything. Each kind of container uses different delimiters. When you're generating token-by-token, you can't easily look back to remember "did I open 3 or 4 things that need closing?"
+
+**The core issue:** Clojure is amazing for humans with structural editing tools (paredit, parinfer). But for LLMs generating code token-by-token? **Delimiter balancing is fundamentally hard.**
 
 For simple functions? No problem. But try generating:
-- Hiccup components with nested conditionals
+- Hiccup/Reagent components with nested conditionals
 - Complex destructuring in let bindings
 - Multi-arity functions with stateful closures
 - Parser combinators or graph algorithms
