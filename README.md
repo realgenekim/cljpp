@@ -58,28 +58,28 @@ Key differences:
 
 ### The 20 Test Cases
 
-| # | Program | Complexity | First Try? | Key Learning |
-|---|---------|-----------|------------|--------------|
-| 01 | [Simple functions](test-output/01-simple-function.cljp) | ⭐ | ✅ | PUSH-( feels natural, zero errors |
-| 02 | [Let bindings](test-output/02-let-binding.cljp) | ⭐⭐ | ✅ | Maps in let feel clean |
-| 03 | [Recursive factorial/fib](test-output/03-recursive-factorial.cljp) | ⭐⭐⭐ | ✅ | Deep nesting is EASY |
-| 04 | [Collections & HOFs](test-output/04-collections.cljp) | ⭐⭐ | ✅ | Vectors of maps are clear |
-| 05 | [Threading macros](test-output/05-threading-macros.cljp) | ⭐⭐ | ✅ | Each step self-contained |
-| 06 | [Error handling](test-output/06-error-handling.cljp) | ⭐⭐⭐ | ✅ | try/catch nesting trivial |
-| 07 | [Multimethods](test-output/07-multimethods.cljp) | ⭐⭐⭐ | ✅ | defmethod bodies clear |
-| 08 | [Complex destructuring](test-output/08-complex-destructuring.cljp) | ⭐⭐⭐⭐ | ✅ | **KILLER APP #2** - No ambiguity! |
-| 09 | [State machine](test-output/09-state-machine.cljp) | ⭐⭐⭐⭐ | ✅ | Nested if/do branches fast to write |
-| 10 | [**GNARLY hiccup**](test-output/10-gnarly-hiccup.cljp) | ⭐⭐⭐⭐⭐ | ✅ | **KILLER APP #1** - This alone justifies CLJP |
-| 11 | [Core.async pipeline](test-output/11-async-pipeline.cljp) | ⭐⭐⭐⭐ | ✅ | go-loops with channels trivial |
-| 12 | [Transducers](test-output/12-transducers.cljp) | ⭐⭐⭐⭐ | ❌→✅ | **ERROR:** Multi-arity needs PUSH-( wrapping each arity |
-| 13 | [Spec validation](test-output/13-spec-validation.cljp) | ⭐⭐⭐ | ❌→✅ | **ERROR:** Reader macros `#()` not supported, expand to `fn` |
-| 14 | [Protocols & records](test-output/14-protocols-and-records.cljp) | ⭐⭐⭐ | ✅ | defprotocol/defrecord clean |
-| 15 | [Graph DFS/BFS](test-output/15-graph-traversal.cljp) | ⭐⭐⭐⭐ | ✅ | loop/recur with stack ops natural |
-| 16 | [**Parser combinators**](test-output/16-monadic-parser.cljp) | ⭐⭐⭐⭐⭐ | ✅ | Monadic bind chains - zero errors! 🤯 |
-| 17 | [Lazy sequences](test-output/17-lazy-sequences.cljp) | ⭐⭐⭐⭐ | ✅ | lazy-seq with letfn worked perfectly |
-| 18 | [Web handlers](test-output/18-web-handler.cljp) | ⭐⭐⭐ | ✅ | Ring/Compojure routes clear |
-| 19 | [Datalog queries](test-output/19-datalog-style.cljp) | ⭐⭐⭐ | ✅ | for comprehensions with :when |
-| 20 | [**Mega hiccup form**](test-output/20-mega-hiccup-form.cljp) | ⭐⭐⭐⭐⭐ | ✅ | Complex nested UI - FINAL BOSS defeated |
+| # | Program | Complexity | Liked it? | First Try? | Key Learning |
+|---|---------|-----------|-----------|------------|--------------|
+| 01 | [Simple functions](test-output/01-simple-function.cljp) | ⭐ | 😐 | ✅ | PUSH-( feels natural, but not better than .clj for simple code |
+| 02 | [Let bindings](test-output/02-let-binding.cljp) | ⭐⭐ | 👍 | ✅ | Maps in let feel clean, starting to see value |
+| 03 | [Recursive factorial/fib](test-output/03-recursive-factorial.cljp) | ⭐⭐⭐ | 💚 | ✅ | Deep nesting is EASY - this is where CLJP shines! |
+| 04 | [Collections & HOFs](test-output/04-collections.cljp) | ⭐⭐ | 👍 | ✅ | Vectors of maps are clear, structure explicit |
+| 05 | [Threading macros](test-output/05-threading-macros.cljp) | ⭐⭐ | 👍 | ✅ | Each step self-contained, nice separation |
+| 06 | [Error handling](test-output/06-error-handling.cljp) | ⭐⭐⭐ | 💚 | ✅ | try/catch nesting trivial, zero hesitation |
+| 07 | [Multimethods](test-output/07-multimethods.cljp) | ⭐⭐⭐ | 👍 | ✅ | defmethod bodies clear, methodical |
+| 08 | [Complex destructuring](test-output/08-complex-destructuring.cljp) | ⭐⭐⭐⭐ | 🔥 | ✅ | **KILLER APP #2** - No ambiguity about nesting! |
+| 09 | [State machine](test-output/09-state-machine.cljp) | ⭐⭐⭐⭐ | 💚 | ✅ | Nested if/do branches fast, never counted |
+| 10 | [**GNARLY hiccup**](test-output/10-gnarly-hiccup.cljp) | ⭐⭐⭐⭐⭐ | 🔥🔥🔥 | ✅ | **KILLER APP #1** - This alone justifies CLJP! |
+| 11 | [Core.async pipeline](test-output/11-async-pipeline.cljp) | ⭐⭐⭐⭐ | 💚 | ✅ | go-loops with channels trivial, linear thinking |
+| 12 | [Transducers](test-output/12-transducers.cljp) | ⭐⭐⭐⭐ | 💚 | ❌→✅ | **ERROR but learned!** Multi-arity wrapping revealed structure |
+| 13 | [Spec validation](test-output/13-spec-validation.cljp) | ⭐⭐⭐ | 👍 | ❌→✅ | **ERROR but quick fix!** Reader macros → expand to fn |
+| 14 | [Protocols & records](test-output/14-protocols-and-records.cljp) | ⭐⭐⭐ | 👍 | ✅ | defprotocol/defrecord clean, clear structure |
+| 15 | [Graph DFS/BFS](test-output/15-graph-traversal.cljp) | ⭐⭐⭐⭐ | 💚 | ✅ | loop/recur with stack ops natural match |
+| 16 | [**Parser combinators**](test-output/16-monadic-parser.cljp) | ⭐⭐⭐⭐⭐ | 🔥 | ✅ | Monadic bind chains - zero errors! Mind blown 🤯 |
+| 17 | [Lazy sequences](test-output/17-lazy-sequences.cljp) | ⭐⭐⭐⭐ | 💚 | ✅ | lazy-seq with letfn perfect, learned from #12 |
+| 18 | [Web handlers](test-output/18-web-handler.cljp) | ⭐⭐⭐ | 👍 | ✅ | Ring/Compojure routes clear, middleware clean |
+| 19 | [Datalog queries](test-output/19-datalog-style.cljp) | ⭐⭐⭐ | 👍 | ✅ | for comprehensions with :when, joins work well |
+| 20 | [**Mega hiccup form**](test-output/20-mega-hiccup-form.cljp) | ⭐⭐⭐⭐⭐ | 🔥🔥🔥 | ✅ | Complex nested UI - FINAL BOSS defeated! |
 
 **Complexity:** ⭐ = simple, ⭐⭐⭐⭐⭐ = very complex
 
@@ -284,7 +284,13 @@ See [`test-output/program-reactions.md`](test-output/program-reactions.md) for d
 
 ## License
 
-EPL 1.0 (same as Clojure)
+Copyright © 2025 Gene Kim
+
+This program and the accompanying materials are made available under the
+terms of the Eclipse Public License 1.0 which is available at
+http://www.eclipse.org/legal/epl-v10.html
+
+(Same as Clojure)
 
 ## Acknowledgments
 
