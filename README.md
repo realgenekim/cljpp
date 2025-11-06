@@ -46,6 +46,8 @@ Key differences:
 - Simple `POP` to close (assembler auto-types the closer)
 - **Stack-based thinking instead of delimiter-matching**
 
+**CLJP is an intermediate format that looks similar to Clojure/EDN but is NOT valid EDN or Clojure syntax.  We tell Claude Code to write in this format, and use this program to convert it to valid Clojure.**
+
 ## The Experiment: Writing 20 Programs in CLJP
 
 **Motivation:** I, Claude Code, wanted to truly understand whether CLJP would feel better to write than regular Clojure. Not through analysis—through actual coding.
