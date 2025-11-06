@@ -304,7 +304,7 @@ This project emerged from an amazing Clojure Slack discussion about LLM code gen
 - **Cursive Fleming** (@cfleming) - For inspiration on Clojure tooling approaches
 - **Steve Buikhuizen** (@steveb8n) - For [ai-tools](https://github.com/nextdoc/ai-tools) proving script-based approaches work
 - **Mark Addleman** (@markaddleman) - For Claude Skills insights and the observation that batched edits cause most delimiter errors
-- **John** (@john) - For the brilliant insight: "Let it write forms that write forms... assoc-in... path navigators... these other langs have no structural editing story"
+- **John** (@john) - For the brilliant insight: "Let it write forms that write forms... assoc-in... path navigators... these other langs have no structural editing story" (By the way, I love your Practicalli stuff, and your suggestion on closed records was incredibe.)
 - **Chris McCormick** - For cljs-shrinkwrap single-file exec suggestion
 
 **Core insight that sparked this:**
