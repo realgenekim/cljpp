@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# CLJP converter: transpile .cljp files to .clj files
+#
+# Usage:
+#   bin/cljp-convert input.cljp [output.clj]
+#
+# If output path is not specified, writes to sibling .clj file.
+
+set -euo pipefail
+
+# Change to project root (parent of bin/)
+cd "$(dirname "$0")/.."
+
+# Run CLJP transpiler
+exec clojure -M -m cljp.core "$@"

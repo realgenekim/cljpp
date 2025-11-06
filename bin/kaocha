@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Kaocha test runner wrapper
+# Usage: bin/kaocha [options]
+
+set -euo pipefail
+
+# Change to project root (parent of bin/)
+cd "$(dirname "$0")/.."
+
+# Run kaocha with run-tests alias
+exec clojure -M:run-tests "$@"
