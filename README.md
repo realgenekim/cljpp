@@ -10,34 +10,19 @@ You're an autoregressive token auto-completer trying to emit perfectly balanced 
 
 ## Background: The Delimiter Problem
 
-I recently had a "nightmare parentheses matching" episode with Claude Code. IntelliJ/Cursive told me I had imbalanced delimiters. What do you actually do when you see this?
+I recently had a "nightmare parentheses matching" episode with Claude Code (and I've occasionally ahd something similar when indentation is quite right, and then `parinfer` completely mangles my code). IntelliJ/Cursive tells me I have  imbalanced delimiters. What do you actually do when you see this?
 
 `]]])}))))]]]])))`
 
-I tried to figure out the error, but it was a deeply nested hiccup form—something like:
+I tried to figure out the error, but it was a deeply nested hiccup form with a `let`, and multiple `if` statements littered throughotu. I literally couldn't figure out where the problem was.
 
-```clojure
-[:div.header
-  [:h2 title]
-  (when verified?
-    [:span.badge "✓"])
-  (for [item items]
-    [:div {:key (:id item)}
-      (render-item item)])]
-```
-
-Was it the `:div` vector? The `when` conditional? The `for` comprehension? The map literal `{:key ...}`? I literally couldn't figure out where the problem was.
-
-**I've watched Claude Code try different strategies:**
+I've watched Claude Code try different strategies:
 - Sometimes it uses `sed` to fix delimiters (sometimes it works)
 - Once I swear I saw it write a Python program to count parentheses (I wish I'd taken a screenshot)
-- Other times it just... guesses and hopes, regenerating the whole function
 
-**The fact that it tried counting was super interesting.** That's the only way to take the problem out of "guessing mode" and into "calculation mode."
+The fact that it was counting is super interesting. That's the only way to take the problem out of "guessing mode" and into "calculation mode."
 
-**The deeper problem:** Hiccup mixes data literals `[:div ...]`, function calls `(when ...)`, map literals `{:key value}`, and nested everything. Each kind of container uses different delimiters. When you're generating token-by-token, you can't easily look back to remember "did I open 3 or 4 things that need closing?"
-
-**The core issue:** Clojure is amazing for humans with structural editing tools (paredit, parinfer). But for LLMs generating code token-by-token? **Delimiter balancing is fundamentally hard.**
+**The core issue:** Clojure is amazing for humans with structural editing tools (paredit, parinfer, IDEs that can show matching parens, etc). 
 
 For simple functions? No problem. But try generating:
 - Hiccup/Reagent components with nested conditionals
@@ -45,7 +30,7 @@ For simple functions? No problem. But try generating:
 - Multi-arity functions with stateful closures
 - Parser combinators or graph algorithms
 
-You'll get errors. Not because the LLM doesn't understand Clojure semantics—it clearly does. But because **counting closing delimiters backwards through a token stream is fundamentally hard for autoregressive generation**.
+You'll get errors. Not because the LLM doesn't understand Clojure semantics—it clearly does. But because **counting closing delimiters backwards through a token stream is fundamentally hard for LLMs that use autoregressive generation**.
 
 ## The Hypothesis
 
@@ -73,7 +58,7 @@ Key differences:
 - Simple `POP` to close (assembler auto-types the closer)
 - **Stack-based thinking instead of delimiter-matching**
 
-**CLJ-PP is an intermediate format that looks similar to Clojure/EDN but is NOT valid EDN or Clojure syntax. We tell Claude Code to write in this format (.cljpp files), and use this program to convert it to valid Clojure (.clj files).**
+**CLJ-PP is an intermediate format that looks similar to Clojure/EDN but is NOT valid EDN or Clojure syntax. We tell Claude Code to write a short-lived file in this format (.cljpp files), and use this program to convert it to valid Clojure (.clj files).**
 
 ## The Experiment: Writing 20 Programs in CLJ-PP
 
@@ -85,42 +70,60 @@ Key differences:
 - Would it actually feel safer, or just slower?
 - Is this solving a real problem or just theoretical?
 
-**Desire:** To push CLJP to its limits. Start simple, get progressively gnarlier, and see where it breaks.
+**Desire:** To push CLJ-PP to its limits. Start simple, get progressively gnarlier, and see where it breaks.
 
-### The 20 Test Cases
+**Then**: Write the same 20 programs in regular Clojure to see if I actually experience the delimiter problems.
 
-| # | Program | Complexity | Liked it? | First Try? | Key Learning |
-|---|---------|-----------|-----------|------------|--------------|
-| 01 | [Simple functions](test-output/01-simple-function.cljpp) | ⭐ | 😐 | ✅ | PUSH-( feels natural, but not better than regular Clojure for simple code |
-| 02 | [Let bindings](test-output/02-let-binding.cljpp) | ⭐⭐ | 👍 | ✅ | Maps in let feel clean, starting to see value |
-| 03 | [Recursive factorial/fib](test-output/03-recursive-factorial.cljpp) | ⭐⭐⭐ | 💚 | ✅ | Deep nesting is EASY - this is where CLJ-PP shines! |
-| 04 | [Collections & HOFs](test-output/04-collections.cljpp) | ⭐⭐ | 👍 | ✅ | Vectors of maps are clear, structure explicit |
-| 05 | [Threading macros](test-output/05-threading-macros.cljpp) | ⭐⭐ | 👍 | ✅ | Each step self-contained, nice separation |
-| 06 | [Error handling](test-output/06-error-handling.cljpp) | ⭐⭐⭐ | 💚 | ✅ | try/catch nesting trivial, zero hesitation |
-| 07 | [Multimethods](test-output/07-multimethods.cljpp) | ⭐⭐⭐ | 👍 | ✅ | defmethod bodies clear, methodical |
-| 08 | [Complex destructuring](test-output/08-complex-destructuring.cljpp) | ⭐⭐⭐⭐ | 🔥 | ✅ | **KILLER APP #2** - No ambiguity about nesting! |
-| 09 | [State machine](test-output/09-state-machine.cljpp) | ⭐⭐⭐⭐ | 💚 | ✅ | Nested if/do branches fast, never counted |
-| 10 | [**GNARLY hiccup**](test-output/10-gnarly-hiccup.cljpp) | ⭐⭐⭐⭐⭐ | 🔥🔥🔥 | ✅ | **KILLER APP #1** - This alone justifies CLJ-PP! |
-| 11 | [Core.async pipeline](test-output/11-async-pipeline.cljpp) | ⭐⭐⭐⭐ | 💚 | ✅ | go-loops with channels trivial, linear thinking |
-| 12 | [Transducers](test-output/12-transducers.cljpp) | ⭐⭐⭐⭐ | 💚 | ❌→✅ | **ERROR but learned!** Multi-arity wrapping revealed structure |
-| 13 | [Spec validation](test-output/13-spec-validation.cljpp) | ⭐⭐⭐ | 👍 | ❌→✅ | **ERROR but quick fix!** Reader macros → expand to fn |
-| 14 | [Protocols & records](test-output/14-protocols-and-records.cljpp) | ⭐⭐⭐ | 👍 | ✅ | defprotocol/defrecord clean, clear structure |
-| 15 | [Graph DFS/BFS](test-output/15-graph-traversal.cljpp) | ⭐⭐⭐⭐ | 💚 | ✅ | loop/recur with stack ops natural match |
-| 16 | [**Parser combinators**](test-output/16-monadic-parser.cljpp) | ⭐⭐⭐⭐⭐ | 🔥 | ✅ | Monadic bind chains - zero errors! Mind blown 🤯 |
-| 17 | [Lazy sequences](test-output/17-lazy-sequences.cljpp) | ⭐⭐⭐⭐ | 💚 | ✅ | lazy-seq with letfn perfect, learned from #12 |
-| 18 | [Web handlers](test-output/18-web-handler.cljpp) | ⭐⭐⭐ | 👍 | ✅ | Ring/Compojure routes clear, middleware clean |
-| 19 | [Datalog queries](test-output/19-datalog-style.cljpp) | ⭐⭐⭐ | 👍 | ✅ | for comprehensions with :when, joins work well |
-| 20 | [**Mega hiccup form**](test-output/20-mega-hiccup-form.cljpp) | ⭐⭐⭐⭐⭐ | 🔥🔥🔥 | ✅ | Complex nested UI - FINAL BOSS defeated! |
+### The 20 Test Cases - Comparative Results
+
+| # | Program | Complexity | CLJ-PP | Regular .clj | Key Learning |
+|---|---------|-----------|--------|--------------|--------------|
+| 01 | [Simple functions](test-output/01-simple-function.cljpp) | ⭐ | ✅ 😐 | ✅ Easy | Both work fine - no advantage either way |
+| 02 | [Let bindings](test-output/02-let-binding.cljpp) | ⭐⭐ | ✅ 👍 | ✅ Easy | Maps in let feel clean in CLJ-PP |
+| 03 | [Recursive factorial/fib](test-output/03-recursive-factorial.cljpp) | ⭐⭐⭐ | ✅ 💚 | ✅ Easy | Deep nesting: CLJ-PP removes mental counting |
+| 04 | [Collections & HOFs](test-output/04-collections.cljpp) | ⭐⭐ | ✅ 👍 | ✅ Easy | Structure explicit in CLJ-PP |
+| 05 | [Threading macros](test-output/05-threading-macros.cljpp) | ⭐⭐ | ✅ 👍 | ✅ Easy | Each step self-contained |
+| 06 | [Error handling](test-output/06-error-handling.cljpp) | ⭐⭐⭐ | ✅ 💚 | ✅ Easy | try/catch nesting trivial in CLJ-PP |
+| 07 | [Multimethods](test-output/07-multimethods.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | defmethod bodies clear |
+| 08 | [Complex destructuring](test-output/08-complex-destructuring.cljpp) | ⭐⭐⭐⭐ | ✅ 🔥 | ✅ Careful | **KILLER APP #2** - No ambiguity in CLJ-PP! |
+| 09 | [State machine](test-output/09-state-machine.cljpp) | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | Nested if/do: CLJ-PP = no counting |
+| 10 | [**GNARLY hiccup**](test-output/10-gnarly-hiccup.cljpp) | ⭐⭐⭐⭐⭐ | ✅ 🔥🔥🔥 | ✅ Very careful | **KILLER APP #1** - CLJ-PP makes hiccup trivial! |
+| 11 | [Core.async pipeline](test-output/11-async-pipeline.cljpp) | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | go-loops with channels: CLJ-PP = linear thinking |
+| 12 | [Transducers](test-output/12-transducers.cljpp) | ⭐⭐⭐⭐ | ❌→✅ 💚 | ✅ Easy | Multi-arity wrapping revealed structure |
+| 13 | [Spec validation](test-output/13-spec-validation.cljpp) | ⭐⭐⭐ | ❌→✅ 👍 | ✅ Easy | Reader macros → expand to fn |
+| 14 | [Protocols & records](test-output/14-protocols-and-records.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | defprotocol/defrecord clean |
+| 15 | [Graph DFS/BFS](test-output/15-graph-traversal.cljpp) | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | loop/recur: CLJ-PP = stack ops natural match |
+| 16 | [**Parser combinators**](test-output/16-monadic-parser.cljpp) | ⭐⭐⭐⭐⭐ | ✅ 🔥 | ⚠️ Logic error | Monadic bind chains - CLJ-PP had zero errors! |
+| 17 | [Lazy sequences](test-output/17-lazy-sequences.cljpp) | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Easy | lazy-seq with letfn perfect |
+| 18 | [Web handlers](test-output/18-web-handler.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | Ring/Compojure routes clear |
+| 19 | [Datalog queries](test-output/19-datalog-style.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | for comprehensions with :when |
+| 20 | [**Mega hiccup form**](test-output/20-mega-hiccup-form.cljpp) | ⭐⭐⭐⭐⭐ | ✅ 🔥🔥🔥 | ✅ Very careful | Complex nested UI - CLJ-PP = FINAL BOSS trivial! |
 
 **Complexity:** ⭐ = simple, ⭐⭐⭐⭐⭐ = very complex
 
-**Results:**
+**CLJ-PP Results:**
 - **85% first-try success rate** (17/20)
 - **All errors fixed in <2 minutes** with precise error messages
 - **Zero delimiter-counting mistakes**
-- **Hiccup code felt transformatively better**
+- **Mental effort: LOW** - just push/pop, no counting
 
-See detailed reactions and learnings in [`test-output/program-reactions.md`](test-output/program-reactions.md).
+**Regular Clojure Results:**
+- **95% first-try success rate** (19/20)
+- **1 logic error** (parser - wrong arg count, would happen in CLJ-PP too)
+- **Mental effort: HIGH** - constant delimiter counting, especially for complex nesting
+- **Required extreme care** on programs 8-11, 15-16, 20
+
+### The Key Insight
+
+**Regular Clojure works pretty well** (95% success) **BUT requires high mental effort**. For complex programs (#8-11, #15-16, #20), I had to carefully count delimiters while writing.
+
+**CLJ-PP's value isn't fixing broken generation** - it's **reducing cognitive load**:
+- ✅ No mental counting required
+- ✅ Safer for editing deeply nested code
+- ✅ Precise error messages when errors occur
+- ✅ Works without relying on training data patterns
+
+See detailed reactions in [`test-output/program-reactions.md`](test-output/program-reactions.md) and comparative analysis in [`test-output-clj/clj-writing-experience.md`](test-output-clj/clj-writing-experience.md).
 
 ## The Results
 
@@ -143,7 +146,7 @@ Compare to typical Clojure delimiter errors which are vague and often wrong abou
 **Hiccup/Reagent components** emerged as the absolute killer use case. Programs 10 and 20 convinced me:
 
 ```clojure
-;; This kind of code is HARD in regular Clojure:
+;; This kind of code is HARD to maintain matching delimiters in regular Clojure:
 [:div.header
   [:h2 title]
   (when verified?
