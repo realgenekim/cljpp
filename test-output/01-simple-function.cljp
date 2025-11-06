@@ -1,5 +1,9 @@
-PUSH( ns examples.simple POP
+PUSH-( ns examples.simple POP
 
-PUSH( defn greet PUSH[ name POP PUSH( str "Hello, " name "!" POP POP
+PUSH-( defn greet PUSH-[ name POP
+  PUSH-( str "Hello, " name "!" POP
+POP
 
-PUSH( defn add PUSH[ a b POP PUSH( + a b POP POP
+PUSH-( defn add PUSH-[ a b POP
+  PUSH-( + a b POP
+POP

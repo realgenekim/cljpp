@@ -1,0 +1,6 @@
+(ns examples.polymorphism)
+(defmulti render :type)
+(defmethod render :button [component] {:html (str "<button>" (:label component) "</button>")})
+(defmethod render :input [component] {:html (str "<input type='" (:input-type component "text") "'>")})
+(defmethod render :default [component] {:html (str "<div>" (:content component "Empty") "</div>")})
+(defn render-form [components] (map render components))

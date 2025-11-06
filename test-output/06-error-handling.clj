@@ -1,0 +1,3 @@
+(ns examples.errors)
+(defn safe-divide [a b] (try (if (zero? b) (throw (ex-info "Division by zero" {:b b, :a a})) (/ a b)) (catch Exception e (println "Error:" (ex-message e)) nil)))
+(defn validate-user [user] (cond (nil? user) {:ok? false, :error "User is nil"} (empty? (:name user)) {:ok? false, :error "Name is required"} (< (:age user 0) 18) {:ok? false, :error "Must be 18 or older"} :else {:ok? true, :user user}))

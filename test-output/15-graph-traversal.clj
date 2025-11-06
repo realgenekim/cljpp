@@ -1,0 +1,4 @@
+(ns examples.graphs)
+(def graph {:e [:f], :c [:f], :b [:d :e], :d [], :f [], :a [:b :c]})
+(defn dfs [graph start] (loop [visited {} stack [start] result []] (if (empty? stack) result (let [node (peek stack) stack' (pop stack)] (if (visited node) (recur visited stack' result) (let [neighbors (get graph node []) visited' (assoc visited node true) stack'' (into stack' neighbors) result' (conj result node)] (recur visited' stack'' result')))))))
+(defn bfs [graph start] (loop [visited {start true} queue [start] result []] (if (empty? queue) result (let [node (first queue) queue' (vec (rest queue)) neighbors (get graph node []) unvisited (filter (fn [n] (not (visited n))) neighbors) visited' (reduce (fn [v n] (assoc v n true)) visited unvisited) queue'' (into queue' unvisited)] (recur visited' queue'' (conj result node))))))

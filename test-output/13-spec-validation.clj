@@ -1,0 +1,8 @@
+(ns examples.specs (:require [clojure.spec.alpha :as s]))
+(s/def ::id pos-int?)
+(s/def ::name (s/and string? (fn [x] (> (count x) 0))))
+(s/def ::age (s/and int? (fn [x] (<= 0 x 150))))
+(s/def ::user (s/keys :req [::id ::name] :opt [::age]))
+(defn validate-user [user] (if (s/valid? ::user user) {:ok? true, :user user} {:ok? false, :errors (s/explain-data ::user user)}))
+(s/fdef process-user :args (s/cat :user ::user) :ret ::user)
+(defn process-user [user] (update user ::name clojure.string/upper-case))

@@ -150,16 +150,8 @@
                           #"Invalid closer '\}'"
                           (tokenizer/tokenize "PUSH-{ :a 1 POP }")))))
 
-(deftest tokenize-error-missing-push
-  (testing "Open paren without PUSH"
-    (is (thrown-with-msg? clojure.lang.ExceptionInfo
-                          #"must be preceded by PUSH"
-                          (tokenizer/tokenize "( defn foo"))))
-
-  (testing "Open bracket without PUSH"
-    (is (thrown-with-msg? clojure.lang.ExceptionInfo
-                          #"must be preceded by PUSH"
-                          (tokenizer/tokenize "[ x ]")))))
+;; Note: In PUSH- syntax, openers like (, [, { are just regular characters
+;; They can appear in symbols/words without error. Only ), ], } are invalid closers.
 
 (deftest tokenize-error-missing-pop
   (testing "Close paren without POP"
