@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# Test a single program repeatedly to tune the prompt
+# Test a single program repeatedly with POP-LINE and POP-ALL prompt
 
 PROGRAM_NUM=${1:-3}  # Default to program 3 (recursive - one that failed)
 ITERATIONS=${2:-10}
 
-OUTPUT_DIR="test-tuning"
+OUTPUT_DIR="experiments/pop-line-all-tests/run-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$OUTPUT_DIR"
 
-# Read the full prompt document
-PROMPT_DOC=$(cat CLJPP-PROMPT.md)
+# Read the ENHANCED prompt document (with POP-LINE and POP-ALL)
+PROMPT_DOC=$(cat CLJPP-PROMPT-WITH-POP-LINE-ALL.md)
 
 # Get the program description
 get_prompt() {
@@ -28,7 +28,7 @@ get_prompt() {
 
 TASK=$(get_prompt "$PROGRAM_NUM")
 
-echo "Testing Program $PROGRAM_NUM: Factorial/Fibonacci"
+echo "Testing Program $PROGRAM_NUM with POP-LINE and POP-ALL"
 echo "Running $ITERATIONS iterations..."
 echo ""
 
@@ -51,7 +51,8 @@ Requirements:
 - Use namespace examples.test$i
 - Output ONLY the CLJ-PP code
 - No markdown blocks, no explanations
-- Complete, valid CLJ-PP"
+- Complete, valid CLJ-PP
+- Use POP-LINE and POP-ALL where appropriate!"
 
     cljpp_file="$OUTPUT_DIR/iter${i}.cljpp"
     clj_file="$OUTPUT_DIR/iter${i}.clj"
@@ -61,7 +62,7 @@ Requirements:
         sed '/^```/d' > "$cljpp_file"; then
 
         # Transpile
-        if ./bin/cljpp "$cljpp_file" "$clj_file" 2>/dev/null; then
+        if clojure -M -m cljp.core "$cljpp_file" "$clj_file" 2>/dev/null; then
             # Load
             if clojure -M -e "(load-file \"$clj_file\")" 2>/dev/null; then
                 echo "✅ SUCCESS"
@@ -74,7 +75,7 @@ Requirements:
             echo "❌ Transpile failed"
             transpile_failures=$((transpile_failures + 1))
             # Show first error
-            ./bin/cljpp "$cljpp_file" "$clj_file" 2>&1 | head -3
+            clojure -M -m cljp.core "$cljpp_file" "$clj_file" 2>&1 | head -3
         fi
     else
         echo "❌ Claude failed"

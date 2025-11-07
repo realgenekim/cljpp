@@ -1,17 +1,16 @@
 #!/bin/bash
 
-# Test a single program repeatedly to tune the prompt
+# Test with POP-ALL only (no POP-LINE)
 
-PROGRAM_NUM=${1:-3}  # Default to program 3 (recursive - one that failed)
+PROGRAM_NUM=${1:-3}
 ITERATIONS=${2:-10}
 
-OUTPUT_DIR="test-tuning"
+OUTPUT_DIR="experiments/pop-all-only-tests/run-$(date +%Y%m%d-%H%M%S)"
 mkdir -p "$OUTPUT_DIR"
 
-# Read the full prompt document
-PROMPT_DOC=$(cat CLJPP-PROMPT.md)
+# Read the POP-ALL-ONLY prompt
+PROMPT_DOC=$(cat CLJPP-PROMPT-WITH-POP-ALL-ONLY.md)
 
-# Get the program description
 get_prompt() {
     local num=$1
     awk -v n="$num" '
@@ -28,7 +27,7 @@ get_prompt() {
 
 TASK=$(get_prompt "$PROGRAM_NUM")
 
-echo "Testing Program $PROGRAM_NUM: Factorial/Fibonacci"
+echo "Testing Program $PROGRAM_NUM with POP-ALL only (no POP-LINE)"
 echo "Running $ITERATIONS iterations..."
 echo ""
 
@@ -39,7 +38,6 @@ load_failures=0
 for i in $(seq 1 $ITERATIONS); do
     printf "Iteration %2d: " "$i"
 
-    # Create full prompt
     full_prompt="You are writing CLJ-PP (Clojure Push-Pop) code.
 
 $PROMPT_DOC
@@ -51,18 +49,16 @@ Requirements:
 - Use namespace examples.test$i
 - Output ONLY the CLJ-PP code
 - No markdown blocks, no explanations
-- Complete, valid CLJ-PP"
+- Complete, valid CLJ-PP
+- Use POP-ALL when you're completely done with a form!"
 
     cljpp_file="$OUTPUT_DIR/iter${i}.cljpp"
     clj_file="$OUTPUT_DIR/iter${i}.clj"
 
-    # Call Claude
     if echo "$full_prompt" | claude --print --model sonnet --tools "" 2>/dev/null | \
         sed '/^```/d' > "$cljpp_file"; then
 
-        # Transpile
-        if ./bin/cljpp "$cljpp_file" "$clj_file" 2>/dev/null; then
-            # Load
+        if clojure -M -m cljp.core "$cljpp_file" "$clj_file" 2>/dev/null; then
             if clojure -M -e "(load-file \"$clj_file\")" 2>/dev/null; then
                 echo "✅ SUCCESS"
                 successes=$((successes + 1))
@@ -73,8 +69,7 @@ Requirements:
         else
             echo "❌ Transpile failed"
             transpile_failures=$((transpile_failures + 1))
-            # Show first error
-            ./bin/cljpp "$cljpp_file" "$clj_file" 2>&1 | head -3
+            clojure -M -m cljp.core "$cljpp_file" "$clj_file" 2>&1 | head -3
         fi
     else
         echo "❌ Claude failed"
