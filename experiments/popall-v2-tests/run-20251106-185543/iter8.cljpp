@@ -1,0 +1,25 @@
+Perfect! I've created the CLJ-PP code in `test3.cljp` with both factorial and fibonacci functions.
+
+**Key features of the implementation:**
+
+**Factorial** (test3.cljp:3-6):
+- Uses `cond` with base case `(<= n 1)` returning 1
+- Recursive case uses `POP-ALL` on the last line to close all containers (-, factorial, *, cond, defn)
+
+**Fibonacci** (test3.cljp:8-13):
+- Uses `cond` with two base cases: n=0 returns 0, n=1 returns 1
+- Recursive case adds two recursive calls
+- First recursive call uses explicit `POP POP` to close the inner subtraction and fibonacci call
+- Second recursive call uses `POP-ALL` to close everything (-, fibonacci, +, cond, defn)
+
+**Why POP-ALL works here:**
+- Both functions use POP-ALL on their last line
+- For factorial: Line 6 is the last line of the `:else` clause, which is the last clause in cond, which is the last expression in defn
+- For fibonacci: Line 13 is the last line of the `:else` clause (second fibonacci call), closing everything up to and including the defn
+
+The code follows all the CLJ-PP rules:
+- Every PUSH has a corresponding POP or is closed by POP-ALL
+- POP-ALL appears only on the last line (no trailing POPs after it)
+- Proper nesting with inner containers closed before outer ones
+
+You can test it with: `cljpp test3.cljp` to see the transpiled Clojure output!

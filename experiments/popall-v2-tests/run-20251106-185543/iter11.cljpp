@@ -1,0 +1,18 @@
+I need permission to create the test3.cljp file. Once granted, I'll write:
+
+**factorial function:**
+- Opens with `PUSH-( defn factorial PUSH-[ n POP`
+- Uses `cond` with two cases
+- Base case: `(<= n 1)` returns `1`
+- Recursive case: Uses `POP-ALL` on the last line to close everything (the `-`, `factorial`, `*`, `cond`, and `defn`)
+
+**fibonacci function:**
+- Opens with `PUSH-( defn fibonacci PUSH-[ n POP`
+- Uses `cond` with three cases
+- Base case 1: `(= n 0)` returns `0`
+- Base case 2: `(= n 1)` returns `1`
+- Recursive case: Adds two recursive calls
+  - First call: `fibonacci(n-1)` with explicit `POP POP` (closes `-`, then `fibonacci`)
+  - Second call: `fibonacci(n-2)` with `POP-ALL` to close everything remaining
+
+Both functions follow the POP-ALL pattern where the last line closes all open containers at once.

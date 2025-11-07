@@ -1,0 +1,85 @@
+; #!/usr/bin/env bb
+
+PUSH-( ns generate-metadata
+  PUSH-( :require
+    PUSH-[ clojure.java.shell :as shell POP
+    PUSH-[ clojure.string :as str POP
+    PUSH-[ babashka.fs :as fs POP-ALL
+
+PUSH-( defn get-git-commit PUSH-[ POP
+  PUSH-( -> PUSH-( shell/sh "git" "rev-parse" "HEAD" POP
+        :out
+        str/trim POP-ALL
+
+PUSH-( defn get-git-dirty? PUSH-[ POP
+  PUSH-( -> PUSH-( shell/sh "git" "status" "--porcelain" POP
+        :out
+        str/blank?
+        not POP-ALL
+
+PUSH-( defn get-git-branch PUSH-[ POP
+  PUSH-( -> PUSH-( shell/sh "git" "rev-parse" "--abbrev-ref" "HEAD" POP
+        :out
+        str/trim POP-ALL
+
+PUSH-( defn get-prompt-hash PUSH-[ prompt-file POP
+  PUSH-( when PUSH-( fs/exists? prompt-file POP
+    PUSH-( -> PUSH-( shell/sh "sha256sum" PUSH-( str prompt-file POP POP
+          :out
+          PUSH-( str/split #"\s+" POP
+          first POP-ALL
+
+PUSH-( defn get-prompt-lines PUSH-[ prompt-file POP
+  PUSH-( when PUSH-( fs/exists? prompt-file POP
+    PUSH-( count PUSH-( str/split-lines PUSH-( slurp prompt-file POP POP-ALL
+
+PUSH-( defn get-clojure-version PUSH-[ POP
+  PUSH-( -> PUSH-( shell/sh "clojure" "-M" "-e" "(clojure-version)" POP
+        :out
+        str/trim
+        PUSH-( str/replace #"\"" "" POP-ALL
+
+PUSH-( defn get-java-version PUSH-[ POP
+  PUSH-( System/getProperty "java.version" POP-ALL
+
+PUSH-( defn get-os-name PUSH-[ POP
+  PUSH-( str PUSH-( System/getProperty "os.name" POP
+        " "
+        PUSH-( System/getProperty "os.version" POP-ALL
+
+PUSH-( defn generate-metadata
+  PUSH-[ PUSH-{ :keys PUSH-[ prompt-file iterations program description POP POP POP
+  PUSH-{ :experiment-id PUSH-( str "exp-" PUSH-( java.util.UUID/randomUUID POP POP
+     :timestamp PUSH-( str PUSH-( java.time.Instant/now POP POP
+     :git PUSH-{ :commit PUSH-( get-git-commit POP
+             :dirty? PUSH-( get-git-dirty? POP
+             :branch PUSH-( get-git-branch POP POP
+     :prompt PUSH-{ :file prompt-file
+                :sha256 PUSH-( get-prompt-hash prompt-file POP
+                :lines PUSH-( get-prompt-lines prompt-file POP POP
+     :parameters PUSH-{ :program program
+                    :description description
+                    :iterations iterations POP
+     :environment PUSH-{ :clojure-version PUSH-( get-clojure-version POP
+                     :java-version PUSH-( get-java-version POP
+                     :os PUSH-( get-os-name POP POP
+     :results PUSH-{ :success-count 0
+                 :transpile-errors 0
+                 :load-errors 0
+                 :success-rate 0.0
+                 :iterations PUSH-[ POP POP POP-ALL
+
+PUSH-( defn -main PUSH-[ & args POP
+  PUSH-( let PUSH-[ opts PUSH-( apply hash-map args POP
+           prompt-file PUSH-( get opts "--prompt" "CLJPP-PROMPT.md" POP
+           iterations PUSH-( Integer/parseInt PUSH-( get opts "--iterations" "10" POP POP
+           program PUSH-( Integer/parseInt PUSH-( get opts "--program" "3" POP POP
+           description PUSH-( get opts "--description" "factorial/fibonacci" POP
+           metadata PUSH-( generate-metadata PUSH-{ :prompt-file prompt-file
+                                              :iterations iterations
+                                              :program program
+                                              :description description POP POP POP
+    PUSH-( println PUSH-( pr-str metadata POP POP-ALL
+
+PUSH-( when PUSH-( = *file* PUSH-( System/getProperty "babashka.file" POP POP
+  PUSH-( apply -main *command-line-args* POP-ALL

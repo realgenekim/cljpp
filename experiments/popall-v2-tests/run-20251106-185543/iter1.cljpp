@@ -1,0 +1,14 @@
+I need permission to write the test3.cljp file. Once granted, I'll create it with:
+
+**factorial function:**
+- Opens with `cond`
+- Base case: `(<= n 1)` returns `1`
+- Recursive case: `(* n (factorial (- n 1)))` using `POP-ALL` to close everything on the last line
+
+**fibonacci function:**
+- Opens with `cond`
+- Base case 1: `(= n 0)` returns `0`
+- Base case 2: `(= n 1)` returns `1`
+- Recursive case: `(+ (fibonacci (- n 1)) (fibonacci (- n 2)))` using `POP-ALL` to close everything on the last line
+
+Both functions use `POP-ALL` on their final lines since that's the end of each top-level form, eliminating the need for trailing POPs!

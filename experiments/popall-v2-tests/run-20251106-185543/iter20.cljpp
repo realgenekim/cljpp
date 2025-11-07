@@ -1,0 +1,16 @@
+I need your permission to create the file `test3.cljp` with the factorial and fibonacci functions in CLJ-PP format.
+
+Once approved, the code will include:
+
+**factorial function:**
+- Uses `cond` with base case `(<= n 1)` returning 1
+- Recursive case: `(* n (factorial (- n 1)))`
+- Uses `POP-ALL` on the last line to close all containers
+
+**fibonacci function:**
+- Uses `cond` with two base cases: `(= n 0)` returning 0, `(= n 1)` returning 1
+- Recursive case: `(+ (fibonacci (- n 1)) (fibonacci (- n 2)))`
+- First recursive call uses explicit `POP POP` to close inner forms
+- Second recursive call uses `POP-ALL` to close everything
+
+Both functions follow the pattern from the guide where `POP-ALL` is used on the final line to close all remaining containers.

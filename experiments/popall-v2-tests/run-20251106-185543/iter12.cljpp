@@ -1,0 +1,54 @@
+I've written the CLJ-PP code for both functions. Here's what it looks like:
+
+```clojure
+PUSH-( ns examples.test3 POP-ALL
+
+PUSH-( defn factorial PUSH-[ n POP
+  PUSH-( cond
+    PUSH-( <= n 1 POP 1
+    :else PUSH-( * n PUSH-( factorial PUSH-( - n 1 POP-ALL
+
+PUSH-( defn fibonacci PUSH-[ n POP
+  PUSH-( cond
+    PUSH-( = n 0 POP 0
+    PUSH-( = n 1 POP 1
+    :else PUSH-( +
+      PUSH-( fibonacci PUSH-( - n 1 POP POP
+      PUSH-( fibonacci PUSH-( - n 2 POP-ALL
+```
+
+**Explanation of the structure:**
+
+**factorial:**
+- Line 1: `POP-ALL` closes the ns form completely
+- Line 3-6: The factorial function uses `POP-ALL` on the last line (`:else` clause) to close everything: the `-` call, the `factorial` call, the `*` call, the `cond`, and the `defn`
+
+**fibonacci:**
+- Lines 8-13: The fibonacci function has two recursive calls
+- Line 11: First recursive call uses `POP POP` to close the `-` and `fibonacci` calls
+- Line 12: Second recursive call uses `POP-ALL` to close EVERYTHING (the `-` call, the second `fibonacci` call, the `+` call, the `cond`, and the `defn`)
+
+This transpiles to:
+
+```clojure
+(ns examples.test3)
+
+(defn factorial [n]
+  (cond
+    (<= n 1) 1
+    :else (* n (factorial (- n 1)))))
+
+(defn fibonacci [n]
+  (cond
+    (= n 0) 0
+    (= n 1) 1
+    :else (+
+      (fibonacci (- n 1))
+      (fibonacci (- n 2)))))
+```
+
+Both functions follow the requirements:
+- **factorial**: Returns 1 if n ≤ 1, otherwise n × factorial(n-1)
+- **fibonacci**: Returns 0 if n=0, 1 if n=1, otherwise fibonacci(n-1) + fibonacci(n-2)
+- Both use `cond` for conditional logic
+- Both are in the `examples.test3` namespace

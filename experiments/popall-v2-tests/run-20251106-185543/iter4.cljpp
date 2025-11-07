@@ -1,0 +1,22 @@
+I've written the factorial and fibonacci functions in CLJ-PP format. Let me verify the logic:
+
+**factorial function:**
+- Opens with `PUSH-( defn factorial PUSH-[ n POP`
+- Uses `cond` with two clauses:
+  - Base case: `(<= n 1)` returns `1`
+  - Recursive case: `:else` returns `(* n (factorial (- n 1)))`
+- Uses `POP-ALL` at the end to close everything (the `-` call, `factorial` call, `*` call, `cond`, and `defn`)
+
+**fibonacci function:**
+- Opens with `PUSH-( defn fibonacci PUSH-[ n POP`
+- Uses `cond` with three clauses:
+  - Base case 1: `(= n 0)` returns `0`
+  - Base case 2: `(= n 1)` returns `1`
+  - Recursive case: `:else` returns `(+ (fibonacci (- n 1)) (fibonacci (- n 2)))`
+- First recursive call uses `POP POP` to close the `-` and `fibonacci` calls
+- Second recursive call uses `POP-ALL` to close everything (the `-`, second `fibonacci`, `+`, `cond`, and `defn`)
+
+The code follows the CLJ-PP rules:
+- Every PUSH has a corresponding POP or is closed by POP-ALL
+- POP-ALL is used only on the last line of each top-level form
+- No POPs appear after POP-ALL

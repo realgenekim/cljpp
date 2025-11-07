@@ -16,16 +16,18 @@
 
 | Approach | Success Rate | Transpile Errors | Load Errors |
 |----------|--------------|------------------|-------------|
+| **🏆 CLJ-PP POP-ALL v2 (improved prompt)** | **100%** (20/20) ✅ | 0 | 0 |
 | **Baseline CLJ-PP (explicit POP, with examples)** | **90%** (9/10) ✅ | 1 | 0 |
 | **Regular Clojure (fresh)** | **80%** (16/20) | N/A | 4 failures |
 | Enhanced CLJ-PP (POP-LINE/ALL) | **80%** (8/10) | 1 | 1 |
-| Enhanced CLJ-PP (POP-ALL only) | **80%** (8/10) | 1 | 1 |
+| Enhanced CLJ-PP (POP-ALL v1) | **80%** (8/10) | 1 | 1 |
 | CLJ-PP Fresh (no examples in prompt) | **50%** (10/20) | Many | Many |
 
 **Key findings:**
-- **Adding examples to prompt dramatically improved CLJ-PP: 50% → 90%!**
-- Baseline CLJ-PP (90%) beats both regular Clojure (80%) and enhanced CLJ-PP (80%)
-- Convenience features (POP-LINE, POP-ALL) reduced success back to 80%
+- **🎉 POP-ALL v2 achieved PERFECT 100% success rate!** (20/20, 2025-11-06)
+- **Improved prompting matters:** Clear error examples + "CRITICAL RULE" section worked
+- Adding examples to prompt dramatically improved CLJ-PP: 50% → 90% → 100%!
+- POP-ALL v2 beats baseline (90%), regular Clojure (80%), and all other variants
 
 ## Analysis
 

@@ -1,0 +1,17 @@
+I need permission to write the file. Once granted, I'll create `examples/test3.cljpp` with:
+
+**Key structure:**
+1. **namespace**: Uses `POP-ALL` since it's a complete top-level form
+2. **factorial**: 
+   - Base case: `(<= n 1)` returns `1`
+   - Recursive case: `(* n (factorial (- n 1)))` - uses `POP-ALL` on last line to close `-`, `factorial`, `*`, `cond`, and `defn` all at once
+3. **fibonacci**:
+   - Two base cases: `n=0` returns `0`, `n=1` returns `1`
+   - Recursive case: Adds two recursive calls
+   - First recursive call uses explicit `POP POP` (closes `-` then `fibonacci`)
+   - Second recursive call uses `POP-ALL` to close everything (closes `-`, second `fibonacci`, `+`, `cond`, and `defn`)
+
+**Why POP-ALL works here:**
+- Line 5: Last line of factorial function → POP-ALL closes all remaining containers
+- Line 11: Last line of fibonacci function → POP-ALL closes all remaining containers
+- No trailing POPs needed after POP-ALL!

@@ -1,0 +1,56 @@
+The file hasn't been created yet because I need permission. Here's the CLJ-PP code I've written:
+
+**test3.cljp:**
+
+```clojure
+PUSH-( ns examples.test3 POP-ALL
+
+PUSH-( defn factorial PUSH-[ n POP
+  PUSH-( cond
+    PUSH-( <= n 1 POP 1
+    :else PUSH-( * n PUSH-( factorial PUSH-( - n 1 POP-ALL
+
+PUSH-( defn fibonacci PUSH-[ n POP
+  PUSH-( cond
+    PUSH-( = n 0 POP 0
+    PUSH-( = n 1 POP 1
+    :else PUSH-( +
+      PUSH-( fibonacci PUSH-( - n 1 POP POP
+      PUSH-( fibonacci PUSH-( - n 2 POP-ALL
+```
+
+**Key CLJ-PP patterns used:**
+
+1. **Namespace declaration:** `PUSH-( ns examples.test3 POP-ALL` - Complete form, so POP-ALL closes everything
+
+2. **Factorial function:**
+   - `PUSH-( defn factorial PUSH-[ n POP` - Opens defn, opens vector, closes vector with POP
+   - `PUSH-( cond` - Opens cond
+   - `PUSH-( <= n 1 POP 1` - Test clause: opens test, closes with POP, then value
+   - `:else PUSH-( * n PUSH-( factorial PUSH-( - n 1 POP-ALL` - Last line uses POP-ALL to close everything (-, factorial, *, cond, defn)
+
+3. **Fibonacci function:**
+   - Same structure for defn and cond
+   - Two base cases with explicit POPs: `PUSH-( = n 0 POP 0` and `PUSH-( = n 1 POP 1`
+   - `:else` clause with addition of two recursive calls:
+     - First call: `PUSH-( fibonacci PUSH-( - n 1 POP POP` - Two explicit POPs to close - and fibonacci
+     - Second call: `PUSH-( fibonacci PUSH-( - n 2 POP-ALL` - Last line, so POP-ALL closes everything (-, fibonacci, +, cond, defn)
+
+**This transpiles to:**
+
+```clojure
+(ns examples.test3)
+
+(defn factorial [n]
+  (cond
+    (<= n 1) 1
+    :else (* n (factorial (- n 1)))))
+
+(defn fibonacci [n]
+  (cond
+    (= n 0) 0
+    (= n 1) 1
+    :else (+
+      (fibonacci (- n 1))
+      (fibonacci (- n 2)))))
+```
