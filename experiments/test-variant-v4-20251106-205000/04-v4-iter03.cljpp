@@ -1,0 +1,34 @@
+I need to write Program 4 in CLJ-PP format. Let me analyze the required structure:
+
+1. Namespace declaration
+2. Vector of user maps
+3. `active-users` function (filter age > 18)
+4. `user-names` function (extract names)
+
+Key points:
+- Must expand `#()` anonymous functions to full `fn` form
+- Count each PUSH- and emit exactly that many POPs
+- No explanatory text, start immediately with code
+
+PUSH-( ns examples.program4 POP
+
+PUSH-( def users
+  PUSH-[
+    PUSH-{ :name "Alice" :age 25 :role "admin" POP
+    PUSH-{ :name "Bob" :age 17 :role "user" POP
+    PUSH-{ :name "Charlie" :age 30 :role "moderator" POP
+    PUSH-{ :name "Diana" :age 16 :role "user" POP
+  POP
+POP
+
+PUSH-( defn active-users PUSH-[ users POP
+  PUSH-( filter PUSH-( fn PUSH-[ user POP
+    PUSH-( > PUSH-( :age user POP 18 POP
+  POP POP users POP
+POP
+
+PUSH-( defn user-names PUSH-[ users POP
+  PUSH-( map PUSH-( fn PUSH-[ user POP
+    PUSH-( :name user POP
+  POP POP users POP
+POP

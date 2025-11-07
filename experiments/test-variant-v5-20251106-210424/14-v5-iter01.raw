@@ -1,0 +1,34 @@
+```clojure
+PUSH-( ns examples.program14 POP
+
+PUSH-( defprotocol Drawable
+  PUSH-( draw PUSH-[ this POP POP
+  PUSH-( bounds PUSH-[ this POP POP
+POP
+
+PUSH-( defrecord Circle PUSH-[ x y radius POP
+  Drawable
+  PUSH-( draw PUSH-[ this POP
+    PUSH-( str "Circle at " PUSH-( :x this POP ", " PUSH-( :y this POP " radius " PUSH-( :radius this POP POP
+  POP
+  PUSH-( bounds PUSH-[ this POP
+    PUSH-{ :x1 PUSH-( - PUSH-( :x this POP PUSH-( :radius this POP POP
+       :y1 PUSH-( - PUSH-( :y this POP PUSH-( :radius this POP POP
+       :x2 PUSH-( + PUSH-( :x this POP PUSH-( :radius this POP POP
+       :y2 PUSH-( + PUSH-( :y this POP PUSH-( :radius this POP POP POP
+  POP
+POP
+
+PUSH-( defrecord Rectangle PUSH-[ x y width height POP
+  Drawable
+  PUSH-( draw PUSH-[ this POP
+    PUSH-( str "Rectangle at " PUSH-( :x this POP ", " PUSH-( :y this POP " size " PUSH-( :width this POP "x" PUSH-( :height this POP POP
+  POP
+  PUSH-( bounds PUSH-[ this POP
+    PUSH-{ :x1 PUSH-( :x this POP
+       :y1 PUSH-( :y this POP
+       :x2 PUSH-( + PUSH-( :x this POP PUSH-( :width this POP POP
+       :y2 PUSH-( + PUSH-( :y this POP PUSH-( :height this POP POP POP
+  POP
+POP
+```

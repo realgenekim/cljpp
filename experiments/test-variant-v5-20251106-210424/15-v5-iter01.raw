@@ -1,0 +1,44 @@
+```clojure
+PUSH-( ns examples.program15 POP
+
+PUSH-( defn dfs PUSH-[ graph start POP
+  PUSH-( loop PUSH-[ stack PUSH-[ start POP
+                visited PUSH-{ POP
+                result PUSH-[ POP POP
+    PUSH-( if PUSH-( empty? stack POP
+      result
+      PUSH-( let PUSH-[ node PUSH-( peek stack POP
+                  rest-stack PUSH-( pop stack POP POP
+        PUSH-( if PUSH-( visited node POP
+          PUSH-( recur rest-stack visited result POP
+          PUSH-( let PUSH-[ neighbors PUSH-( get graph node PUSH-[ POP POP
+                      new-stack PUSH-( into rest-stack neighbors POP
+                      new-visited PUSH-( conj visited node POP
+                      new-result PUSH-( conj result node POP POP
+            PUSH-( recur new-stack new-visited new-result POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn bfs PUSH-[ graph start POP
+  PUSH-( loop PUSH-[ queue PUSH-( conj clojure.lang.PersistentQueue/EMPTY start POP
+                visited PUSH-{ start true POP
+                result PUSH-[ POP POP
+    PUSH-( if PUSH-( empty? queue POP
+      result
+      PUSH-( let PUSH-[ node PUSH-( peek queue POP
+                  rest-queue PUSH-( pop queue POP
+                  neighbors PUSH-( get graph node PUSH-[ POP POP
+                  unvisited PUSH-( filter PUSH-( fn PUSH-[ n POP PUSH-( not PUSH-( visited n POP POP POP POP neighbors POP
+                  new-queue PUSH-( into rest-queue unvisited POP
+                  new-visited PUSH-( into visited PUSH-( map PUSH-( fn PUSH-[ n POP PUSH-[ n true POP POP POP unvisited POP POP
+                  new-result PUSH-( conj result node POP POP
+        PUSH-( recur new-queue new-visited new-result POP
+      POP
+    POP
+  POP
+POP
+```

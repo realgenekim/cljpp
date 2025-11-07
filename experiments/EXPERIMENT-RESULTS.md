@@ -1,7 +1,7 @@
 # CLJ-PP Experiment Results
 
 **Date:** 2025-11-06
-**Last updated:** 2025-11-06 20:05 (POP-ALL v3 test complete)
+**Last updated:** 2025-11-06 21:04 (v5 test complete - CATASTROPHIC FAILURE)
 
 ---
 
@@ -15,15 +15,19 @@
 | **🥈** | **CLJ-PP (explicit POP)** | **16/20 (80%)** ✅ | `CLJPP-PROMPT.md` | **Best CLJ-PP variant** - tedious but unambiguous |
 | 🥉 | CLJ-PP (POP-ALL v2) | 15/20 (75%) | `CLJPP-PROMPT-WITH-POP-ALL-ONLY-v2.md` | Overfitted to factorial/fibonacci |
 | 4 | CLJ-PP (POP-ALL v3) | **12/20 (60%)** ❌ | `CLJPP-PROMPT-WITH-POP-ALL-ONLY-v3.md` | **WORSE than v2** - more rules backfired |
+| 5 | CLJ-PP v5 (v1 + #() fix) | **11/20 (55%)** 🚨 | `CLJPP-PROMPT-v5.md` | **CATASTROPHIC** - Broke basic POP counting! |
+| 6 | CLJ-PP v4 (Hybrid) | **0/5 (0%)** 💀 | `CLJPP-PROMPT-v4.md` | **TOTAL FAILURE** - Wrote Clojure instead of CLJPP |
 
 **🚨 CRITICAL FINDINGS:**
 
 1. **Regular Clojure wins** at 95% - better delimiter balancing than CLJ-PP overall
-2. **Explicit POP counting** (80%) is the best CLJ-PP approach
+2. **Explicit POP counting** (80%) is the best CLJ-PP approach - **v1 REMAINS UNBEATEN**
 3. **POP-ALL doesn't generalize:** 100% on factorial/fibonacci → 75% on diverse programs
 4. **More rules made things worse:** v3 (60%) < v2 (75%) - fresh instances lack context understanding
+5. **⚠️ v5 DISASTER:** Trying to "improve" v1 with prominent #() examples BROKE basic POP counting (55%)
+6. **💀 v4 TOTAL FAILURE:** "Bitter lesson" misapplication - priming with Clojure knowledge backfired (0%)
 
-**RECOMMENDATION:** Use baseline CLJ-PP with explicit POP counting (`CLJPP-PROMPT.md`)
+**RECOMMENDATION:** **STOP trying to improve v1!** Use baseline CLJ-PP with explicit POP counting (`CLJPP-PROMPT.md`). Every attempt to "fix" it makes it worse.
 
 ---
 
@@ -367,4 +371,102 @@ They don't realize they're inside a `let` binding, which is inside a `fn`, which
 
 ---
 
-**Lesson learned:** **Simple and tedious beats clever and ambiguous.** For fresh LLM instances without context, explicit counting is easier than semantic decision-making. Adding convenience operations requires contextual understanding that fresh instances don't have.
+## v4 and v5: The Failed "Improvement" Attempts
+
+**Test date:** 2025-11-06
+
+After establishing v1 (explicit POP) as the 80% baseline, we attempted two "improvements" based on different theories. Both failed catastrophically.
+
+### v4: "Bitter Lesson" Misapplication (0% - TOTAL FAILURE)
+
+**Theory:** LLMs are trained on vast Clojure code. Explicitly prime them with "you're great at Clojure (95% success)" then ask them to translate to CLJPP mid-stride when nesting gets complex.
+
+**Result:** **0/5 (0%)** - Complete failure!
+
+**What happened:** The prompt opened with "You have excellent Clojure training (95% success rate)..." This priming was SO strong that Claude wrote **pure Clojure** with `(` and `)` instead of CLJPP with `PUSH-(` and `POP`.
+
+**Example output:**
+```clojure
+(ns examples.program3)  ← Should be: PUSH-( ns examples.program3 POP
+(defn factorial [n]     ← Should be: PUSH-( defn factorial PUSH-[ n POP ...
+```
+
+**Lesson:** Priming effects dominate explicit instructions. Telling an LLM "you're great at X" activates X-generation mode, even when you then ask for Y.
+
+**Postmortem:** See `experiments/v4-FAILURE-ANALYSIS.md` and `POSTMORTEM-v4.md`
+
+---
+
+### v5: "Prominent #() Examples" Backfire (55% - CATASTROPHIC REGRESSION)
+
+**Theory:** v1 fails on programs 04, 11, 13, 17 - all involving anonymous functions `#()`. Make #() expansion more prominent in the prompt to fix these failures.
+
+**Design changes from v1:**
+1. **Removed** motivation section ("why CLJ-PP exists")
+2. **Shortened** to concise "reference card" style vs v1's "teaching" style
+3. **Added** prominent CRITICAL section on #() expansion (early in prompt)
+4. **Removed** mental models ("write contents then pop" pattern)
+5. **Made it** more rules-based vs explanation-based
+
+**Expected:** Fix #() issues → 85%+ (17/20)
+
+**Actual result:** **11/20 (55%)** - WORSE than v1, v2, AND v3!
+
+**What went wrong:** v5 BROKE basic POP counting!
+
+**Common failure pattern (7/9 failures):**
+```clojure
+PUSH-( defn active-users PUSH-[ users POP
+  PUSH-( filter PUSH-( fn PUSH-[ user POP
+    PUSH-( > PUSH-( :age user POP 18 POP
+  POP POP users POP  ← ERROR: 3 POPs here (should be 2)
+POP                   ← Tries to close defn, but stack already empty!
+```
+
+**Manual trace:**
+- Line 1: Open defn (depth 1), open [ (depth 2), close [ (depth 1)
+- Line 2: Open filter (depth 2), open fn (depth 3), open [ (depth 4), close [ (depth 3)
+- Line 3: Open > (depth 4), open :age (depth 5), close :age (depth 4), close > (depth 3)
+- Line 4: POP closes fn (depth 2), POP closes filter (depth 1), POP closes defn (depth 0)
+- Line 5: **POP with empty stack → ERROR**
+
+**The LLM added an EXTRA POP on line 4!** Should be 2 POPs (close fn, close filter), not 3.
+
+**Why v5 failed:**
+1. **Lost teaching context** - Concise "reference" style removed explanation of WHY counting is hard
+2. **Lost mental models** - v1's "write contents then pop" pattern helped build intuition
+3. **Prominent #() section disrupted flow** - May have distracted from basic POP counting
+4. **Too terse** - Short prompts fail for complex tasks like delimiter balancing
+
+**Failure breakdown:**
+- **7 transpile errors:** All "POP with empty stack" (miscounting)
+- **2 execution errors:** Semantic errors (letfn syntax, transducer logic)
+
+**Comparisons:**
+- v1 failures: Programs 04, 11, 13, 17 (4 failures, all complex semantic issues)
+- v5 failures: Programs 04, 10, 11, 12, 13, 15, 16, 17, 19 (9 failures, 7 from basic POP miscounting!)
+
+**v5 didn't fix #() issues - it broke POP counting instead.**
+
+**Files:**
+- Prompt: `CLJPP-PROMPT-v5.md`
+- Results: `experiments/test-variant-v5-20251106-210424/`
+- Analysis: `experiments/test-variant-v5-20251106-210424/FAILURE-ANALYSIS.md`
+- Design doc: `plans/v5-design.md`
+
+---
+
+## Key Lessons from v4 and v5 Failures
+
+1. **v1 (80%) is a local maximum** - Every "improvement" attempt made things worse
+2. **Don't prime with competing formats** - v4 primed with Clojure → wrote Clojure
+3. **Don't remove teaching context** - v5 made it concise → broke basic counting
+4. **More prominent ≠ better** - v5's prominent #() section harmed overall performance
+5. **LLMs need context, not just rules** - Concise reference cards fail for complex tasks
+6. **Priming > Explicit instructions** - "You're great at X" overrides "now do Y"
+
+**FINAL VERDICT:** v1 (explicit POP counting with teaching-style prompt) remains the best CLJPP variant at 80%. Stop trying to improve it.
+
+---
+
+**Lesson learned:** **Simple and tedious beats clever and ambiguous.** For fresh LLM instances without context, explicit counting is easier than semantic decision-making. Adding convenience operations requires contextual understanding that fresh instances don't have. **And removing teaching context to add prominent examples breaks the foundational skills.**
