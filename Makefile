@@ -26,7 +26,29 @@ runtests-once:
 format:
 	npx @chrisoakman/standard-clojure-style fix src test deps.edn
 
-# Install cljpp command globally to ~/bin
+# Build uberjar
+uberjar:
+	@echo "Building uberjar..."
+	@clojure -T:build uber
+	@echo "#!/usr/bin/env sh" > bin/cljpp
+	@echo '# Find the jar in the same directory as this script' >> bin/cljpp
+	@echo 'SCRIPT_DIR="$$(cd "$$(dirname "$$0")" && pwd)"' >> bin/cljpp
+	@echo 'exec java -jar "$$SCRIPT_DIR/cljpp.jar" "$$@"' >> bin/cljpp
+	@chmod +x bin/cljpp
+	@echo "✓ Built target/cljpp.jar and bin/cljpp wrapper"
+
+# Install uberjar and wrapper to ~/bin
+installuberjar: uberjar
+	@echo "Installing cljpp to ~/bin..."
+	@mkdir -p ~/bin
+	@cp target/cljpp.jar ~/bin/cljpp.jar
+	@cp bin/cljpp ~/bin/cljpp
+	@chmod +x ~/bin/cljpp
+	@echo "✓ Installed ~/bin/cljpp and ~/bin/cljpp.jar"
+	@echo "  Run 'cljpp input.cljpp' from anywhere"
+	@echo "  (Make sure ~/bin is in your PATH)"
+
+# Install cljpp command globally to ~/bin (symlink version for dev)
 install:
 	@echo "Installing cljpp to ~/bin/cljpp..."
 	@mkdir -p ~/bin
@@ -36,8 +58,8 @@ install:
 
 # Uninstall cljpp command
 uninstall:
-	@echo "Removing ~/bin/cljpp..."
-	@rm -f ~/bin/cljpp
+	@echo "Removing ~/bin/cljpp and ~/bin/cljpp.jar..."
+	@rm -f ~/bin/cljpp ~/bin/cljpp.jar
 	@echo "✓ Uninstalled"
 
 # Clean compiled artifacts
@@ -61,9 +83,11 @@ help:
 	@echo "  make repl                 - Start basic REPL"
 	@echo "  make format               - Format code with standard Clojure style"
 	@echo ""
-	@echo "📦 Installation:"
-	@echo "  make install              - Install 'cljpp' command globally to ~/bin"
-	@echo "  make uninstall            - Remove 'cljpp' command from ~/bin"
+	@echo "📦 Build & Install:"
+	@echo "  make uberjar              - Build uberjar and wrapper script"
+	@echo "  make installuberjar       - Build + copy cljpp to ~/bin (recommended!)"
+	@echo "  make install              - Symlink 'cljpp' to ~/bin (dev mode)"
+	@echo "  make uninstall            - Remove 'cljpp' from ~/bin"
 	@echo ""
 	@echo "🧹 Maintenance:"
 	@echo "  make clean                - Clean compiled artifacts"
@@ -71,4 +95,4 @@ help:
 	@echo ""
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-.PHONY: nrepl repl runtests runtests-once format install uninstall clean help
+.PHONY: nrepl repl runtests runtests-once format uberjar installuberjar install uninstall clean help

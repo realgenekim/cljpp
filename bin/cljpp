@@ -1,34 +1,4 @@
-#!/usr/bin/env bash
-# CLJPP transpiler: Convert .cljpp files to .clj files
-#
-# Usage:
-#   cljpp input.cljpp           # Creates input.clj
-#   cljpp input.cljpp out.clj   # Explicit output
-#   cljpp input.cljpp --force   # Force overwrite
-#
-# Install globally: make install
-
-set -euo pipefail
-
-# Resolve symlinks to find actual script location
-SCRIPT="$0"
-while [ -L "$SCRIPT" ]; do
-  SCRIPT="$(readlink "$SCRIPT")"
-done
-
-# Get project root (parent of bin/)
-PROJECT_ROOT="$(cd "$(dirname "$SCRIPT")/.." && pwd)"
-
-# Convert relative paths to absolute paths before cd-ing
-ARGS=()
-for arg in "$@"; do
-  # If arg is a file path (not a flag), make it absolute
-  if [[ ! "$arg" =~ ^-- ]] && [[ -e "$arg" || "$arg" =~ \.(cljp|clj)$ ]]; then
-    ARGS+=("$(cd "$(dirname "$arg")" 2>/dev/null && pwd)/$(basename "$arg")")
-  else
-    ARGS+=("$arg")
-  fi
-done
-
-# Run CLJPP transpiler from project root
-cd "$PROJECT_ROOT" && exec clojure -M -m cljp.core "${ARGS[@]}"
+#!/usr/bin/env sh
+# Find the jar in the same directory as this script
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+exec java -jar "$SCRIPT_DIR/cljpp.jar" "$@"

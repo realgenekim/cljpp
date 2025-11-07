@@ -9,7 +9,17 @@
       "Bash(cat:*)",
       "Bash(make install:*)",
       "Bash(test2.cljp)",
-      "Bash(~/bin/cljpp:*)"
+      "Bash(~/bin/cljpp:*)",
+      "Bash(make build-bb:*)",
+      "Bash(test-bb.cljp)",
+      "Bash(/Users/genekim/src.local/cljp-tokenizer/bin/cljpp:*)",
+      "Bash(make uberjar:*)",
+      "Bash(make installuberjar:*)",
+      "Bash(make uninstall:*)",
+      "Bash(ubertest.cljp)",
+      "Bash(cljpp ubertest.cljp:*)",
+      "Bash(jar tf:*)",
+      "Bash(jar xf:*)"
     ],
     "deny": [],
     "ask": []
