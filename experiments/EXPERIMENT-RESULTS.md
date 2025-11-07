@@ -1,6 +1,31 @@
 # CLJ-PP Experiment Results
 
 **Date:** 2025-11-06
+**Last updated:** 2025-11-06 20:05 (POP-ALL v3 test complete)
+
+---
+
+## 🏆 FINAL RESULTS: All Variants Ranked (20 Diverse Programs)
+
+**Test:** 20 different programs, 1 fresh Claude instance each → Tests generalization
+
+| Rank | Approach | Success Rate | Prompt File | Notes |
+|------|----------|--------------|-------------|-------|
+| **🥇** | **Regular Clojure** | **19/20 (95%)** ✅ | *(standard Clojure)* | **Winner!** Best on diverse programs |
+| **🥈** | **CLJ-PP (explicit POP)** | **16/20 (80%)** ✅ | `CLJPP-PROMPT.md` | **Best CLJ-PP variant** - tedious but unambiguous |
+| 🥉 | CLJ-PP (POP-ALL v2) | 15/20 (75%) | `CLJPP-PROMPT-WITH-POP-ALL-ONLY-v2.md` | Overfitted to factorial/fibonacci |
+| 4 | CLJ-PP (POP-ALL v3) | **12/20 (60%)** ❌ | `CLJPP-PROMPT-WITH-POP-ALL-ONLY-v3.md` | **WORSE than v2** - more rules backfired |
+
+**🚨 CRITICAL FINDINGS:**
+
+1. **Regular Clojure wins** at 95% - better delimiter balancing than CLJ-PP overall
+2. **Explicit POP counting** (80%) is the best CLJ-PP approach
+3. **POP-ALL doesn't generalize:** 100% on factorial/fibonacci → 75% on diverse programs
+4. **More rules made things worse:** v3 (60%) < v2 (75%) - fresh instances lack context understanding
+
+**RECOMMENDATION:** Use baseline CLJ-PP with explicit POP counting (`CLJPP-PROMPT.md`)
+
+---
 
 ## Test Methodology
 
@@ -13,21 +38,24 @@
 2. **Multiple programs, single iteration** (20 diverse programs)
    - Tests generalization: Different programs, 1 fresh instance each
    - Used for: Final comparison against regular Clojure baseline
-   - ⚠️ **Currently running** - will update table when complete
 
-## Results Summary (Single Program Tests)
+---
 
-| Approach | Make Target | Success Rate | Test Type |
-|----------|-------------|--------------|-----------|
-| **🏆 CLJ-PP POP-ALL v2** | `test-generate-cljpp-pop-all` | **100%** (20/20) ✅ | 1 program, 20 iterations |
-| **CLJ-PP Baseline (explicit POP)** | `test-generate-cljpp-pop` | **90%** (9/10) | 1 program, 10 iterations |
-| **Regular Clojure** | `test-generate-clj` | **80%** (16/20) | 20 programs, 1 iteration |
-| CLJ-PP (POP-LINE + POP-ALL) | `test-generate-cljpp-pop-all-and-line` | **80%** (8/10) | 1 program, 10 iterations |
-| CLJ-PP (POP-ALL v1) | *(old version)* | **80%** (8/10) | 1 program, 10 iterations |
-| CLJ-PP (POP-LINE only) | `test-generate-cljpp-pop-line` | **TBD** | Not yet tested |
-| CLJ-PP (no examples in prompt) | *(early test)* | **50%** (10/20) | 20 programs, 1 iteration |
+## Single Program Test Results (Factorial/Fibonacci)
 
-## Multi-Program Test Results (20 Programs)
+**Test:** 1 program (recursive factorial/fibonacci), N fresh Claude instances → Tests consistency
+
+| Approach | Success Rate | Test Type | Notes |
+|----------|--------------|-----------|-------|
+| **CLJ-PP POP-ALL v2** | **100%** (20/20) ✅ | 1 program, 20 iterations | Perfect on simple recursion! (But doesn't generalize) |
+| **CLJ-PP Baseline (explicit POP)** | **90%** (9/10) | 1 program, 10 iterations | Solid consistency |
+| CLJ-PP (POP-LINE + POP-ALL) | **80%** (8/10) | 1 program, 10 iterations | POP-LINE scope ambiguity |
+| CLJ-PP (POP-ALL v1) | **80%** (8/10) | 1 program, 10 iterations | Early version |
+| CLJ-PP (no examples in prompt) | **50%** (10/20) | 20 programs, 1 iteration | Examples matter!
+
+---
+
+## Multi-Program Test Results (20 Diverse Programs)
 
 ✅ **Tests complete:** Sequential (`run-comprehensive-experiment.sh`) and Parallel (`bb bin/run-comprehensive-parallel.clj`) (2025-11-06)
 
@@ -38,14 +66,9 @@
 | CLJ-PP (POP-ALL v2) | **15/20 (75%)** | Overfitted to factorial/fibonacci |
 | CLJ-PP (POP-ALL v3) | **12/20 (60%)** ❌ | WORSE than v2! More aggressive rules backfired |
 
-**🚨 CRITICAL FINDING #1:** POP-ALL v2's 100% success on factorial/fibonacci **DOES NOT generalize** to diverse programs!
-
-**🚨 CRITICAL FINDING #2:** Attempting to fix v2's failures with v3 made things WORSE (75% → 60%)!
-
 **Key findings:**
-- **🎉 POP-ALL v2 achieved PERFECT 100% success rate on simple recursion!** (20/20, 2025-11-06)
-- **But this was overfitting** - dropped to 75% (15/20) on diverse programs
-- **v3 attempted to add stricter rules** - but fresh instances misinterpreted them
+- **POP-ALL v2 achieved PERFECT 100% on simple recursion** but dropped to 75% on diverse programs
+- **v3 attempted to add stricter rules** but fresh instances misinterpreted them
 - **v3 made things worse:** 60% (12/20) - fresh instances started using POP-ALL inappropriately
 - **Explicit POP counting (80%) remains the winner** for diverse programs
 
