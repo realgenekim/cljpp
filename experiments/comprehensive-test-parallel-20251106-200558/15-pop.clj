@@ -1,0 +1,3 @@
+(ns examples.program15)
+(defn dfs [graph start] (loop [stack [start] visited {} result []] (if (empty? stack) result (let [node (peek stack) rest-stack (pop stack)] (if (visited node) (recur rest-stack visited result) (recur (into rest-stack (get graph node [])) (assoc visited node true) (conj result node)))))))
+(defn bfs [graph start] (loop [queue [start] visited {start true} result []] (if (empty? queue) result (let [node (first queue) rest-queue (subvec (vec queue) 1) neighbors (get graph node []) unvisited (filter (fn [n] (not (visited n))) neighbors)] (recur (into rest-queue unvisited) (into visited (map (fn [n] [n true]) unvisited)) (conj result node))))))

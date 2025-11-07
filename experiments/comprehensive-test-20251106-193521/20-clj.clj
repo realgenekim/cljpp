@@ -1,0 +1,22 @@
+(ns examples.program20)
+
+(defn form-field [label-text input-attrs error-msg]
+  [:div.field
+   [:label label-text]
+   [:input input-attrs]
+   [:span.error error-msg]])
+
+(defn registration-form []
+  (let [errors {:email "Invalid email format"
+                :password "Password too short"
+                :confirm nil}
+        loading false
+        submitted true]
+    [:form.registration
+     (form-field "Email" {:type "email" :placeholder "Enter email"} (:email errors))
+     (form-field "Password" {:type "password" :placeholder "Enter password"} (:password errors))
+     (form-field "Confirm Password" {:type "password" :placeholder "Confirm password"} (:confirm errors))
+     [:div.actions
+      [:button {:type "submit" :disabled loading} "Register"]
+      (when submitted
+        [:p.success "Registration successful!"])]]))

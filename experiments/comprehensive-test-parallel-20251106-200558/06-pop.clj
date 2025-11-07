@@ -1,0 +1,3 @@
+(ns examples.program6)
+(defn safe-divide [numerator denominator] (try {:value (/ numerator denominator), :status :ok} (catch ArithmeticException e {:status :error, :message (.getMessage e)})))
+(defn validate-user [user] (cond (nil? user) {:status :error, :message "User is nil"} (or (nil? (:name user)) (empty? (:name user))) {:status :error, :message "Name is empty or nil"} (or (nil? (:age user)) (neg? (:age user))) {:status :error, :message "Age is negative or nil"} :else {:status :ok, :user user}))

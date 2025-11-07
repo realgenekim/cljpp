@@ -1,0 +1,45 @@
+I've written the factorial and fibonacci functions in CLJ-PP format. Here's the code structure:
+
+**Namespace declaration:**
+```clojure
+PUSH-( ns examples.test3 POP-ALL
+```
+
+**Factorial function:**
+```clojure
+PUSH-( defn factorial PUSH-[ n POP
+  PUSH-( cond
+    PUSH-( <= n 1 POP 1
+    :else PUSH-( * n PUSH-( factorial PUSH-( - n 1 POP-ALL
+```
+- Opens `defn`, opens and closes the `[n]` parameter vector
+- Opens `cond` with two clauses:
+  - Base case: `(<= n 1)` returns `1`
+  - Recursive case: `(* n (factorial (- n 1)))`
+- `POP-ALL` on the last line closes the `-`, `factorial`, `*`, `cond`, and `defn` - everything!
+
+**Fibonacci function:**
+```clojure
+PUSH-( defn fibonacci PUSH-[ n POP
+  PUSH-( cond
+    PUSH-( = n 0 POP 0
+    PUSH-( = n 1 POP 1
+    :else PUSH-( +
+      PUSH-( fibonacci PUSH-( - n 1 POP POP
+      PUSH-( fibonacci PUSH-( - n 2 POP-ALL
+```
+- Opens `defn`, opens and closes the `[n]` parameter vector
+- Opens `cond` with three clauses:
+  - Base case 1: `(= n 0)` returns `0`
+  - Base case 2: `(= n 1)` returns `1`
+  - Recursive case: `(+ (fibonacci (- n 1)) (fibonacci (- n 2)))`
+- First fibonacci call uses `POP POP` to close `-` and `fibonacci`
+- Second fibonacci call uses `POP-ALL` to close everything (the second `-`, second `fibonacci`, `+`, `cond`, and `defn`)
+
+Both functions follow the CLJ-PP rules:
+- ✅ No closing delimiters (no `]`, `)`, `}`)
+- ✅ Explicit stack operations (PUSH and POP)
+- ✅ `POP-ALL` only on the last line to close everything
+- ✅ No POPs after `POP-ALL`
+
+This will transpile to standard Clojure code that matches your requirements!

@@ -318,19 +318,21 @@ This repo contains:
 ### Quick Start
 
 ```bash
-# Transpile a CLJ-PP file
-clojure -M -m cljp.core input.cljpp
+# Install cljpp command (one-time setup)
+make installuberjar
 
-# Output: input.clj (auto-generated)
-
-# With explicit output
-clojure -M -m cljp.core input.cljpp output.clj
-
-# Force overwrite if output is newer
-clojure -M -m cljp.core input.cljpp --force
+# Now use cljpp from anywhere!
+cljpp input.cljpp           # Creates input.clj
+cljpp input.cljpp out.clj   # Explicit output
+cljpp input.cljpp --force   # Force overwrite
 
 # Run tests
 make runtests-once
+```
+
+**Alternative:** Use directly without installing:
+```bash
+clojure -M -m cljp.core input.cljpp
 ```
 
 ### Using with Claude Code

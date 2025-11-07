@@ -1,1 +1,21 @@
 target
+cljpp.jar
+# Experiment artifacts to exclude from git
+
+# Raw Claude output (has markdown fences, redundant)
+experiments/*/iter*.raw.cljpp
+
+# Transpiled Clojure (can regenerate from .cljpp)
+experiments/*/iter*.clj
+
+# Exception: Keep specifically marked interesting cases
+!experiments/*/interesting-*.cljpp
+!experiments/*/failure-*.cljpp
+!experiments/*/success-*.cljpp
+
+# Keep all metadata and summaries
+# These are small and essential:
+# - metadata.edn
+# - prompt-used.md
+# - results-summary.edn
+# - iterations.edn

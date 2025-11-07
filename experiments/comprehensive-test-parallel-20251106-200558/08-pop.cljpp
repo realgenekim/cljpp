@@ -1,0 +1,19 @@
+PUSH-( ns examples.program8 POP
+
+PUSH-( defn process-user PUSH-[ PUSH-{ :keys PUSH-[ name age POP :as user POP POP
+  PUSH-( println PUSH-( str "Name: " name ", Age: " age POP POP
+  PUSH-( println PUSH-( str "Full user: " user POP POP
+POP
+
+PUSH-( defn process-items PUSH-[ PUSH-[ first second & rest POP POP
+  PUSH-( println PUSH-( str "First: " first POP POP
+  PUSH-( println PUSH-( str "Second: " second POP POP
+  PUSH-( println PUSH-( str "Rest: " rest POP POP
+POP
+
+PUSH-( defn nested-extract PUSH-[ PUSH-{ :keys PUSH-[ name POP PUSH-{ :keys PUSH-[ city street POP :as address POP :address POP POP
+  PUSH-( println PUSH-( str "Name: " name POP POP
+  PUSH-( println PUSH-( str "City: " city POP POP
+  PUSH-( println PUSH-( str "Street: " street POP POP
+  PUSH-( println PUSH-( str "Full address: " address POP POP
+POP

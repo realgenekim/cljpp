@@ -1,0 +1,27 @@
+(ns examples.program17)
+
+(defn lazy-range
+  [start end]
+  (letfn [(range-helper [n]
+            (lazy-seq
+              (when (< n end)
+                (cons n (range-helper (inc n))))))]
+    (range-helper start)))
+
+(defn lazy-fibonacci
+  ([]
+   (lazy-fibonacci 0 1))
+  ([a b]
+   (lazy-seq
+     (cons a (lazy-fibonacci b (+ a b))))))
+
+(defn take-while-sum
+  [max-sum coll]
+  (letfn [(helper [sum remaining]
+            (lazy-seq
+              (when-let [s (seq remaining)]
+                (let [x (first s)
+                      new-sum (+ sum x)]
+                  (when (<= new-sum max-sum)
+                    (cons x (helper new-sum (rest s))))))))]
+    (helper 0 coll)))

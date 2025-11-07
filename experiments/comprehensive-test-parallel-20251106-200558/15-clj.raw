@@ -1,0 +1,39 @@
+```clojure
+(ns examples.program15)
+
+(defn dfs
+  "Depth-first search using loop with stack, visited set, and result vector"
+  [graph start]
+  (loop [stack [start]
+         visited #{}
+         result []]
+    (if (empty? stack)
+      result
+      (let [node (peek stack)
+            stack' (pop stack)]
+        (if (visited node)
+          (recur stack' visited result)
+          (let [neighbors (get graph node [])
+                unvisited (remove visited neighbors)]
+            (recur (into stack' unvisited)
+                   (conj visited node)
+                   (conj result node))))))))
+
+(defn bfs
+  "Breadth-first search using loop with queue"
+  [graph start]
+  (loop [queue (conj clojure.lang.PersistentQueue/EMPTY start)
+         visited #{}
+         result []]
+    (if (empty? queue)
+      result
+      (let [node (peek queue)
+            queue' (pop queue)]
+        (if (visited node)
+          (recur queue' visited result)
+          (let [neighbors (get graph node [])
+                unvisited (remove visited neighbors)]
+            (recur (into queue' unvisited)
+                   (conj visited node)
+                   (conj result node))))))))
+```

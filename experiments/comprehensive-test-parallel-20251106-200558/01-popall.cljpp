@@ -1,0 +1,7 @@
+PUSH-( ns examples.program1 POP-ALL
+
+PUSH-( defn add PUSH-[ a b POP
+  PUSH-( + a b POP-ALL
+
+PUSH-( defn greet PUSH-[ name POP
+  PUSH-( str "Hello, " name "!" POP-ALL

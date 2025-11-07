@@ -1,0 +1,20 @@
+(ns examples.program8)
+
+(defn process-user
+  [{:keys [name age] :as user}]
+  {:processed-name name
+   :processed-age age
+   :original-user user})
+
+(defn process-items
+  [[first second & rest]]
+  {:first-item first
+   :second-item second
+   :remaining-items rest})
+
+(defn nested-extract
+  [{{:keys [street city state]} :address :as data}]
+  {:street street
+   :city city
+   :state state
+   :full-data data})

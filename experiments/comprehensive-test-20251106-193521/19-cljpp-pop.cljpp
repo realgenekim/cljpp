@@ -1,0 +1,57 @@
+PUSH-( ns examples.program19 POP
+
+PUSH-( def db
+  PUSH-{
+    :people PUSH-[
+      PUSH-{ :id 1 :name "Alice" :role "manager" POP
+      PUSH-{ :id 2 :name "Bob" :role "developer" POP
+      PUSH-{ :id 3 :name "Carol" :role "manager" POP
+      PUSH-{ :id 4 :name "Dave" :role "developer" POP
+    POP
+    :projects PUSH-[
+      PUSH-{ :id 101 :title "Project X" :manager-id 1 POP
+      PUSH-{ :id 102 :title "Project Y" :manager-id 3 POP
+      PUSH-{ :id 103 :title "Project Z" :manager-id 1 POP
+    POP
+  POP
+POP
+
+PUSH-( defn find-by PUSH-[ coll k v POP
+  PUSH-( filter PUSH-( fn PUSH-[ item POP PUSH-( = PUSH-( k item POP v POP POP coll POP
+POP
+
+PUSH-( defn join PUSH-[ coll1 k1 coll2 k2 POP
+  PUSH-( for PUSH-[ item1 coll1
+            item2 coll2
+            :when PUSH-( = PUSH-( k1 item1 POP PUSH-( k2 item2 POP POP
+       POP
+    PUSH-[ item1 item2 POP
+  POP
+POP
+
+PUSH-( defn query-projects-with-managers PUSH-[ POP
+  PUSH-( let PUSH-[ people PUSH-( :people db POP
+              projects PUSH-( :projects db POP
+              managers PUSH-( find-by people :role "manager" POP
+              joined PUSH-( join projects :manager-id managers :id POP
+         POP
+    PUSH-( map PUSH-( fn PUSH-[ PUSH-[ project manager POP POP
+             PUSH-{ :project-title PUSH-( :title project POP
+                    :manager-name PUSH-( :name manager POP
+             POP
+           POP
+           joined
+    POP
+  POP
+POP
+
+PUSH-( defn -main PUSH-[ & args POP
+  PUSH-( println "Managers:" POP
+  PUSH-( doseq PUSH-[ m PUSH-( find-by PUSH-( :people db POP :role "manager" POP POP
+    PUSH-( println "  " PUSH-( :name m POP POP
+  POP
+  PUSH-( println "\nProjects with managers:" POP
+  PUSH-( doseq PUSH-[ result PUSH-( query-projects-with-managers POP POP
+    PUSH-( println "  " PUSH-( :project-title result POP "managed by" PUSH-( :manager-name result POP POP
+  POP
+POP

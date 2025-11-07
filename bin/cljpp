@@ -1,4 +1,4 @@
 #!/usr/bin/env sh
 # Find the jar in the same directory as this script
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-exec java -jar "$SCRIPT_DIR/cljpp.jar" "$@"
+exec java -cp "$SCRIPT_DIR/cljpp.jar" clojure.main -m cljp.core "$@"

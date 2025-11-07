@@ -1,0 +1,15 @@
+(ns examples.program9)
+
+(def transitions
+  {:idle {:start :running
+          :pause :idle}
+   :running {:pause :paused
+             :stop :idle}
+   :paused {:resume :running
+            :stop :idle}})
+
+(defn apply-event [state event]
+  (get-in transitions [state event] state))
+
+(defn run-machine [initial-state events]
+  (reduce apply-event initial-state events))

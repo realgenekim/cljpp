@@ -30,12 +30,15 @@ format:
 uberjar:
 	@echo "Building uberjar..."
 	@clojure -T:build uber
+	@cp target/cljpp.jar bin/cljpp.jar
 	@echo "#!/usr/bin/env sh" > bin/cljpp
 	@echo '# Find the jar in the same directory as this script' >> bin/cljpp
 	@echo 'SCRIPT_DIR="$$(cd "$$(dirname "$$0")" && pwd)"' >> bin/cljpp
-	@echo 'exec java -jar "$$SCRIPT_DIR/cljpp.jar" "$$@"' >> bin/cljpp
+	@echo 'exec java -cp "$$SCRIPT_DIR/cljpp.jar" clojure.main -m cljp.core "$$@"' >> bin/cljpp
 	@chmod +x bin/cljpp
-	@echo "✓ Built target/cljpp.jar and bin/cljpp wrapper"
+	@echo "✓ Built target/cljpp.jar and bin/cljpp.jar + bin/cljpp wrapper"
+	@echo "  Project-local: ./bin/cljpp"
+	@echo "  For global install: make installuberjar"
 
 # Install uberjar and wrapper to ~/bin
 installuberjar: uberjar
@@ -93,6 +96,40 @@ help:
 	@echo "  make clean                - Clean compiled artifacts"
 	@echo "  make help                 - Show this help"
 	@echo ""
+	@echo "🧪 Fresh Instance Tests:"
+	@echo "  make test-generate-clj ITERS=20 PROG=3"
+	@echo "      Test regular Clojure generation"
+	@echo "  make test-generate-cljpp-pop ITERS=20 PROG=3"
+	@echo "      Test CLJ-PP with explicit POP (baseline)"
+	@echo "  make test-generate-cljpp-pop-all ITERS=20 PROG=3"
+	@echo "      Test CLJ-PP with POP-ALL"
+	@echo "  make test-generate-cljpp-pop-line ITERS=20 PROG=3"
+	@echo "      Test CLJ-PP with POP-LINE"
+	@echo "  make test-generate-cljpp-pop-all-and-line ITERS=20 PROG=3"
+	@echo "      Test CLJ-PP with POP-ALL and POP-LINE"
+	@echo "  Default: ITERS=10 PROG=3 (factorial/fibonacci)"
+	@echo ""
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-.PHONY: nrepl repl runtests runtests-once format uberjar installuberjar install uninstall clean help
+# Test targets for code generation experiments
+# Usage: make test-generate-clj ITERS=20 PROG=3
+ITERS ?= 10
+PROG ?= 3
+
+test-generate-clj:
+	@./test-one-program-clj.sh $(PROG) $(ITERS)
+
+test-generate-cljpp-pop:
+	@./test-one-program.sh $(PROG) $(ITERS)
+
+test-generate-cljpp-pop-all:
+	@./test-one-program-with-pop-all-only.sh $(PROG) $(ITERS)
+
+test-generate-cljpp-pop-line:
+	@./test-one-program-with-pop-line.sh $(PROG) $(ITERS)
+
+test-generate-cljpp-pop-all-and-line:
+	@./test-one-program-with-pop-line-all.sh $(PROG) $(ITERS)
+
+.PHONY: nrepl repl runtests runtests-once format uberjar installuberjar install uninstall clean help \
+        test-generate-clj test-generate-cljpp-pop test-generate-cljpp-pop-all test-generate-cljpp-pop-line test-generate-cljpp-pop-all-and-line

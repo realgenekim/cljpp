@@ -1,0 +1,16 @@
+I've written the factorial and fibonacci functions in CLJ-PP format. Let me verify the structure:
+
+**factorial function:**
+- Line 3: Opens defn, opens vector for parameter, closes vector with POP
+- Line 4: Opens cond
+- Line 5: First clause - opens condition `(<= n 1)`, closes with POP, then returns 1
+- Line 6: Else clause - opens `*`, opens `factorial` call, opens `-` call, then POP-ALL closes everything (-, factorial, *, cond, and defn)
+
+**fibonacci function:**
+- Line 8: Opens defn, opens vector for parameter, closes vector with POP
+- Line 9: Opens cond
+- Line 10: First clause - `(= n 0)` returns 0
+- Line 11: Second clause - `(= n 1)` returns 1
+- Lines 12-14: Else clause - opens `+` call with two fibonacci recursive calls, the second one uses POP-ALL to close everything
+
+Both functions use POP-ALL on their last lines to close all remaining containers at once, following the pattern from Examples 6 and 7 in the guide.

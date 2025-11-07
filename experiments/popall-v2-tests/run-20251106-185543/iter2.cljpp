@@ -1,0 +1,8 @@
+I need permission to write the test3.cljp file. This file will contain:
+
+1. **factorial function**: Uses cond with base case (n <= 1 returns 1) and recursive case using POP-ALL to close all containers at the end
+2. **fibonacci function**: Uses cond with two base cases (n=0 returns 0, n=1 returns 1) and recursive case that adds two recursive calls, using POP-ALL on the final line
+
+Both functions follow the CLJ-PP guide's patterns:
+- Explicit POPs for intermediate closures (like the vector parameters and inner base cases)
+- POP-ALL on the last line of each function to close everything remaining (the arithmetic operations, cond, and defn)

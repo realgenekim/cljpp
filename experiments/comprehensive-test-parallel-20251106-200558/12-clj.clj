@@ -1,0 +1,35 @@
+(ns examples.program12)
+
+(defn custom-transducer
+  "Transducer that filters even numbers and doubles them"
+  [rf]
+  (fn
+    ([] (rf))
+    ([result] (rf result))
+    ([result input]
+     (if (even? input)
+       (rf result (* 2 input))
+       result))))
+
+(defn stateful-transducer
+  "Transducer that tracks seen values using an atom"
+  [rf]
+  (let [seen (atom #{})]
+    (fn
+      ([] (rf))
+      ([result] (rf result))
+      ([result input]
+       (if (contains? @seen input)
+         result
+         (do
+           (swap! seen conj input)
+           (rf result input)))))))
+
+(defn process-with-transducers
+  "Compose transducers to filter and process a collection"
+  [coll]
+  (into []
+        (comp
+         custom-transducer
+         stateful-transducer)
+        coll))

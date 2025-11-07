@@ -1,0 +1,21 @@
+```clojure
+PUSH-( ns examples.program5 POP
+
+PUSH-( defn process-data PUSH-[ data POP
+  PUSH-( ->
+    data
+    PUSH-( update :count inc POP
+    PUSH-( assoc :items PUSH-( count PUSH-( :items data POP POP POP
+    PUSH-( assoc :processed true POP
+  POP
+POP
+
+PUSH-( defn transform-coll PUSH-[ coll POP
+  PUSH-( ->>
+    coll
+    PUSH-( filter odd? POP
+    PUSH-( map PUSH-( fn PUSH-[ x POP PUSH-( * x 2 POP POP POP
+    PUSH-( reduce + POP
+  POP
+POP
+```

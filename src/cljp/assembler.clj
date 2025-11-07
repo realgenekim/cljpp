@@ -104,7 +104,7 @@
   [tokens]
   (try
     (loop [ts tokens
-           stack []     ; Stack of {:type :list/:vec/:map :opener \"(\" :coll ...}
+           stack []     ; Stack of {:type :list/:vec/:map :opener \"(\" :line N :col N :coll ...}
            forms []]    ; Completed top-level forms
       (if (empty? ts)
         ;; EOF - check for unclosed forms
@@ -116,51 +116,112 @@
            :error {:code :unclosed
                    :msg (str "Unclosed forms at EOF (depth: " (count stack) ")")
                    :depth (count stack)
-                   :stack-info (mapv #(select-keys % [:type :opener]) stack)}})
+                   :stack-info (mapv #(select-keys % [:type :opener :line]) stack)}})
 
         ;; Process next token
-        (let [[tag value] (first ts)]
+        (let [token (first ts)
+              [tag & rest-token] token]
           (case tag
             :push
-            (let [type (container-type value)
-                  coll (open-container value)]
+            (let [[opener line col] rest-token
+                  type (container-type opener)
+                  coll (open-container opener)]
               (recur (rest ts)
-                     (conj stack {:type type :opener value :coll coll})
+                     (conj stack {:type type :opener opener :line line :col col :coll coll})
                      forms))
 
             :pop
-            (if (empty? stack)
-              {:ok? false
-               :error {:code :underflow
-                       :msg "POP with empty stack"
-                       :pos (count tokens)}}
-              (let [{:keys [type coll]} (peek stack)]
-                ;; Finalize the container
-                (let [coll' (finalize-container! type coll)]
-                  (if (= 1 (count stack))
-                    ;; Closing a top-level form
-                    (recur (rest ts) [] (conj forms coll'))
-                    ;; Attach to parent
-                    (let [parent (peek (pop stack))
-                          parent' (update parent :coll emit-into coll')]
-                      (recur (rest ts) (conj (pop (pop stack)) parent') forms))))))
+            (let [[line col] rest-token]
+              (if (empty? stack)
+                {:ok? false
+                 :error {:code :underflow
+                         :msg "POP with empty stack"
+                         :line line
+                         :col col}}
+                (let [{:keys [type coll]} (peek stack)]
+                  ;; Finalize the container
+                  (let [coll' (finalize-container! type coll)]
+                    (if (= 1 (count stack))
+                      ;; Closing a top-level form
+                      (recur (rest ts) [] (conj forms coll'))
+                      ;; Attach to parent
+                      (let [parent (peek (pop stack))
+                            parent' (update parent :coll emit-into coll')]
+                        (recur (rest ts) (conj (pop (pop stack)) parent') forms)))))))
+
+            :pop-line
+            (let [[line col] rest-token
+                  ;; Find all containers opened on this line
+                  line-containers (filterv #(= (:line %) line) stack)]
+              (if (empty? line-containers)
+                {:ok? false
+                 :error {:code :pop-line-no-containers
+                         :msg (str "POP-LINE with no containers opened on line " line)
+                         :line line
+                         :col col
+                         :stack-state (mapv #(select-keys % [:type :line]) stack)}}
+                ;; Close all containers from this line (in reverse order)
+                (let [[final-stack final-forms]
+                      (loop [remaining-pops (count line-containers)
+                             current-stack stack
+                             current-forms forms]
+                        (if (zero? remaining-pops)
+                          [current-stack current-forms]
+                          (let [{:keys [type coll]} (peek current-stack)
+                                coll' (finalize-container! type coll)]
+                            (if (= 1 (count current-stack))
+                              ;; Closing a top-level form
+                              (recur (dec remaining-pops) [] (conj current-forms coll'))
+                              ;; Attach to parent
+                              (let [parent (peek (pop current-stack))
+                                    parent' (update parent :coll emit-into coll')]
+                                (recur (dec remaining-pops) (conj (pop (pop current-stack)) parent') current-forms))))))]
+                  (recur (rest ts) final-stack final-forms))))
+
+            :pop-all
+            (let [[line col] rest-token]
+              (if (empty? stack)
+                {:ok? false
+                 :error {:code :pop-all-empty-stack
+                         :msg "POP-ALL with empty stack"
+                         :line line
+                         :col col}}
+                ;; Close ALL containers in the stack
+                (let [[final-stack final-forms]
+                      (loop [current-stack stack
+                             current-forms forms]
+                        (if (empty? current-stack)
+                          [current-stack current-forms]
+                          (let [{:keys [type coll]} (peek current-stack)
+                                coll' (finalize-container! type coll)]
+                            (if (= 1 (count current-stack))
+                              ;; Closing a top-level form
+                              (recur [] (conj current-forms coll'))
+                              ;; Attach to parent
+                              (let [parent (peek (pop current-stack))
+                                    parent' (update parent :coll emit-into coll')]
+                                (recur (conj (pop (pop current-stack)) parent') current-forms))))))]
+                  (recur (rest ts) final-stack final-forms))))
 
             :atom
-            (if (empty? stack)
-              {:ok? false
-               :error {:code :no-container
-                       :msg "Atom at top-level without container (v1 disallows loose atoms)"
-                       :atom value}}
-              (let [parsed (parse-atom value)
-                    top (peek stack)
-                    top' (update top :coll emit-into parsed)]
-                (recur (rest ts) (conj (pop stack) top') forms)))
+            (let [[value line col] rest-token]
+              (if (empty? stack)
+                {:ok? false
+                 :error {:code :no-container
+                         :msg "Atom at top-level without container (v1 disallows loose atoms)"
+                         :atom value
+                         :line line
+                         :col col}}
+                (let [parsed (parse-atom value)
+                      top (peek stack)
+                      top' (update top :coll emit-into parsed)]
+                  (recur (rest ts) (conj (pop stack) top') forms))))
 
             ;; Unknown token type
             {:ok? false
              :error {:code :tokenize
                      :msg (str "Unknown token type: " tag)
-                     :token [tag value]}}))))
+                     :token token}}))))
     (catch clojure.lang.ExceptionInfo e
       {:ok? false
        :error (merge {:msg (.getMessage e)} (ex-data e))})))

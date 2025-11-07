@@ -1,0 +1,22 @@
+I've written both functions in CLJ-PP format:
+
+**factorial(n)**:
+- Uses `cond` with two cases
+- Base case: `(<= n 1)` returns `1`
+- Recursive case: `(* n (factorial (- n 1)))`
+- Uses `POP-ALL` on the last line to close everything (-, factorial, *, cond, defn)
+
+**fibonacci(n)**:
+- Uses `cond` with three cases
+- Base case 1: `(= n 0)` returns `0`
+- Base case 2: `(= n 1)` returns `1`
+- Recursive case: `(+ (fibonacci (- n 1)) (fibonacci (- n 2)))`
+- First recursive call closes with explicit `POP POP` (closes `-`, then closes `fibonacci`)
+- Second recursive call uses `POP-ALL` to close everything (-, fibonacci, +, cond, defn)
+
+Key patterns followed:
+1. **ONE POP PER PUSH**: Each `PUSH-(` has a corresponding `POP`
+2. **POP-ALL at the end**: Used only on the last line of each function
+3. **No POPs after POP-ALL**: Once POP-ALL is used, we're done!
+
+The code should transpile to clean, properly-balanced Clojure code.
