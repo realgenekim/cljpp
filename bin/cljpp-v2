@@ -1,0 +1,30 @@
+#!/usr/bin/env bb
+;; CLJ-PP v2 transpiler
+;; Usage: cljpp-v2 <input-file> <output-file>
+
+(require '[clojure.java.io :as io])
+
+;; Load v2 implementation
+(load-file "src/cljp/v2/tokenizer.clj")
+(load-file "src/cljp/v2/assembler.clj")
+(load-file "src/cljp/v2/core.clj")
+
+(defn -main [& args]
+  (if (not= (count args) 2)
+    (do
+      (println "Usage: cljpp-v2 <input-file> <output-file>")
+      (println "")
+      (println "Transpiles CLJ-PP v2 source to Clojure.")
+      (System/exit 1))
+    (let [[input output] args
+          result (cljp.v2.core/transpile-file input output)]
+      (if (:ok? result)
+        (do
+          (println (str "✓ Transpiled " input " -> " output))
+          (System/exit 0))
+        (do
+          (println (str "✗ Transpilation failed: " input))
+          (println (cljp.v2.core/format-error (:error result)))
+          (System/exit 1))))))
+
+(apply -main *command-line-args*)

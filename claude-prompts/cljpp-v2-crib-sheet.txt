@@ -1,0 +1,7 @@
+CLJ-PP v2 Syntax Crib Sheet:
+1. LP opens (, LV opens [, LM opens {, X closes one level.
+2. Use atoms as normal Clojure tokens/strings; separate by spaces.
+3. Optional: X2 closes 2 levels, X3 closes 3. Never "close all."
+4. Example: LP defn hello LV name X X → (defn hello [name]).
+5. Hiccup: LV :div LV :span "Hi" X X → [:div [:span "Hi"]].
+6. Errors: no extra X; end with an empty stack.

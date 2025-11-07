@@ -17,7 +17,8 @@
    :popall {:file "claude-prompts/CLJPP-PROMPT-WITH-POP-ALL-ONLY-v2.md" :name "CLJ-PP (POP-ALL v2)"}
    :v3     {:file "claude-prompts/CLJPP-PROMPT-WITH-POP-ALL-ONLY-v3.md" :name "CLJ-PP (POP-ALL v3)"}
    :v4     {:file "claude-prompts/CLJPP-PROMPT-v4.md" :name "CLJ-PP v4 (Hybrid)"}
-   :v5     {:file "claude-prompts/CLJPP-PROMPT-v5.md" :name "CLJ-PP v5 (v1 + #() fix)"}})
+   :v5     {:file "claude-prompts/CLJPP-PROMPT-v5.md" :name "CLJ-PP v5 (v1 + #() fix)"}
+   :v2     {:file "claude-prompts/CLJPP-PROMPT-v2.md" :name "CLJ-PP v2 (LP/LV/LM/X)"}})
 
 (def timestamp (.format (java.time.LocalDateTime/now)
                        (java.time.format.DateTimeFormatter/ofPattern "yyyyMMdd-HHmmss")))
@@ -76,7 +77,8 @@
 
       ;; Transpile if CLJPP
       (when is-cljpp
-        (let [transpile-result (shell/sh "bin/cljpp" code-file final-file)]
+        (let [transpiler (if (= variant :v2) "bin/cljpp-v2" "bin/cljpp")
+              transpile-result (shell/sh transpiler code-file final-file)]
           (when-not (zero? (:exit transpile-result))
             (println "  ❌ TRANSPILE ERROR")
             (println "    " (:err transpile-result))
@@ -146,13 +148,13 @@
   (println "Usage: bb bin/test-variant.clj <variant> <program> <iterations>")
   (println "")
   (println "Arguments:")
-  (println "  variant     One of: clj, pop, popall, v3, v4")
+  (println "  variant     One of: clj, pop, popall, v2, v3, v4, v5")
   (println "  program     Program number (1-20) or 'all'")
   (println "  iterations  How many times to run (default: 1)")
   (println "")
   (println "Examples:")
-  (println "  bb bin/test-variant.clj v4 3 10          # Test v4 on program 3, 10 times")
-  (println "  bb bin/test-variant.clj v4 all 1         # Test v4 on all programs, once")
+  (println "  bb bin/test-variant.clj v2 3 10          # Test v2 on program 3, 10 times")
+  (println "  bb bin/test-variant.clj v2 all 1         # Test v2 on all programs, once")
   (println "  bb bin/test-variant.clj pop 13 5         # Test explicit POP on program 13, 5 times")
   (println "")
   (println "Available variants:")
