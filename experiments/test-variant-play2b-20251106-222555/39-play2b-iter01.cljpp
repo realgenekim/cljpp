@@ -1,0 +1,77 @@
+PUSH-( ns examples.program39 POP
+
+PUSH-( defrecord Node PUSH-[ keys children leaf? POP POP
+
+PUSH-( defn create-node PUSH-[ leaf? POP
+  PUSH-( ->Node PUSH-[ POP PUSH-[ POP leaf? POP-ALL
+
+PUSH-( defn create-btree PUSH-[ t POP
+  PUSH-{ :root PUSH-( create-node true POP :t t POP-ALL
+
+PUSH-( defn search-in-node PUSH-[ node key POP
+  PUSH-( let PUSH-[ idx PUSH-( count PUSH-( take-while PUSH-( fn PUSH-[ k POP PUSH-( < k key POP POP PUSH-( :keys node POP POP POP POP
+    PUSH-( cond
+      PUSH-( and PUSH-( < idx PUSH-( count PUSH-( :keys node POP POP POP PUSH-( = key PUSH-( nth PUSH-( :keys node POP idx POP POP POP
+        PUSH-{ :found? true :node node :idx idx POP
+      PUSH-( :leaf? node POP
+        PUSH-{ :found? false POP
+      :else
+        PUSH-( recur PUSH-( nth PUSH-( :children node POP idx POP key POP-ALL
+
+PUSH-( defn b-tree-search PUSH-[ btree key POP
+  PUSH-( search-in-node PUSH-( :root btree POP key POP-ALL
+
+PUSH-( defn split-child PUSH-[ parent idx child t POP
+  PUSH-( let PUSH-[ mid-idx PUSH-( dec t POP
+              mid-key PUSH-( nth PUSH-( :keys child POP mid-idx POP
+              left-keys PUSH-( vec PUSH-( take mid-idx PUSH-( :keys child POP POP POP
+              right-keys PUSH-( vec PUSH-( drop PUSH-( inc mid-idx POP PUSH-( :keys child POP POP POP
+              left-children PUSH-( when-not PUSH-( :leaf? child POP PUSH-( vec PUSH-( take t PUSH-( :children child POP POP POP POP
+              right-children PUSH-( when-not PUSH-( :leaf? child POP PUSH-( vec PUSH-( drop t PUSH-( :children child POP POP POP POP
+              left-node PUSH-( ->Node left-keys left-children PUSH-( :leaf? child POP POP
+              right-node PUSH-( ->Node right-keys right-children PUSH-( :leaf? child POP POP
+              new-keys PUSH-( vec PUSH-( concat PUSH-( take idx PUSH-( :keys parent POP POP PUSH-[ mid-key POP PUSH-( drop idx PUSH-( :keys parent POP POP POP POP
+              new-children PUSH-( vec PUSH-( concat PUSH-( take idx PUSH-( :children parent POP POP PUSH-[ left-node right-node POP PUSH-( drop PUSH-( inc idx POP PUSH-( :children parent POP POP POP POP POP
+    PUSH-( ->Node new-keys new-children PUSH-( :leaf? parent POP POP-ALL
+
+PUSH-( defn insert-non-full PUSH-[ node key t POP
+  PUSH-( if PUSH-( :leaf? node POP
+    PUSH-( let PUSH-[ idx PUSH-( count PUSH-( take-while PUSH-( fn PUSH-[ k POP PUSH-( < k key POP POP PUSH-( :keys node POP POP POP
+              new-keys PUSH-( vec PUSH-( concat PUSH-( take idx PUSH-( :keys node POP POP PUSH-[ key POP PUSH-( drop idx PUSH-( :keys node POP POP POP POP POP
+      PUSH-( assoc node :keys new-keys POP-ALL
+    PUSH-( let PUSH-[ idx PUSH-( count PUSH-( take-while PUSH-( fn PUSH-[ k POP PUSH-( < k key POP POP PUSH-( :keys node POP POP POP
+              child PUSH-( nth PUSH-( :children node POP idx POP
+              child-full? PUSH-( >= PUSH-( count PUSH-( :keys child POP POP PUSH-( dec PUSH-( * 2 t POP POP POP POP
+      PUSH-( if child-full?
+        PUSH-( let PUSH-[ new-parent PUSH-( split-child node idx child t POP
+                  new-idx PUSH-( if PUSH-( < key PUSH-( nth PUSH-( :keys new-parent POP idx POP POP idx PUSH-( inc idx POP POP
+                  new-child PUSH-( nth PUSH-( :children new-parent POP new-idx POP
+                  updated-child PUSH-( insert-non-full new-child key t POP
+                  new-children PUSH-( assoc PUSH-( :children new-parent POP new-idx updated-child POP POP
+          PUSH-( assoc new-parent :children new-children POP-ALL
+        PUSH-( let PUSH-[ updated-child PUSH-( insert-non-full child key t POP
+                  new-children PUSH-( assoc PUSH-( :children node POP idx updated-child POP POP
+          PUSH-( assoc node :children new-children POP-ALL
+
+PUSH-( defn b-tree-insert PUSH-[ btree key POP
+  PUSH-( let PUSH-[ root PUSH-( :root btree POP
+              t PUSH-( :t btree POP
+              root-full? PUSH-( >= PUSH-( count PUSH-( :keys root POP POP PUSH-( dec PUSH-( * 2 t POP POP POP POP
+    PUSH-( if root-full?
+      PUSH-( let PUSH-[ new-root PUSH-( ->Node PUSH-[ POP PUSH-[ root POP false POP
+                  split-root PUSH-( split-child new-root 0 root t POP
+                  updated-root PUSH-( insert-non-full split-root key t POP POP
+        PUSH-( assoc btree :root updated-root POP-ALL
+      PUSH-( let PUSH-[ updated-root PUSH-( insert-non-full root key t POP POP
+        PUSH-( assoc btree :root updated-root POP-ALL
+
+PUSH-( defn split-node PUSH-[ node t POP
+  PUSH-( let PUSH-[ mid-idx PUSH-( dec t POP
+              mid-key PUSH-( nth PUSH-( :keys node POP mid-idx POP
+              left-keys PUSH-( vec PUSH-( take mid-idx PUSH-( :keys node POP POP POP
+              right-keys PUSH-( vec PUSH-( drop PUSH-( inc mid-idx POP PUSH-( :keys node POP POP POP
+              left-children PUSH-( when PUSH-( :children node POP PUSH-( vec PUSH-( take t PUSH-( :children node POP POP POP POP
+              right-children PUSH-( when PUSH-( :children node POP PUSH-( vec PUSH-( drop t PUSH-( :children node POP POP POP POP
+              left-node PUSH-( ->Node left-keys left-children PUSH-( :leaf? node POP POP
+              right-node PUSH-( ->Node right-keys right-children PUSH-( :leaf? node POP POP POP
+    PUSH-{ :mid-key mid-key :left left-node :right right-node POP-ALL

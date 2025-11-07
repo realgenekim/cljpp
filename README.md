@@ -68,7 +68,9 @@ After building comprehensive test infrastructure and running multiple variants o
 - Regular Clojure: 19/20 (95%)
 - CLJ-PP (explicit POP counting): 16/20 (80%):  Best CLJ-PP variant
 
-This might be another manifestation of the **bitter lesson**: methods that leverage massive training data (Claude's extensive Clojure corpus) outperform clever hand-engineered solutions (explicit stack operations).
+However, my latest experiment (labeled "PLAY" in the repo) revealed that when using the best CLJ-PP variant (Play2b with aggressive format enforcement) against a holdout set of 20 unseen programs, performance dropped from 95% on training programs to just 40% on holdout programs. The training set contained simpler patterns (basic functions, collections, recursion) while the holdout set included advanced features (macros, protocols, B-trees, constraint solvers, monadic parsers). This 55-point performance gap suggests the high training scores were driven more by problem simplicity than by the effectiveness of explicit stack operations.
+
+This might be more evidence for the **bitter lesson**: methods that leverage massive training data (Claude's extensive Clojure corpus) outperform clever hand-engineered solutions (explicit stack operations).
 
 Despite this, I still feel like CLJ-PP has promise. I'm going to keep exploring it.
 

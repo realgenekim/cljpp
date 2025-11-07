@@ -1,0 +1,3 @@
+(ns examples.program24)
+(defmacro when-let-all [bindings & body] (let [pairs (partition 2 bindings)] (reduce (fn [acc [sym expr]] (list 'let [sym expr] (list 'if sym acc nil))) (cons 'do body) (reverse pairs))))
+(defmacro defn-timed [name args & body] (let [name-str (str name)] (list 'defn name args (list 'let ['start (list 'System/nanoTime)] (list 'let ['result (cons 'do body)] (list 'let ['end (list 'System/nanoTime)] (list 'let ['elapsed (list '/ (list '- 'end 'start) 1000000.0)] (list 'do (list 'println (str "Entering " name-str)) (list 'println (str name-str " completed in ") 'elapsed (str " ms")) 'result))))))))

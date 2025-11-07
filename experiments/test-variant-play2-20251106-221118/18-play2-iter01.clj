@@ -1,0 +1,5 @@
+(ns examples.program18)
+(defn wrap-logging [handler] (fn [request] (println "Request:" (:uri request)) (let [response (handler request)] (println "Response:" (:status response)) response)))
+(defn wrap-auth [handler] (fn [request] (if (:authenticated? request) (handler request) {:status 401, :body "Unauthorized"})))
+(defn app-handler [request] (case (:uri request) "/home" {:status 200, :body "Home Page"} "/about" {:status 200, :body "About Page"} "/api" {:status 200, :body "API Endpoint"} {:status 404, :body "Not Found"}))
+(def app (-> app-handler wrap-auth wrap-logging))

@@ -1,0 +1,36 @@
+PUSH-( ns examples.program33 POP
+
+PUSH-( defmulti apply-event
+  PUSH-( fn PUSH-[ state event POP PUSH-( :type event POP POP
+POP
+
+PUSH-( defmethod apply-event :account-created
+  PUSH-[ state event POP
+  PUSH-( assoc state
+    :id PUSH-( :account-id event POP
+    :balance 0
+    :status :active
+  POP-ALL
+
+PUSH-( defmethod apply-event :deposit
+  PUSH-[ state event POP
+  PUSH-( update state :balance + PUSH-( :amount event POP POP-ALL
+
+PUSH-( defmethod apply-event :withdrawal
+  PUSH-[ state event POP
+  PUSH-( update state :balance - PUSH-( :amount event POP POP-ALL
+
+PUSH-( defmethod apply-event :account-closed
+  PUSH-[ state event POP
+  PUSH-( assoc state :status :closed POP-ALL
+
+PUSH-( defn aggregate
+  PUSH-[ events POP
+  PUSH-( reduce apply-event PUSH-{ POP events POP-ALL
+
+PUSH-( defn get-state-at-time
+  PUSH-[ events timestamp POP
+  PUSH-( ->> events
+    PUSH-( filter PUSH-( fn PUSH-[ event POP PUSH-( <= PUSH-( :timestamp event POP timestamp POP POP POP
+    PUSH-( aggregate POP
+  POP-ALL

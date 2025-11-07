@@ -1,0 +1,59 @@
+```clojure
+PUSH-( ns examples.program38 POP-ALL
+
+PUSH-( defn diff PUSH-[ expr var POP
+  PUSH-( cond
+    PUSH-( and PUSH-( vector? expr POP PUSH-( = PUSH-( first expr POP :+ POP POP
+    PUSH-( let PUSH-[ PUSH-[ _ a b POP expr POP
+      PUSH-( let PUSH-[ da PUSH-( diff a var POP
+                   db PUSH-( diff b var POP POP
+        PUSH-( cond
+          PUSH-( and PUSH-( = da PUSH-[ :const 0 POP POP PUSH-( = db PUSH-[ :const 0 POP POP POP PUSH-[ :const 0 POP
+          PUSH-( = da PUSH-[ :const 0 POP POP db
+          PUSH-( = db PUSH-[ :const 0 POP POP da
+          :else PUSH-[ :+ da db POP
+        POP
+      POP
+    POP
+
+    PUSH-( and PUSH-( vector? expr POP PUSH-( = PUSH-( first expr POP :* POP POP
+    PUSH-( let PUSH-[ PUSH-[ _ a b POP expr POP
+      PUSH-( let PUSH-[ da PUSH-( diff a var POP
+                   db PUSH-( diff b var POP POP
+        PUSH-( let PUSH-[ term1 PUSH-[ :* da b POP
+                     term2 PUSH-[ :* a db POP POP
+          PUSH-( cond
+            PUSH-( and PUSH-( = da PUSH-[ :const 0 POP POP PUSH-( = db PUSH-[ :const 0 POP POP POP PUSH-[ :const 0 POP
+            PUSH-( = da PUSH-[ :const 0 POP POP term2
+            PUSH-( = db PUSH-[ :const 0 POP POP term1
+            :else PUSH-[ :+ term1 term2 POP
+          POP
+        POP
+      POP
+    POP
+
+    PUSH-( and PUSH-( vector? expr POP PUSH-( = PUSH-( first expr POP :exp POP POP
+    PUSH-( let PUSH-[ PUSH-[ _ a POP expr POP
+      PUSH-( let PUSH-[ da PUSH-( diff a var POP POP
+        PUSH-( if PUSH-( = da PUSH-[ :const 0 POP POP
+          PUSH-[ :const 0 POP
+          PUSH-[ :* da PUSH-[ :exp a POP POP
+        POP
+      POP
+    POP
+
+    PUSH-( and PUSH-( vector? expr POP PUSH-( = PUSH-( first expr POP :var POP POP
+    PUSH-( let PUSH-[ PUSH-[ _ x POP expr POP
+      PUSH-( if PUSH-( = x var POP
+        PUSH-[ :const 1 POP
+        PUSH-[ :const 0 POP
+      POP
+    POP
+
+    PUSH-( and PUSH-( vector? expr POP PUSH-( = PUSH-( first expr POP :const POP POP
+    PUSH-[ :const 0 POP
+
+    :else PUSH-[ :const 0 POP
+  POP
+POP-ALL
+```

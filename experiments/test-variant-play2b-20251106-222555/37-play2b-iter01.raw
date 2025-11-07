@@ -1,0 +1,120 @@
+PUSH-( ns examples.program37
+  PUSH-( :require
+    PUSH-[ reagent.core :as r POP
+    PUSH-[ reagent.ratom :as ratom POP
+    PUSH-[ clojure.string :as str POP-ALL
+
+PUSH-( defn use-state PUSH-[ initial-value POP
+  PUSH-( r/atom initial-value POP-ALL
+
+PUSH-( defn use-effect PUSH-[ deps-atom effect-fn POP
+  PUSH-( let PUSH-[ prev-deps PUSH-( atom nil POP POP
+    PUSH-( ratom/run!
+      PUSH-( let PUSH-[ current-deps @deps-atom
+              old-deps @prev-deps POP
+        PUSH-( when PUSH-( not= current-deps old-deps POP
+          PUSH-( reset! prev-deps current-deps POP
+          PUSH-( effect-fn POP-ALL
+
+PUSH-( defn use-fetch PUSH-[ url POP
+  PUSH-( let PUSH-[ state PUSH-( r/atom PUSH-{ :loading true :error nil :data nil POP POP POP
+    PUSH-( ratom/run!
+      PUSH-( when url
+        PUSH-( swap! state assoc :loading true :error nil POP
+        PUSH-( try
+          PUSH-( let PUSH-[ response @PUSH-( http/get url POP POP
+            PUSH-( swap! state assoc :loading false :data PUSH-( :body response POP POP
+          PUSH-( catch Exception e
+            PUSH-( swap! state assoc :loading false :error PUSH-( str e POP POP-ALL
+    state POP-ALL
+
+PUSH-( defn user-profile PUSH-[ PUSH-{ :keys PUSH-[ user-id POP POP POP
+  PUSH-( let PUSH-[ state PUSH-( use-fetch PUSH-( str "https://api.example.com/users/" user-id POP POP POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div
+        PUSH-( if PUSH-( :loading @state POP
+          PUSH-[ :p "Loading..." POP
+          PUSH-( if-let PUSH-[ error PUSH-( :error @state POP POP
+            PUSH-[ :div.error
+              PUSH-[ :p "Error: " error POP-ALL
+            PUSH-( if-let PUSH-[ data PUSH-( :data @state POP POP
+              PUSH-[ :div.profile
+                PUSH-[ :h2 PUSH-( :name data POP POP
+                PUSH-[ :p "Email: " PUSH-( :email data POP POP
+                PUSH-[ :p "Bio: " PUSH-( :bio data POP POP-ALL
+              PUSH-[ :p "No data" POP-ALL
+
+PUSH-( defn counter-component PUSH-[ POP
+  PUSH-( let PUSH-[ count PUSH-( use-state 0 POP
+          clicks PUSH-( use-state PUSH-[ POP POP
+          effect-deps PUSH-( r/atom @count POP POP
+    PUSH-( use-effect effect-deps
+      PUSH-( fn PUSH-[ POP
+        PUSH-( println "Count changed:" @count POP
+        PUSH-( swap! clicks conj @count POP-ALL
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div
+        PUSH-[ :h3 "Counter: " @count POP
+        PUSH-[ :button
+          PUSH-{ :on-click PUSH-( fn PUSH-[ _ POP PUSH-( swap! count inc POP POP POP
+          "Increment" POP
+        PUSH-[ :button
+          PUSH-{ :on-click PUSH-( fn PUSH-[ _ POP PUSH-( swap! count dec POP POP POP
+          "Decrement" POP
+        PUSH-[ :button
+          PUSH-{ :on-click PUSH-( fn PUSH-[ _ POP PUSH-( reset! count 0 POP POP POP
+          "Reset" POP
+        PUSH-[ :p "Click history: " PUSH-( str/join ", " @clicks POP POP-ALL
+
+PUSH-( defn use-local-storage PUSH-[ key initial-value POP
+  PUSH-( let PUSH-[ stored PUSH-( try
+                    PUSH-( js/localStorage.getItem key POP
+                    PUSH-( catch js/Error _ nil POP-ALL
+          state PUSH-( r/atom PUSH-( or stored initial-value POP POP POP
+    PUSH-( ratom/run!
+      PUSH-( try
+        PUSH-( js/localStorage.setItem key @state POP
+        PUSH-( catch js/Error e
+          PUSH-( println "Storage error:" e POP-ALL
+    state POP-ALL
+
+PUSH-( defn todo-list PUSH-[ POP
+  PUSH-( let PUSH-[ todos PUSH-( use-local-storage "todos" PUSH-[ POP POP
+          input PUSH-( use-state "" POP POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div.todo-list
+        PUSH-[ :h3 "Todo List" POP
+        PUSH-[ :input
+          PUSH-{ :type "text"
+               :value @input
+               :on-change PUSH-( fn PUSH-[ e POP
+                            PUSH-( reset! input PUSH-( .. e -target -value POP POP-ALL
+               :placeholder "Enter todo..." POP-ALL
+        PUSH-[ :button
+          PUSH-{ :on-click PUSH-( fn PUSH-[ _ POP
+                          PUSH-( when-not PUSH-( str/blank? @input POP
+                            PUSH-( swap! todos conj @input POP
+                            PUSH-( reset! input "" POP-ALL
+               :disabled PUSH-( str/blank? @input POP POP
+          "Add" POP
+        PUSH-[ :ul
+          PUSH-( for PUSH-[ PUSH-[ idx todo POP PUSH-( map-indexed vector @todos POP POP
+            PUSH-[ :li PUSH-{ :key idx POP
+              todo
+              PUSH-[ :button
+                PUSH-{ :on-click PUSH-( fn PUSH-[ _ POP
+                                PUSH-( swap! todos
+                                  PUSH-( fn PUSH-[ ts POP
+                                    PUSH-( vec PUSH-( concat PUSH-( take idx ts POP PUSH-( drop PUSH-( inc idx POP ts POP POP-ALL
+                     :style PUSH-{ :margin-left "10px" POP POP
+                "Delete" POP-ALL
+
+PUSH-( defn app PUSH-[ POP
+  PUSH-( fn PUSH-[ POP
+    PUSH-[ :div
+      PUSH-[ :h1 "React Hooks Pattern in Reagent" POP
+      PUSH-[ counter-component POP
+      PUSH-[ :hr POP
+      PUSH-[ user-profile PUSH-{ :user-id 1 POP POP
+      PUSH-[ :hr POP
+      PUSH-[ todo-list POP-ALL

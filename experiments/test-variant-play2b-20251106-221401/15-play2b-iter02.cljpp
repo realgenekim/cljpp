@@ -1,0 +1,35 @@
+PUSH-( ns examples.program15 POP
+
+PUSH-( defn dfs PUSH-[ graph start POP
+  PUSH-( loop PUSH-[ stack PUSH-[ start POP
+                visited PUSH-{ POP
+                result PUSH-[ POP POP
+    PUSH-( if PUSH-( empty? stack POP
+      result
+      PUSH-( let PUSH-[ node PUSH-( peek stack POP
+                  new-stack PUSH-( pop stack POP POP
+        PUSH-( if PUSH-( contains? visited node POP
+          PUSH-( recur new-stack visited result POP
+          PUSH-( let PUSH-[ new-visited PUSH-( conj visited node POP
+                      new-result PUSH-( conj result node POP
+                      neighbors PUSH-( get graph node PUSH-[ POP POP
+                      unvisited PUSH-( remove PUSH-( fn PUSH-[ n POP PUSH-( contains? new-visited n POP POP neighbors POP
+                      next-stack PUSH-( into new-stack unvisited POP POP
+            PUSH-( recur next-stack new-visited new-result POP-ALL
+
+PUSH-( defn bfs PUSH-[ graph start POP
+  PUSH-( loop PUSH-[ queue PUSH-[ start POP
+                visited PUSH-{ POP
+                result PUSH-[ POP POP
+    PUSH-( if PUSH-( empty? queue POP
+      result
+      PUSH-( let PUSH-[ node PUSH-( first queue POP
+                  new-queue PUSH-( into PUSH-[ POP PUSH-( rest queue POP POP POP
+        PUSH-( if PUSH-( contains? visited node POP
+          PUSH-( recur new-queue visited result POP
+          PUSH-( let PUSH-[ new-visited PUSH-( conj visited node POP
+                      new-result PUSH-( conj result node POP
+                      neighbors PUSH-( get graph node PUSH-[ POP POP
+                      unvisited PUSH-( remove PUSH-( fn PUSH-[ n POP PUSH-( contains? new-visited n POP POP neighbors POP
+                      next-queue PUSH-( into new-queue unvisited POP POP
+            PUSH-( recur next-queue new-visited new-result POP-ALL

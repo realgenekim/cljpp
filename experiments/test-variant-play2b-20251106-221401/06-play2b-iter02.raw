@@ -1,0 +1,19 @@
+PUSH-( ns examples.program6 POP-ALL
+
+PUSH-( defn safe-divide PUSH-[ numerator denominator POP
+  PUSH-( try
+    PUSH-{ :status :ok :value PUSH-( / numerator denominator POP POP
+    PUSH-( catch ArithmeticException e
+      PUSH-{ :status :error :message PUSH-( .getMessage e POP POP
+    POP
+  POP
+POP-ALL
+
+PUSH-( defn validate-user PUSH-[ user POP
+  PUSH-( cond
+    PUSH-( nil? user POP PUSH-{ :status :error :message "User cannot be nil" POP
+    PUSH-( empty? PUSH-( :name user POP POP PUSH-{ :status :error :message "Name cannot be empty" POP
+    PUSH-( neg? PUSH-( :age user POP POP PUSH-{ :status :error :message "Age cannot be negative" POP
+    :else PUSH-{ :status :ok :user user POP
+  POP
+POP-ALL

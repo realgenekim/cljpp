@@ -1,0 +1,44 @@
+I need to generate CLJ-PP format code for a Hiccup component program.
+
+Let me write this carefully, using POP-ALL at the very end since this is a complete namespace with multiple function definitions:
+
+```clojure
+PUSH-( ns examples.program10 POP
+
+PUSH-( defn user-badge PUSH-[ PUSH-{ :keys PUSH-[ name verified? role POP POP POP
+  PUSH-[ :div PUSH-{ :class "user-badge" POP
+    PUSH-[ :span.name name POP
+    PUSH-( when verified?
+      PUSH-[ :span.verified "\u2713" POP
+    POP
+    PUSH-[ :span.role role POP
+  POP
+POP
+
+PUSH-( defn user-list PUSH-[ users POP
+  PUSH-[ :div PUSH-{ :class "user-list" POP
+    PUSH-( for PUSH-[ user users POP
+      PUSH-[ :div PUSH-{ :key PUSH-( :id user POP POP
+        PUSH-[ user-badge user POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn stats-panel PUSH-[ stats POP
+  PUSH-( let PUSH-[ total PUSH-( reduce + PUSH-( vals stats POP POP POP
+    PUSH-[ :div PUSH-{ :class "stats-panel" POP
+      PUSH-[ :div.total 
+        PUSH-[ :strong "Total: " POP
+        total
+      POP
+      PUSH-( for PUSH-[ PUSH-[ k v POP stats POP
+        PUSH-[ :div PUSH-{ :key k POP
+          PUSH-[ :span PUSH-( name k POP POP
+          ": "
+          v
+        POP
+      POP
+    POP
+  POP-ALL
+```

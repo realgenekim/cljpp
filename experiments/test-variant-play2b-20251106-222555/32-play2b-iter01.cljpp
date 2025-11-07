@@ -1,0 +1,68 @@
+PUSH-( ns examples.program32 POP
+
+PUSH-( defn get-box PUSH-[ board row col POP
+  PUSH-( let PUSH-[ 
+    box-row PUSH-( * 3 PUSH-( quot row 3 POP POP
+    box-col PUSH-( * 3 PUSH-( quot col 3 POP POP
+  POP
+    PUSH-( for PUSH-[ 
+      r PUSH-( range box-row PUSH-( + box-row 3 POP POP
+      c PUSH-( range box-col PUSH-( + box-col 3 POP POP
+    POP
+      PUSH-( get-in board PUSH-[ r c POP POP
+    POP
+  POP
+POP
+
+PUSH-( defn valid? PUSH-[ board row col num POP
+  PUSH-( let PUSH-[
+    row-vals PUSH-( get board row POP
+    col-vals PUSH-( map PUSH-( fn PUSH-[ r POP PUSH-( get-in board PUSH-[ r col POP POP POP board POP
+    box-vals PUSH-( get-box board row col POP
+  POP
+    PUSH-( and
+      PUSH-( not PUSH-( some PUSH-{ num true POP PUSH-( frequencies row-vals POP POP POP
+      PUSH-( not PUSH-( some PUSH-{ num true POP PUSH-( frequencies col-vals POP POP POP
+      PUSH-( not PUSH-( some PUSH-{ num true POP PUSH-( frequencies box-vals POP POP POP
+    POP
+  POP
+POP
+
+PUSH-( defn find-empty PUSH-[ board POP
+  PUSH-( first
+    PUSH-( for PUSH-[
+      row PUSH-( range 9 POP
+      col PUSH-( range 9 POP
+      :when PUSH-( zero? PUSH-( get-in board PUSH-[ row col POP POP POP
+    POP
+      PUSH-[ row col POP
+    POP
+  POP
+POP
+
+PUSH-( defn solve-sudoku PUSH-[ board POP
+  PUSH-( loop PUSH-[ current board POP
+    PUSH-( if-let PUSH-[ PUSH-[ row col POP PUSH-( find-empty current POP POP
+      PUSH-( loop PUSH-[ nums PUSH-( range 1 10 POP POP
+        PUSH-( if PUSH-( seq nums POP
+          PUSH-( let PUSH-[ num PUSH-( first nums POP POP
+            PUSH-( if PUSH-( valid? current row col num POP
+              PUSH-( let PUSH-[ 
+                updated PUSH-( assoc-in current PUSH-[ row col POP num POP
+                result PUSH-( solve-sudoku updated POP
+              POP
+                PUSH-( if result
+                  result
+                  PUSH-( recur PUSH-( rest nums POP POP
+                POP
+              POP
+              PUSH-( recur PUSH-( rest nums POP POP
+            POP
+          POP
+          nil
+        POP
+      POP
+      current
+    POP
+  POP
+POP-ALL

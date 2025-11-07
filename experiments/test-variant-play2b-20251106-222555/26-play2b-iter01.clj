@@ -1,0 +1,7 @@
+(ns examples.program26)
+(defn wrap-json [handler] (fn [request] (let [body (get request :body) parsed-body (if (string? body) (clojure.data.json/read-str body :key-fn keyword) body) updated-request (assoc request :body parsed-body)] (handler updated-request))))
+(defn wrap-cors [handler] (fn [request] (let [response (handler request) headers (get response :headers {}) updated-headers (assoc headers "Access-Control-Allow-Origin" "*" "Access-Control-Allow-Methods" "GET, POST, PUT, DELETE" "Access-Control-Allow-Headers" "Content-Type")] (assoc response :headers updated-headers))))
+(defn wrap-session [handler] (fn [request] (let [token (get-in request [:headers "authorization"])] (if (and token (not (empty? token))) (let [updated-request (assoc request :session {:valid? true, :token token})] (handler updated-request)) (handler (assoc request :session {:valid? false}))))))
+(defn base-handler [request] {:headers {"Content-Type" "application/json"}, :status 200, :body {:request-body (get request :body), :message "Success", :session (get request :session)}})
+(defn app [] (-> base-handler wrap-session wrap-cors wrap-json))
+(defn -main [& args] (let [handler (app) test-request {:headers {"authorization" "token123"}, :body "{\"name\":\"test\",\"value\":42}"} response (handler test-request)] (println "Response:" response)))

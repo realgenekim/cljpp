@@ -1,0 +1,6 @@
+(ns examples.program13 (:require [clojure.spec.alpha :as s]))
+(s/def ::name string?)
+(s/def ::age (fn ([x] (and (int? x) (pos? x)))))
+(s/def ::email (fn ([x] (and (string? x) (re-matches #".+@.+\..+" x)))))
+(s/def ::user (s/keys :req-un [::name ::age ::email]))
+(defn validate-user [user] (s/valid? ::user user))

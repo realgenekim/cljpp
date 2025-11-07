@@ -1,0 +1,23 @@
+PUSH-( ns examples.program28
+  PUSH-( :require PUSH-[ clojure.core.match :refer PUSH-[ match POP POP POP POP
+
+PUSH-( defn handle-user PUSH-[ user-data POP
+  PUSH-( match PUSH-[ user-data POP
+    PUSH-{ :type :user :data PUSH-{ :role :admin POP POP
+    "Administrator access granted"
+    
+    PUSH-{ :type :user :data PUSH-{ :role :member POP POP
+    "Member access granted"
+    
+    PUSH-{ :type :user :data PUSH-{ :role :guest POP POP
+    "Guest access granted"
+    
+    :else "Unknown user type" POP-ALL
+
+PUSH-( defn -main PUSH-[ & args POP
+  PUSH-( let PUSH-[ admin PUSH-{ :type :user :data PUSH-{ :role :admin POP POP
+        member PUSH-{ :type :user :data PUSH-{ :role :member POP POP
+        guest PUSH-{ :type :user :data PUSH-{ :role :guest POP POP POP
+    PUSH-( println "Admin:" PUSH-( handle-user admin POP POP
+    PUSH-( println "Member:" PUSH-( handle-user member POP POP
+    PUSH-( println "Guest:" PUSH-( handle-user guest POP-ALL

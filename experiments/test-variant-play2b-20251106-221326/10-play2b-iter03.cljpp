@@ -1,0 +1,37 @@
+PUSH-( ns examples.program10 POP-ALL
+
+PUSH-( defn user-badge PUSH-[ PUSH-{ :keys PUSH-[ name verified? role POP POP POP
+  PUSH-[ :div.user-badge
+    PUSH-[ :div.user-info
+      PUSH-[ :span.name name POP
+      PUSH-( when verified?
+        PUSH-[ :span.badge "✓" POP
+      POP
+    POP
+    PUSH-[ :div.role role POP
+  POP-ALL
+
+PUSH-( defn user-list PUSH-[ users POP
+  PUSH-[ :div.user-list
+    PUSH-( for PUSH-[ user users POP
+      PUSH-[ :div PUSH-{ :key PUSH-( :name user POP POP
+        PUSH-( user-badge user POP
+      POP
+    POP
+  POP-ALL
+
+PUSH-( defn stats-panel PUSH-[ stats POP
+  PUSH-( let PUSH-[ total PUSH-( reduce + PUSH-( vals stats POP POP POP
+    PUSH-[ :div.stats-panel
+      PUSH-[ :div.total
+        PUSH-[ :span "Total: " POP
+        PUSH-[ :span.count total POP
+      POP
+      PUSH-( for PUSH-[ PUSH-[ stat-name stat-value POP stats POP
+        PUSH-[ :div.stat PUSH-{ :key stat-name POP
+          PUSH-[ :span.label PUSH-( name stat-name POP POP
+          PUSH-[ :span.value stat-value POP
+        POP
+      POP
+    POP
+  POP-ALL

@@ -1,0 +1,15 @@
+PUSH-( ns examples.program13
+  PUSH-( :require PUSH-[ clojure.spec.alpha :as s POP POP
+POP
+
+PUSH-( s/def ::name string? POP
+
+PUSH-( s/def ::age PUSH-( fn PUSH-( PUSH-[ n POP PUSH-( and PUSH-( int? n POP PUSH-( pos? n POP POP POP POP POP
+
+PUSH-( s/def ::email PUSH-( fn PUSH-( PUSH-[ email POP 
+  PUSH-( re-matches #".+@.+\..+" email POP POP POP POP
+
+PUSH-( s/def ::user PUSH-( s/keys :req-un PUSH-[ ::name ::age ::email POP POP POP
+
+PUSH-( defn validate-user PUSH-[ user POP
+  PUSH-( s/valid? ::user user POP-ALL

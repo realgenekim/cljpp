@@ -1,0 +1,17 @@
+PUSH-( ns examples.program23 POP-ALL
+
+PUSH-( defn tree-map PUSH-[ f tree POP
+  PUSH-( when tree
+    PUSH-( assoc tree
+      :value PUSH-( f PUSH-( :value tree POP POP
+      :left PUSH-( tree-map f PUSH-( :left tree POP POP
+      :right PUSH-( tree-map f PUSH-( :right tree POP POP-ALL
+      
+PUSH-( defn tree-reduce PUSH-[ f acc tree POP
+  PUSH-( if tree
+    PUSH-( let PUSH-[
+      left-acc PUSH-( tree-reduce f acc PUSH-( :left tree POP POP
+      node-acc PUSH-( f left-acc PUSH-( :value tree POP POP
+      POP
+      PUSH-( tree-reduce f node-acc PUSH-( :right tree POP-ALL
+    acc POP-ALL
