@@ -1,0 +1,44 @@
+# v3 Test Results Summary
+
+**Date:** 2025-11-06
+**Variant:** v3 (POP-ALL v3)
+**Success Rate:** 15/20 (75%)
+
+## Results
+
+✅ **Passed (15):** 2, 3, 5, 6, 9, 10, 12, 13, 14, 15, 16, 17, 18, 19, 20
+❌ **Failed (5):** 1, 4, 8, 11, 19
+
+## Failure Analysis
+
+**Transpile Errors (3):**
+- Program 01: "Atom at top-level" - wrote explanation text before code
+- Program 04: "POP-ALL with empty stack" - POP-ALL usage error
+- Program 19: "POP with empty stack" - too many POPs
+
+**Execution Errors (2):**
+- Program 08: Destructuring syntax error (generated invalid Clojure)
+- Program 11: core.async "Can only recur from tail position" (logic error)
+
+## Comparison to Historical Data
+
+From EXPERIMENT-RESULTS.md:
+- v3 previous: 12/20 (60%)
+- v3 today: 15/20 (75%)
+
+**Difference:** +3 programs (15% improvement)
+
+Possible reasons for variance:
+- Different LLM version/state
+- Single iteration (historical used parallel comprehensive test)
+- Random variation in fresh instances
+
+## Key Takeaway
+
+v3 achieves 75%, which is:
+- Better than historical 60%
+- Worse than v1 (80%)
+- Same as v2 POP-ALL (75%)
+- Better than v4 (0%!)
+
+v1 (explicit POP counting) remains the winner at 80%.

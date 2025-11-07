@@ -1,0 +1,33 @@
+PUSH-( ns examples.program15 POP
+
+PUSH-( defn dfs PUSH-[ graph start POP
+  PUSH-( loop PUSH-[ stack PUSH-[ start POP
+                visited PUSH-{ POP
+                result PUSH-[ POP POP
+    PUSH-( if PUSH-( empty? stack POP
+      result
+      PUSH-( let PUSH-[ node PUSH-( peek stack POP
+                  new-stack PUSH-( pop stack POP POP
+        PUSH-( if PUSH-( visited node POP
+          PUSH-( recur new-stack visited result POP
+          PUSH-( let PUSH-[ neighbors PUSH-( get graph node PUSH-[ POP POP
+                      new-visited PUSH-( conj visited node POP
+                      new-result PUSH-( conj result node POP
+                      new-stack PUSH-( into new-stack neighbors POP POP
+            PUSH-( recur new-stack new-visited new-result POP-ALL
+
+PUSH-( defn bfs PUSH-[ graph start POP
+  PUSH-( loop PUSH-[ queue PUSH-( conj clojure.lang.PersistentQueue/EMPTY start POP
+                visited PUSH-{ POP
+                result PUSH-[ POP POP
+    PUSH-( if PUSH-( empty? queue POP
+      result
+      PUSH-( let PUSH-[ node PUSH-( peek queue POP
+                  new-queue PUSH-( pop queue POP POP
+        PUSH-( if PUSH-( visited node POP
+          PUSH-( recur new-queue visited result POP
+          PUSH-( let PUSH-[ neighbors PUSH-( get graph node PUSH-[ POP POP
+                      new-visited PUSH-( conj visited node POP
+                      new-result PUSH-( conj result node POP
+                      new-queue PUSH-( into new-queue neighbors POP POP
+            PUSH-( recur new-queue new-visited new-result POP-ALL

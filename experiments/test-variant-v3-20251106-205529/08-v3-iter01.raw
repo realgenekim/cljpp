@@ -1,0 +1,12 @@
+```clojure
+PUSH-( ns examples.program8 POP
+
+PUSH-( defn process-user PUSH-[ PUSH-{ :keys PUSH-[ name age POP :as user POP POP
+  PUSH-{ :name name :age age :full-data user POP-ALL
+
+PUSH-( defn process-items PUSH-[ PUSH-[ first second & rest POP POP
+  PUSH-{ :first first :second second :rest rest POP-ALL
+
+PUSH-( defn nested-extract PUSH-[ PUSH-{ :keys PUSH-[ PUSH-{ :keys PUSH-[ address POP POP POP POP POP
+  address POP-ALL
+```

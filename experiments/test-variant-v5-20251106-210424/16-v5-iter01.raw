@@ -1,0 +1,55 @@
+```clojure
+PUSH-( ns examples.program16 POP
+
+PUSH-( defn parse-char PUSH-[ c POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( if PUSH-( and PUSH-( seq input POP PUSH-( = PUSH-( first input POP c POP POP POP
+      PUSH-[ PUSH-[ c PUSH-( rest input POP POP POP
+      PUSH-[ POP
+    POP
+  POP
+POP
+
+PUSH-( defn return PUSH-[ v POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-[ PUSH-[ v input POP POP
+  POP
+POP
+
+PUSH-( defn bind PUSH-[ parser f POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( mapcat
+      PUSH-( fn PUSH-[ PUSH-[ v rest-input POP POP
+        PUSH-( PUSH-( f v POP rest-input POP
+      POP
+      PUSH-( parser input POP
+    POP
+  POP
+POP
+
+PUSH-( defn choice PUSH-[ p1 p2 POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( let PUSH-[ r1 PUSH-( p1 input POP POP
+      PUSH-( if PUSH-( seq r1 POP
+        r1
+        PUSH-( p2 input POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn many PUSH-[ parser POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( loop PUSH-[ acc PUSH-[ POP inp input POP
+      PUSH-( let PUSH-[ result PUSH-( parser inp POP POP
+        PUSH-( if PUSH-( seq result POP
+          PUSH-( let PUSH-[ PUSH-[ v rest-inp POP PUSH-( first result POP POP
+            PUSH-( recur PUSH-( conj acc v POP rest-inp POP
+          POP
+          PUSH-[ PUSH-[ acc inp POP POP
+        POP
+      POP
+    POP
+  POP
+POP
+```

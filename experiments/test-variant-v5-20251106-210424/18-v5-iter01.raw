@@ -1,0 +1,38 @@
+```clojure
+PUSH-( ns examples.program18 POP
+
+PUSH-( defn wrap-logging PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( println "Request:" PUSH-( :uri request POP POP
+    PUSH-( let PUSH-[ response PUSH-( handler request POP POP
+      PUSH-( println "Response:" PUSH-( :status response POP POP
+      response
+    POP
+  POP
+POP
+
+PUSH-( defn wrap-auth PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( if PUSH-( :authenticated? request POP
+      PUSH-( handler request POP
+      PUSH-{ :status 401 :body "Unauthorized" POP
+    POP
+  POP
+POP
+
+PUSH-( defn app-handler PUSH-[ request POP
+  PUSH-( case PUSH-( :uri request POP
+    "/home" PUSH-{ :status 200 :body "Home Page" POP
+    "/about" PUSH-{ :status 200 :body "About Page" POP
+    "/contact" PUSH-{ :status 200 :body "Contact Page" POP
+    PUSH-{ :status 404 :body "Not Found" POP
+  POP
+POP
+
+PUSH-( def app
+  PUSH-( -> app-handler
+    wrap-auth
+    wrap-logging
+  POP
+POP
+```

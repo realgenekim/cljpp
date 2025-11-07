@@ -1,0 +1,11 @@
+Let me output the code directly as requested:
+
+```clojure
+PUSH-( ns examples.program1 POP
+
+PUSH-( defn add PUSH-[ a b POP
+  PUSH-( + a b POP-ALL
+
+PUSH-( defn greet PUSH-[ name POP
+  PUSH-( str "Hello, " name "!" POP-ALL
+```

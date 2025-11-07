@@ -1,0 +1,75 @@
+# v5 Test Results Summary
+
+**Date:** 2025-11-06
+**Variant:** v5 (v1 + prominent #() examples)
+**Success Rate:** 11/20 (55%) ⚠️ WORST CLJPP VARIANT
+
+## Results
+
+✅ **Passed (11):** 1, 2, 3, 5, 6, 7, 8, 9, 14, 18, 20
+❌ **Failed (9):** 4, 10, 11, 12, 13, 15, 16, 17, 19
+
+## Failure Breakdown
+
+**Transpile Errors - "POP with empty stack" (7):**
+- Program 04: Line 16 - Extra POP in filter expression
+- Program 10: Line 37 - POP miscounting
+- Program 11: Line 21 - POP miscounting
+- Program 13: Line 16 - Extra POP
+- Program 15: Line 44 - Extra POP in letfn
+- Program 16: Line 10 - Extra POP
+- Program 19: Line 44 - Extra POP
+
+**Execution Errors (2):**
+- Program 12: Invalid stateful transducer syntax (unresolved symbol)
+- Program 17: Invalid letfn syntax (extra parens in binding form)
+
+## What Went Wrong
+
+**v5 was designed as "v1 + prominent #() examples"** but made things WORSE:
+
+1. **Removed teaching context** - v1 had motivation section explaining "why delimiter counting is hard"
+2. **Made it too concise** - "Reference card" style vs v1's teaching style
+3. **Lost mental models** - v1 had "write contents then pop" pattern
+4. **Harmed basic POP counting** - 7/9 failures are POP miscounting!
+
+**The irony:** We tried to fix #() handling but broke basic POP counting instead.
+
+## Comparison to All Variants
+
+| Variant | Success | Notes |
+|---------|---------|-------|
+| clj (baseline) | **95%** (19/20) | Pure Clojure |
+| v1 (explicit POP) | **80%** (16/20) | Best CLJPP variant |
+| v2 (POP-ALL) | 75% (15/20) | POP-ALL reduces success |
+| v3 (POP-ALL v3) | 60-75% | POP-ALL confusion |
+| v4 (hybrid) | **0%** (0/5) | Priming disaster |
+| **v5 (this test)** | **55%** (11/20) | **Worst CLJPP ever** |
+
+## Key Insight
+
+**More prominent examples ≠ better results**
+
+Adding a prominent #() section DISRUPTED the LLM's ability to do basic POP counting. The LLM needs:
+- Teaching context (not just rules)
+- Mental models (not just examples)
+- Motivation (why this task exists)
+
+Concise "reference card" style prompts fail for complex tasks like delimiter balancing.
+
+## Recommendation
+
+**ABANDON v5.** Return to v1 (80%) as the baseline.
+
+If we want to improve v1:
+- DON'T shorten it or make it more "concise"
+- DON'T add more prominent sections
+- DO analyze v1's 4 specific failures (programs 04, 11, 13, 17)
+- DO consider if those failures are fundamental limits vs fixable issues
+
+## Files
+
+All test artifacts in: `experiments/test-variant-v5-20251106-210424/`
+- Raw LLM outputs: `*.raw`
+- Generated CLJPP: `*.cljpp`
+- Transpiled Clojure: `*.clj`

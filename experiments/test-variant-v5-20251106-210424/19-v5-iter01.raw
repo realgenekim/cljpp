@@ -1,0 +1,46 @@
+```clojure
+PUSH-( ns examples.program19 POP
+
+PUSH-( def db
+  PUSH-{
+    :people PUSH-[
+      PUSH-{ :id 1 :name "Alice" :role "manager" POP
+      PUSH-{ :id 2 :name "Bob" :role "developer" POP
+      PUSH-{ :id 3 :name "Carol" :role "manager" POP
+      PUSH-{ :id 4 :name "Dave" :role "developer" POP
+    POP
+    :projects PUSH-[
+      PUSH-{ :id 101 :title "Project Alpha" :manager-id 1 POP
+      PUSH-{ :id 102 :title "Project Beta" :manager-id 3 POP
+      PUSH-{ :id 103 :title "Project Gamma" :manager-id 1 POP
+    POP
+  POP
+POP
+
+PUSH-( defn find-by PUSH-[ coll pred POP
+  PUSH-( filter pred coll POP
+POP
+
+PUSH-( defn join PUSH-[ left right left-key right-key POP
+  PUSH-( for PUSH-[ l left
+         r right
+         :when PUSH-( = PUSH-( left-key l POP PUSH-( right-key r POP POP
+       POP
+    PUSH-( merge l r POP
+  POP
+POP
+
+PUSH-( defn query-projects-with-managers PUSH-[ db POP
+  PUSH-( let PUSH-[ people PUSH-( :people db POP
+              projects PUSH-( :projects db POP
+              managers PUSH-( find-by people PUSH-( fn PUSH-[ p POP PUSH-( = PUSH-( :role p POP "manager" POP POP POP POP
+              joined PUSH-( join projects managers :manager-id :id POP
+            POP
+    PUSH-( map PUSH-( fn PUSH-[ item POP
+             PUSH-{ :project PUSH-( :title item POP
+                    :manager PUSH-( :name item POP
+             POP
+           POP joined POP
+  POP
+POP
+```
