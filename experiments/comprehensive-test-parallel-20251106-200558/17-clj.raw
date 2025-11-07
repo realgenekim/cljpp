@@ -1,0 +1,26 @@
+```clojure
+(ns examples.program17)
+
+(defn lazy-range
+  [start end]
+  (letfn [(range-helper [n]
+            (when (< n end)
+              (lazy-seq
+                (cons n (range-helper (inc n))))))]
+    (range-helper start)))
+
+(defn lazy-fibonacci
+  ([]
+   (lazy-fibonacci 0 1))
+  ([a b]
+   (lazy-seq
+     (cons a (lazy-fibonacci b (+ a b))))))
+
+(defn take-while-sum
+  [pred coll]
+  (lazy-seq
+    (when-let [s (seq coll)]
+      (let [x (first s)]
+        (when (pred x)
+          (cons x (take-while-sum pred (rest s))))))))
+```

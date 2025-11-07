@@ -1,0 +1,40 @@
+(ns examples.program19)
+
+(def db
+  {:people [{:id 1 :name "Alice" :role "manager" :project-id 10}
+            {:id 2 :name "Bob" :role "developer" :project-id 10}
+            {:id 3 :name "Carol" :role "manager" :project-id 20}
+            {:id 4 :name "Dave" :role "developer" :project-id 20}
+            {:id 5 :name "Eve" :role "developer" :project-id 30}]
+   :projects [{:id 10 :name "Project Alpha"}
+              {:id 20 :name "Project Beta"}
+              {:id 30 :name "Project Gamma"}]})
+
+(defn find-by
+  [coll pred]
+  (filter pred coll))
+
+(defn join
+  [people projects]
+  (for [person people
+        project projects
+        :when (= (:project-id person) (:id project))]
+    (merge person {:project-name (:name project)})))
+
+(defn query-projects-with-managers
+  [db]
+  (let [managers (find-by (:people db) #(= (:role %) "manager"))
+        projects (:projects db)
+        joined (join managers projects)]
+    (map #(select-keys % [:project-name :name]) joined)))
+
+(defn -main []
+  (println "All people:")
+  (doseq [p (:people db)]
+    (println p))
+  (println "\nManagers:")
+  (doseq [m (find-by (:people db) #(= (:role %) "manager"))]
+    (println m))
+  (println "\nProjects with managers:")
+  (doseq [pm (query-projects-with-managers db)]
+    (println pm)))

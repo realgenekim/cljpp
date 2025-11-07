@@ -1,0 +1,6 @@
+(ns examples.program19)
+(def db {:projects [{:manager-id 1, :title "Project X", :id 101} {:manager-id 3, :title "Project Y", :id 102} {:manager-id 1, :title "Project Z", :id 103}], :people [{:role "manager", :name "Alice", :id 1} {:role "developer", :name "Bob", :id 2} {:role "manager", :name "Carol", :id 3} {:role "developer", :name "Dave", :id 4}]})
+(defn find-by [coll k v] (filter (fn [item] (= (k item) v)) coll))
+(defn join [coll1 k1 coll2 k2] (for [item1 coll1 item2 coll2 :when (= (k1 item1) (k2 item2))] [item1 item2]))
+(defn query-projects-with-managers [] (let [people (:people db) projects (:projects db) managers (find-by people :role "manager") joined (join projects :manager-id managers :id)] (map (fn [[project manager]] {:manager-name (:name manager), :project-title (:title project)}) joined)))
+(defn -main [& args] (println "Managers:") (doseq [m (find-by (:people db) :role "manager")] (println "  " (:name m))) (println "\nProjects with managers:") (doseq [result (query-projects-with-managers)] (println "  " (:project-title result) "managed by" (:manager-name result))))

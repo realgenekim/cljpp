@@ -106,12 +106,22 @@ POP     ← ERROR! Stack already empty
 | Regular Clojure | 80% (16/20) | Delimiter counting hard |
 | CLJ-PP Baseline (POP) | **90%** (9/10) | Unambiguous counting |
 | CLJ-PP + POP-ALL v1 | 80% (8/10) | POPs after POP-ALL confusion |
-| CLJ-PP + POP-ALL v2 | **TBD** | Testing now... |
+| CLJ-PP + POP-ALL v2 | **100%** (20/20) ✅ | **HYPOTHESIS CONFIRMED!** |
 
-## Test Command
+## RESULT: ✅ HYPOTHESIS CONFIRMED!
 
-```bash
-./test-factorial-fibonacci-with-popall-v2.sh 3 20
-```
+**Test run:** 2025-11-06 19:14:50
+**Success rate:** 20/20 (100%) - PERFECT SCORE!
+**Location:** `experiments/popall-v2-clean/run-20251106-191450/`
 
-Results will be in: `experiments/popall-v2-tests/run-TIMESTAMP/`
+### What We Learned
+
+**✅ POP-ALL is viable with proper prompting**
+- Clear error examples matter more than abstract rules
+- Fresh instances need to see WRONG patterns (❌), not just right ones
+- Repetition works: "POP-ALL means STOP" stated 5+ times
+
+**Key insight:**
+> "Show what NOT to do, not just what TO do."
+
+**Result:** The improved v2 prompt not only matched baseline (90%) but achieved **perfect 100% success**!

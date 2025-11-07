@@ -1,0 +1,3 @@
+(ns examples.program6)
+(defn safe-divide [x y] (try {:value (/ x y), :status :ok} (catch Exception e {:status :error, :message (.getMessage e)})))
+(defn validate-user [user] (cond (nil? user) {:status :error, :message "User cannot be nil"} (empty? (:name user)) {:status :error, :message "Name cannot be empty"} (neg? (:age user)) {:status :error, :message "Age cannot be negative"} :else {:status :ok, :user user}))

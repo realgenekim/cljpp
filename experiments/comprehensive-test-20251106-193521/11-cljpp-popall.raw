@@ -1,0 +1,30 @@
+```clojure
+PUSH-( ns examples.program11
+  PUSH-( :require PUSH-[ clojure.core.async :as async :refer PUSH-[ go go-loop <! >! chan close! POP POP POP
+POP
+
+PUSH-( defn create-pipeline PUSH-[ input-ch POP
+  PUSH-( let PUSH-[
+    step1-ch PUSH-( chan POP
+    step2-ch PUSH-( chan POP
+    POP
+    
+    PUSH-( go-loop PUSH-[ POP
+      PUSH-( when-let PUSH-[ value PUSH-( <! input-ch POP POP
+        PUSH-( >! step1-ch PUSH-( * 2 value POP POP
+        PUSH-( recur POP
+      POP
+      PUSH-( close! step1-ch POP
+    POP
+    
+    PUSH-( go-loop PUSH-[ POP
+      PUSH-( when-let PUSH-[ value PUSH-( <! step1-ch POP POP
+        PUSH-( >! step2-ch PUSH-( + 10 value POP POP
+        PUSH-( recur POP
+      POP
+      PUSH-( close! step2-ch POP
+    POP
+    
+    step2-ch
+  POP-ALL
+```

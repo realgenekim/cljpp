@@ -1,33 +1,53 @@
-# POP-LINE and POP-ALL Experiment Results
+# CLJ-PP Experiment Results
 
 **Date:** 2025-11-06
-**Program:** Factorial/Fibonacci (recursive with cond)
-**Iterations:** 10 each
 
-## Context: Regular Clojure Performance
+## Test Methodology
 
-**Regular Clojure (fresh instances, same 20 programs):** **80% success** (16/20)
-- Source: `test-output-clj-round2/fresh-experiment-results.md`
-- Failed on: complex destructuring, core.async, tool-usage attempts (2 programs)
+**Two types of tests:**
 
-**This is our baseline to beat.**
+1. **Single program, multiple iterations** (factorial/fibonacci with cond)
+   - Tests consistency: Same program, N fresh Claude instances
+   - Used for: Initial prompt testing and refinement
 
-## Results Summary
+2. **Multiple programs, single iteration** (20 diverse programs)
+   - Tests generalization: Different programs, 1 fresh instance each
+   - Used for: Final comparison against regular Clojure baseline
+   - ⚠️ **Currently running** - will update table when complete
 
-| Approach | Success Rate | Transpile Errors | Load Errors |
-|----------|--------------|------------------|-------------|
-| **🏆 CLJ-PP POP-ALL v2 (improved prompt)** | **100%** (20/20) ✅ | 0 | 0 |
-| **Baseline CLJ-PP (explicit POP, with examples)** | **90%** (9/10) ✅ | 1 | 0 |
-| **Regular Clojure (fresh)** | **80%** (16/20) | N/A | 4 failures |
-| Enhanced CLJ-PP (POP-LINE/ALL) | **80%** (8/10) | 1 | 1 |
-| Enhanced CLJ-PP (POP-ALL v1) | **80%** (8/10) | 1 | 1 |
-| CLJ-PP Fresh (no examples in prompt) | **50%** (10/20) | Many | Many |
+## Results Summary (Single Program Tests)
+
+| Approach | Make Target | Success Rate | Test Type |
+|----------|-------------|--------------|-----------|
+| **🏆 CLJ-PP POP-ALL v2** | `test-generate-cljpp-pop-all` | **100%** (20/20) ✅ | 1 program, 20 iterations |
+| **CLJ-PP Baseline (explicit POP)** | `test-generate-cljpp-pop` | **90%** (9/10) | 1 program, 10 iterations |
+| **Regular Clojure** | `test-generate-clj` | **80%** (16/20) | 20 programs, 1 iteration |
+| CLJ-PP (POP-LINE + POP-ALL) | `test-generate-cljpp-pop-all-and-line` | **80%** (8/10) | 1 program, 10 iterations |
+| CLJ-PP (POP-ALL v1) | *(old version)* | **80%** (8/10) | 1 program, 10 iterations |
+| CLJ-PP (POP-LINE only) | `test-generate-cljpp-pop-line` | **TBD** | Not yet tested |
+| CLJ-PP (no examples in prompt) | *(early test)* | **50%** (10/20) | 20 programs, 1 iteration |
+
+## Multi-Program Test Results (20 Programs)
+
+✅ **Tests complete:** Sequential (`run-comprehensive-experiment.sh`) and Parallel (`bb bin/run-comprehensive-parallel.clj`) (2025-11-06)
+
+| Approach | Success Rate | Notes |
+|----------|--------------|-------|
+| **Regular Clojure** | **19/20 (95%)** ✅ | Best performer on diverse programs! |
+| CLJ-PP (explicit POP) | **16/20 (80%)** | Solid performance |
+| CLJ-PP (POP-ALL v2) | **15/20 (75%)** | Overfitted to factorial/fibonacci |
+| CLJ-PP (POP-ALL v3) | **12/20 (60%)** ❌ | WORSE than v2! More aggressive rules backfired |
+
+**🚨 CRITICAL FINDING #1:** POP-ALL v2's 100% success on factorial/fibonacci **DOES NOT generalize** to diverse programs!
+
+**🚨 CRITICAL FINDING #2:** Attempting to fix v2's failures with v3 made things WORSE (75% → 60%)!
 
 **Key findings:**
-- **🎉 POP-ALL v2 achieved PERFECT 100% success rate!** (20/20, 2025-11-06)
-- **Improved prompting matters:** Clear error examples + "CRITICAL RULE" section worked
-- Adding examples to prompt dramatically improved CLJ-PP: 50% → 90% → 100%!
-- POP-ALL v2 beats baseline (90%), regular Clojure (80%), and all other variants
+- **🎉 POP-ALL v2 achieved PERFECT 100% success rate on simple recursion!** (20/20, 2025-11-06)
+- **But this was overfitting** - dropped to 75% (15/20) on diverse programs
+- **v3 attempted to add stricter rules** - but fresh instances misinterpreted them
+- **v3 made things worse:** 60% (12/20) - fresh instances started using POP-ALL inappropriately
+- **Explicit POP counting (80%) remains the winner** for diverse programs
 
 ## Analysis
 
@@ -239,4 +259,89 @@ Adding semantic shortcuts (POP-LINE, POP-ALL) requires understanding WHEN to use
 
 ---
 
-**Lesson learned:** **Simple and tedious beats clever and ambiguous.** For fresh LLM instances without context, explicit counting is easier than semantic decision-making.
+## POP-ALL v3 Analysis: Why More Rules Made Things Worse
+
+**Test date:** 2025-11-06 (parallel test using `bb bin/run-comprehensive-parallel.clj`)
+
+**Result:** **60% (12/20)** - WORSE than v2's 75%!
+
+### What v3 Changed
+
+v3 added three "critical rules" attempting to address v2's failures:
+
+1. **Rule 1:** NEVER write POPs after POP-ALL (carried over from v2)
+2. **Rule 2:** NEVER use POP-ALL in the middle of a function ← NEW
+3. **Rule 3:** Start code immediately - no explanations ← NEW
+
+### What Actually Happened
+
+**Fresh instances interpreted the rules as "use POP-ALL MORE aggressively"** instead of "use it more carefully."
+
+### Critical Failure Examples
+
+**Program 04 (v2 vs v3):**
+```clojure
+v2: PUSH-( ns examples.program4 POP              ✅ Correct
+v3: PUSH-( ns examples.program4 POP-ALL          ❌ Closes entire program at line 2!
+```
+
+**Program 12 - Inside let binding (v2 vs v3):**
+```clojure
+v2: PUSH-[ seen PUSH-( atom PUSH-{ POP POP POP   ✅ Explicit counting
+v3: PUSH-[ seen PUSH-( atom PUSH-{ POP-ALL       ❌ Closes let, fn, AND defn!
+```
+
+**Program 12 - Inside comp (v2 vs v3):**
+```clojure
+v2: PUSH-( map PUSH-( fn [...] POP POP POP       ✅ Closes fn, map, then waits
+v3: PUSH-( map PUSH-( fn [...] POP-ALL           ❌ Closes entire comp + defn!
+```
+
+### Why v3 Failed
+
+**The fundamental problem:** Fresh instances don't understand **nesting context**.
+
+When they see:
+```clojure
+PUSH-( atom PUSH-{ POP-ALL
+```
+
+They think: "I'm done with this atom expression → POP-ALL"
+
+They don't realize they're inside a `let` binding, which is inside a `fn`, which is inside a `defn`. POP-ALL closes ALL of them!
+
+### The Paradox
+
+**More explicit rules → More misinterpretation**
+
+- v2 had fewer rules → Fresh instances used POP-ALL conservatively (only at end of complete functions)
+- v3 added "don't use POP-ALL in the middle" → Fresh instances thought "okay, so I CAN use it for complete sub-expressions" → Used it EVERYWHERE they thought a sub-expression ended
+- Result: v3 used POP-ALL in MORE places, closing parent forms prematurely
+
+### v2 vs v3 Failure Comparison
+
+**v2 failures (5 programs):**
+- Programs 04, 05, 11, 13, 14
+
+**v3 failures (8 programs):**
+- Programs 04, 08, 11, 12, 13, 14, 16, 19
+- **New failures:** Programs 08, 12, 16, 19 (4 regressions!)
+- **Only fixed:** Program 05 (1 improvement)
+
+**Net result:** v3 fixed 1 but broke 4 more → 3 steps backward!
+
+### The Actual Solution
+
+**Don't add more rules. The counting approach is already optimal.**
+
+| Approach | Success Rate | Characteristic |
+|----------|--------------|----------------|
+| Explicit POP counting | **80%** ✅ | Tedious but unambiguous |
+| POP-ALL v2 | **75%** | Overfitted to simple recursion |
+| POP-ALL v3 | **60%** ❌ | More rules = more confusion |
+
+**Winner:** Explicit POP counting (baseline CLJ-PP)
+
+---
+
+**Lesson learned:** **Simple and tedious beats clever and ambiguous.** For fresh LLM instances without context, explicit counting is easier than semantic decision-making. Adding convenience operations requires contextual understanding that fresh instances don't have.

@@ -1,0 +1,35 @@
+```clojure
+PUSH-( ns examples.program17 POP
+
+PUSH-( defn lazy-range PUSH-[ start end POP
+  PUSH-( letfn PUSH-[ PUSH-( step PUSH-[ n POP
+    PUSH-( when PUSH-( < n end POP
+      PUSH-( lazy-seq
+        PUSH-( cons n PUSH-( step PUSH-( inc n POP POP POP
+      POP
+    POP
+  POP POP
+    PUSH-( step start POP-ALL
+
+PUSH-( defn lazy-fibonacci
+  PUSH-( PUSH-[ POP PUSH-( lazy-fibonacci 0 1 POP POP
+  PUSH-( PUSH-[ a b POP
+    PUSH-( lazy-seq
+      PUSH-( cons a PUSH-( lazy-fibonacci b PUSH-( + a b POP POP POP
+    POP-ALL
+
+PUSH-( defn take-while-sum PUSH-[ pred coll POP
+  PUSH-( letfn PUSH-[ PUSH-( helper PUSH-[ xs sum POP
+    PUSH-( lazy-seq
+      PUSH-( when PUSH-( seq xs POP
+        PUSH-( let PUSH-[ f PUSH-( first xs POP
+                   new-sum PUSH-( + sum f POP POP
+          PUSH-( when PUSH-( pred new-sum POP
+            PUSH-( cons f PUSH-( helper PUSH-( rest xs POP new-sum POP POP
+          POP
+        POP
+      POP
+    POP
+  POP POP
+    PUSH-( helper coll 0 POP-ALL
+```
