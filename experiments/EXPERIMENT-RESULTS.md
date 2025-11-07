@@ -16,11 +16,16 @@
 
 | Approach | Success Rate | Transpile Errors | Load Errors |
 |----------|--------------|------------------|-------------|
+| **Baseline CLJ-PP (explicit POP, with examples)** | **90%** (9/10) ✅ | 1 | 0 |
 | **Regular Clojure (fresh)** | **80%** (16/20) | N/A | 4 failures |
-| Baseline CLJ-PP (explicit POP) | **90%** (9/10) | 1 | 0 |
 | Enhanced CLJ-PP (POP-LINE/ALL) | **80%** (8/10) | 1 | 1 |
+| Enhanced CLJ-PP (POP-ALL only) | **80%** (8/10) | 1 | 1 |
+| CLJ-PP Fresh (no examples in prompt) | **50%** (10/20) | Many | Many |
 
-**Key finding:** Baseline CLJ-PP (90%) beats both regular Clojure (80%) and enhanced CLJ-PP (80%)!
+**Key findings:**
+- **Adding examples to prompt dramatically improved CLJ-PP: 50% → 90%!**
+- Baseline CLJ-PP (90%) beats both regular Clojure (80%) and enhanced CLJ-PP (80%)
+- Convenience features (POP-LINE, POP-ALL) reduced success back to 80%
 
 ## Analysis
 
@@ -171,19 +176,65 @@ Am I completely done with this entire form?
 └─ NO → POP (one at a time)
 ```
 
+## Second Experiment: POP-ALL Only (No POP-LINE)
+
+**Hypothesis:** Remove POP-LINE (ambiguous) but keep POP-ALL (unambiguous).
+
+**Result:** **80% success** (8/10)
+
+**Failures:**
+- iter3: Included explanatory text before code (same as before)
+- iter8: Used POP-ALL inside cond, then added trailing POP POP → underflow!
+
+**Example of confusion (iter8):**
+```clojure
+PUSH-( defn factorial PUSH-[ n POP
+  PUSH-( cond
+    PUSH-( <= n 1 POP 1
+    :else PUSH-( * n PUSH-( factorial PUSH-( - n 1 POP-ALL  ← Closes everything!
+  POP   ← But then tries to close cond
+POP     ← And tries to close defn
+```
+
+**Error:** POP-ALL already closed cond and defn, so the trailing POPs cause stack underflow.
+
+**The confusion:** Fresh instances don't consistently understand when to use POP-ALL vs trailing POPs.
+
+## Final Results Summary
+
+| Approach | Success Rate | Key Issue |
+|----------|--------------|-----------|
+| Regular Clojure (fresh) | **80%** | Delimiter counting |
+| CLJ-PP Fresh (no examples) | **50%** | Syntax rules alone insufficient |
+| **Baseline CLJ-PP (explicit POP, with examples)** | **90%** ✅ | Unambiguous - winner! |
+| CLJ-PP + POP-LINE + POP-ALL | **80%** | POP-LINE scope ambiguity |
+| CLJ-PP + POP-ALL only | **80%** | When to use POP-ALL vs trailing POPs |
+
 ## Conclusion
 
-**Result:** Baseline (explicit POP) achieved **90% success**, Enhanced (POP-LINE/ALL) achieved **80% success**.
+**Winner:** Baseline CLJ-PP with explicit POP counting (**90% success**)
 
-**Hypothesis rejected:** POP-LINE and POP-ALL did NOT improve success rate - they actually hurt it by 10 percentage points.
+**Why it wins:**
+1. **Unambiguous:** Count PUSHes → emit that many POPs
+2. **No scope questions:** Each POP closes exactly one container
+3. **No decision fatigue:** Just count - no "am I done?" decisions
 
-**Why:** The scope ambiguity of POP-LINE ("which containers count as 'this line'?") introduced new error modes.
+**Why POP-ALL didn't help:**
+1. Introduced new decision point: "Should I use POP-ALL here?"
+2. Fresh instances got confused about trailing POPs after POP-ALL
+3. Sometimes used POP-ALL too early (inside cond instead of after)
 
-**Next steps:**
-1. Test POP-ALL only (without POP-LINE)
-2. Improve prompts to clarify POP-LINE scope
-3. Consider: maybe explicit counting (baseline) is already good enough?
+**Hypothesis rejected (again):** Adding convenience operations (POP-LINE, POP-ALL) did NOT improve success rate.
+
+**Key insight:** **The counting approach is already optimal for fresh instances.**
+
+Adding semantic shortcuts (POP-LINE, POP-ALL) requires understanding WHEN to use them, which is harder than just counting. The arithmetic is tedious but unambiguous.
+
+**Recommendation:** Stick with baseline CLJ-PP (explicit POP counting). It achieves:
+- **90% success** (better than regular Clojure's 80%)
+- **Zero ambiguity** (every PUSH needs exactly one POP)
+- **Simple mental model** (count and match)
 
 ---
 
-**Lesson learned:** More features ≠ better. The explicit POP approach, while requiring counting, is **unambiguous**. POP-LINE added ambiguity that fresh instances couldn't navigate.
+**Lesson learned:** **Simple and tedious beats clever and ambiguous.** For fresh LLM instances without context, explicit counting is easier than semantic decision-making.

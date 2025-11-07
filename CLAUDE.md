@@ -65,27 +65,55 @@ The explicit POP counting approach is unambiguous:
 
 POP-LINE added cognitive complexity that fresh instances couldn't navigate.
 
-## Next Experiment: POP-ALL Only
+## Second Experiment: POP-ALL Only (2025-11-06)
 
-### New Hypothesis
+### Hypothesis
 
-**POP-ALL** is useful (unambiguous "I'm done"), but **POP-LINE** is dangerous (scope ambiguity).
+Remove POP-LINE (scope ambiguity) but keep POP-ALL (unambiguous "I'm done").
 
-Test: Just add POP-ALL, skip POP-LINE entirely.
+### Result
 
-**Decision tree:**
+**80% success** (8/10) - same as POP-LINE+POP-ALL!
+
+### The Problem
+
+Fresh instances got confused about **when to use POP-ALL vs trailing POPs**:
+
+```clojure
+PUSH-( defn factorial PUSH-[ n POP
+  PUSH-( cond
+    :else PUSH-( * n PUSH-( factorial PUSH-( - n 1 POP-ALL  ← Closes everything
+  POP   ← ERROR! Stack already empty
+POP     ← ERROR! Stack already empty
 ```
-Am I completely done with this entire form?
-├─ YES → POP-ALL
-└─ NO → POP (count them)
-```
 
-### Expected Result
+Introduced **new decision fatigue**: "Should I use POP-ALL here or save it for later?"
 
-Success rate should improve from 80% (with POP-LINE) because:
-1. Removes scope ambiguity of POP-LINE
-2. Keeps unambiguous POP-ALL for convenience
-3. Falls back to explicit POP counting (proven to work at 90%)
+## Final Verdict
+
+**Winner: Baseline CLJ-PP (explicit POP) - 90% success** ✅
+
+| Approach | Success | Why |
+|----------|---------|-----|
+| Regular Clojure | 80% | Delimiter counting is hard |
+| **CLJ-PP (explicit POP)** | **90%** ✅ | **Unambiguous counting** |
+| CLJ-PP + POP-LINE + POP-ALL | 80% | Scope ambiguity (when does POP-LINE apply?) |
+| CLJ-PP + POP-ALL only | 80% | Decision ambiguity (when to use POP-ALL?) |
+
+**Key insight:** **Simple and tedious beats clever and ambiguous.**
+
+For fresh LLM instances:
+- **Counting is easier than deciding**
+- **One rule (POP per PUSH) is clearer than multiple options**
+- **Arithmetic is unambiguous, semantics are subjective**
+
+### Recommendation
+
+**Keep CLJ-PP as-is** (PUSH/POP only):
+- 90% success beats regular Clojure's 80%
+- Zero ambiguity - count PUSHes, emit POPs
+- Simple mental model
+- Proven to work with enhanced prompt + examples
 
 ## File Organization
 
