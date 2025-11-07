@@ -1,0 +1,6 @@
+(ns examples.program19)
+(def db {:projects [{:name "Project Alpha", :manager-id 1, :id 101} {:name "Project Beta", :manager-id 3, :id 102} {:name "Project Gamma", :manager-id 1, :id 103}], :people [{:role "Manager", :name "Alice", :id 1} {:role "Developer", :name "Bob", :id 2} {:role "Manager", :name "Carol", :id 3} {:role "Developer", :name "Dave", :id 4}]})
+(defn find-by [coll pred] (filter pred coll))
+(defn join [people projects] (for [person people project projects :when (= (:id person) (:manager-id project))] {:person person, :project project}))
+(defn query-projects-with-managers [db] (let [people (:people db) projects (:projects db) managers (find-by people (fn [p] (= "Manager" (:role p)))) joined (join managers projects)] (map (fn [j] {:project-name (get-in j [:project :name]), :manager-name (get-in j [:person :name])}) joined)))
+(defn -main [& args] (println "Database:") (clojure.pprint/pprint db) (println "\nManagers:") (clojure.pprint/pprint (find-by (:people db) (fn [p] (= "Manager" (:role p))))) (println "\nProjects with Managers:") (clojure.pprint/pprint (query-projects-with-managers db)))

@@ -91,26 +91,26 @@ Despite this, I still feel like CLJ-PP has promise. I'm going to keep exploring 
 
 | # | Program | Complexity | CLJ-PP | Regular .clj | Key Learning |
 |---|---------|-----------|--------|--------------|--------------|
-| 01 | Simple functions | ⭐ | ✅ 😐 | ✅ Easy | Both work fine - no advantage either way |
-| 02 | Let bindings | ⭐⭐ | ✅ 👍 | ✅ Easy | Maps in let feel clean in CLJ-PP |
-| 03 | Recursive factorial/fib | ⭐⭐⭐ | ✅ 💚 | ✅ Easy | Deep nesting: CLJ-PP removes mental counting |
-| 04 | Collections [Collections & HOFs](docs/test-20-programs/04-collections.cljpp) HOFs | ⭐⭐ | ✅ 👍 | ✅ Easy | Structure explicit in CLJ-PP |
-| 05 | Threading macros | ⭐⭐ | ✅ 👍 | ✅ Easy | Each step self-contained |
-| 06 | Error handling | ⭐⭐⭐ | ✅ 💚 | ✅ Easy | try/catch nesting trivial in CLJ-PP |
-| 07 | Multimethods | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | defmethod bodies clear |
-| 08 | Complex destructuring | ⭐⭐⭐⭐ | ✅ 🔥 | ✅ Careful | **KILLER APP #2** - No ambiguity in CLJ-PP! |
-| 09 | State machine | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | Nested if/do: CLJ-PP = no counting |
-| 10 | **GNARLY hiccup** | ⭐⭐⭐⭐⭐ | ✅ 🔥🔥🔥 | ✅ Very careful | **KILLER APP #1** - CLJ-PP makes hiccup trivial! |
-| 11 | Core.async pipeline | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | go-loops with channels: CLJ-PP = linear thinking |
-| 12 | Transducers | ⭐⭐⭐⭐ | ❌→✅ 💚 | ✅ Easy | Multi-arity wrapping revealed structure |
-| 13 | Spec validation | ⭐⭐⭐ | ❌→✅ 👍 | ✅ Easy | Reader macros → expand to fn |
-| 14 | Protocols [Protocols & records](docs/test-20-programs/14-protocols-and-records.cljpp) records | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | defprotocol/defrecord clean |
-| 15 | Graph DFS/BFS | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | loop/recur: CLJ-PP = stack ops natural match |
-| 16 | **Parser combinators** | ⭐⭐⭐⭐⭐ | ✅ 🔥 | ⚠️ Logic error | Monadic bind chains - CLJ-PP had zero errors! |
-| 17 | Lazy sequences | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Easy | lazy-seq with letfn perfect |
-| 18 | Web handlers | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | Ring/Compojure routes clear |
-| 19 | Datalog queries | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | for comprehensions with :when |
-| 20 | **Mega hiccup form** | ⭐⭐⭐⭐⭐ | ✅ 🔥🔥🔥 | ✅ Very careful | Complex nested UI - CLJ-PP = FINAL BOSS trivial! |
+| 01 | [Simple function](docs/test-20-programs/01-simple-function.cljpp) | ⭐ | ✅ 😐 | ✅ Easy | Both work fine - no advantage either way |
+| 02 | [Let binding](docs/test-20-programs/02-let-binding.cljpp) | ⭐⭐ | ✅ 👍 | ✅ Easy | Maps in let feel clean in CLJ-PP |
+| 03 | [Recursive factorial](docs/test-20-programs/03-recursive-factorial.cljpp) | ⭐⭐⭐ | ✅ 💚 | ✅ Easy | Deep nesting: CLJ-PP removes mental counting |
+| 04 | [Collections & HOFs](docs/test-20-programs/04-collections.cljpp) | ⭐⭐ | ✅ 👍 | ✅ Easy | Structure explicit in CLJ-PP |
+| 05 | [Threading macros](docs/test-20-programs/05-threading-macros.cljpp) | ⭐⭐ | ✅ 👍 | ✅ Easy | Each step self-contained |
+| 06 | [Error handling](docs/test-20-programs/06-error-handling.cljpp) | ⭐⭐⭐ | ✅ 💚 | ✅ Easy | try/catch nesting trivial in CLJ-PP |
+| 07 | [Multimethods](docs/test-20-programs/07-multimethods.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | defmethod bodies clear |
+| 08 | [Complex destructuring](docs/test-20-programs/08-complex-destructuring.cljpp) | ⭐⭐⭐⭐ | ✅ 🔥 | ✅ Careful | **KILLER APP #2** - No ambiguity in CLJ-PP! |
+| 09 | [State machine](docs/test-20-programs/09-state-machine.cljpp) | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | Nested if/do: CLJ-PP = no counting |
+| 10 | [**GNARLY hiccup**](docs/test-20-programs/10-gnarly-hiccup.cljpp) | ⭐⭐⭐⭐⭐ | ✅ 🔥🔥🔥 | ✅ Very careful | **KILLER APP #1** - CLJ-PP makes hiccup trivial! |
+| 11 | [Async pipeline](docs/test-20-programs/11-async-pipeline.cljpp) | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | go-loops with channels: CLJ-PP = linear thinking |
+| 12 | [Transducers](docs/test-20-programs/12-transducers.cljpp) | ⭐⭐⭐⭐ | ❌→✅ 💚 | ✅ Easy | Multi-arity wrapping revealed structure |
+| 13 | [Spec validation](docs/test-20-programs/13-spec-validation.cljpp) | ⭐⭐⭐ | ❌→✅ 👍 | ✅ Easy | Reader macros → expand to fn |
+| 14 | [Protocols & records](docs/test-20-programs/14-protocols-and-records.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | defprotocol/defrecord clean |
+| 15 | [Graph traversal](docs/test-20-programs/15-graph-traversal.cljpp) | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | loop/recur: CLJ-PP = stack ops natural match |
+| 16 | [**Monadic parser**](docs/test-20-programs/16-monadic-parser.cljpp) | ⭐⭐⭐⭐⭐ | ✅ 🔥 | ⚠️ Logic error | Monadic bind chains - CLJ-PP had zero errors! |
+| 17 | [Lazy sequences](docs/test-20-programs/17-lazy-sequences.cljpp) | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Easy | lazy-seq with letfn perfect |
+| 18 | [Web handler](docs/test-20-programs/18-web-handler.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | Ring/Compojure routes clear |
+| 19 | [Datalog style](docs/test-20-programs/19-datalog-style.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | for comprehensions with :when |
+| 20 | [**Mega hiccup form**](docs/test-20-programs/20-mega-hiccup-form.cljpp) | ⭐⭐⭐⭐⭐ | ✅ 🔥🔥🔥 | ✅ Very careful | Complex nested UI - CLJ-PP = FINAL BOSS trivial! |
 | **TOTAL** | **20 programs** | | **17/20 (85%)** | **19/20 (95%)** | **CLJ-PP = low effort, Regular = high effort** |
 
 **Complexity:** ⭐ = simple, ⭐⭐⭐⭐⭐ = very complex
@@ -211,9 +211,9 @@ But "better for LLMs with context":
 
 See detailed analyses:
 - CLJ-PP with context: [`docs/test-20-programs/program-reactions.md`](docs/test-20-programs/program-reactions.md)
-- Regular Clojure with context: [`test-output-clj/clj-writing-experience.md`](test-output-clj/clj-writing-experience.md)
-- Regular Clojure fresh instances: [`test-output-clj-round2/fresh-experiment-results.md`](test-output-clj-round2/fresh-experiment-results.md)
-- CLJ-PP fresh instances: [`test-output-clj-round2/fresh-cljpp-experiment-results.md`](test-output-clj-round2/fresh-cljpp-experiment-results.md)
+- Regular Clojure with context: [`docs/test-output-clj/clj-writing-experience.md`](docs/test-output-clj/clj-writing-experience.md)
+- Regular Clojure fresh instances: [`docs/test-output-clj-round2/fresh-experiment-results.md`](docs/test-output-clj-round2/fresh-experiment-results.md)
+- CLJ-PP fresh instances: [`docs/test-output-clj-round2/fresh-cljpp-experiment-results.md`](docs/test-output-clj-round2/fresh-cljpp-experiment-results.md)
 
 ## The Results
 

@@ -1,0 +1,19 @@
+(ns examples.program3)
+
+(defn factorial [n]
+  (cond
+    (<= n 0) 1
+    :else (* n (factorial (dec n)))))
+
+(defn fibonacci [n]
+  (cond
+    (<= n 0) 0
+    (= n 1) 1
+    :else (+ (fibonacci (- n 1))
+             (fibonacci (- n 2)))))
+
+(defn -main [& args]
+  (println "Factorial of 5:" (factorial 5))
+  (println "Factorial of 10:" (factorial 10))
+  (println "Fibonacci of 10:" (fibonacci 10))
+  (println "Fibonacci of 15:" (fibonacci 15)))

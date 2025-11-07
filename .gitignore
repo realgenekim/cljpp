@@ -2,9 +2,10 @@ target
 cljpp.jar
 
 # Test output directories (can regenerate)
-test-output/
-test-output-*/
 test-tuning/
+
+# Exception: Keep docs/test-output-* (reference documentation)
+!docs/test-output-*/
 
 # Tool-specific directories
 .beads/

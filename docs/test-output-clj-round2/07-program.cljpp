@@ -1,0 +1,20 @@
+PUSH-( ns examples.program7 POP
+
+PUSH-( defmulti render-shape PUSH-( fn PUSH-[ shape POP PUSH-( :type shape POP POP POP
+
+PUSH-( defmethod render-shape :circle PUSH-[ shape POP
+  PUSH-( let PUSH-[ radius PUSH-( :radius shape POP POP
+    PUSH-( str "Circle with radius " radius POP POP POP
+
+PUSH-( defmethod render-shape :rectangle PUSH-[ shape POP
+  PUSH-( let PUSH-[ width PUSH-( :width shape POP
+         height PUSH-( :height shape POP POP
+    PUSH-( str "Rectangle " width " x " height POP POP POP
+
+PUSH-( defmethod render-shape :default PUSH-[ shape POP
+  PUSH-( str "Error: Unknown shape type " PUSH-( :type shape POP POP POP
+
+PUSH-( defn -main PUSH-[ & args POP
+  PUSH-( println PUSH-( render-shape PUSH-{ :type :circle :radius 5 POP POP POP
+  PUSH-( println PUSH-( render-shape PUSH-{ :type :rectangle :width 10 :height 20 POP POP POP
+  PUSH-( println PUSH-( render-shape PUSH-{ :type :triangle :base 8 POP POP POP POP
