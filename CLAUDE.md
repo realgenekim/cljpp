@@ -39,6 +39,11 @@ The current prompt is **v4** (Minimal + Dense Examples + Clojure Leverage):
 ## Testing Workflow
 
 ```bash
+# Test v2 (tokenizer-friendly syntax)
+bb bin/test-variant.clj v2 all 1         # Test v2 on all 20 programs
+bb bin/test-variant.clj v2 4 10          # Program 4: Collections
+bb bin/test-variant.clj v2 13 10         # Program 13: Spec
+
 # Test v4 on programs that previously failed (#() confusion)
 bb bin/test-variant.clj v4 4 5    # Program 4: Collections with #() filters
 bb bin/test-variant.clj v4 13 5   # Program 13: Spec with #() predicates
@@ -48,6 +53,7 @@ bb bin/test-variant.clj v4 all 1
 
 # Compare variants on a specific program
 bb bin/test-variant.clj pop 3 10
+bb bin/test-variant.clj v2 3 10
 bb bin/test-variant.clj v4 3 10
 ```
 
@@ -58,3 +64,4 @@ bb bin/test-variant.clj v4 3 10
 - `popall` - CLJ-PP with POP-ALL v2 (75% success)
 - `v3` - CLJ-PP with POP-ALL v3 (60% success)
 - `v4` - CLJ-PP v4 Hybrid (untested - this is what we're testing!)
+- `v2` - CLJ-PP v2 with LP/LV/LM/X tokens (NEW - tokenizer-friendly!)
