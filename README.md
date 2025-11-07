@@ -476,13 +476,9 @@ See [`docs/test-20-programs/program-reactions.md`](docs/test-20-programs/program
 
 ## License
 
-Copyright © 2025 Gene Kim
+MIT License - Copyright © 2025 Gene Kim
 
-This program and the accompanying materials are made available under the
-terms of the Eclipse Public License 1.0 which is available at
-http://www.eclipse.org/legal/epl-v10.html
-
-(Same as Clojure)
+See [LICENSE](LICENSE) file for details.
 
 ## Acknowledgments
 
