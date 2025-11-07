@@ -1,0 +1,18 @@
+PUSH-( ns examples.program3 POP
+
+PUSH-( defn factorial PUSH-[ n POP
+  PUSH-( cond
+    PUSH-( <= n 0 POP 1
+    :else PUSH-( * n PUSH-( factorial PUSH-( - n 1 POP POP POP POP POP POP
+
+PUSH-( defn fibonacci PUSH-[ n POP
+  PUSH-( cond
+    PUSH-( = n 0 POP 0
+    PUSH-( = n 1 POP 1
+    :else PUSH-( + PUSH-( fibonacci PUSH-( - n 1 POP POP PUSH-( fibonacci PUSH-( - n 2 POP POP POP POP POP
+
+PUSH-( defn -main PUSH-[ & args POP
+  PUSH-( println "Factorial of 5:" PUSH-( factorial 5 POP POP
+  PUSH-( println "Factorial of 10:" PUSH-( factorial 10 POP POP
+  PUSH-( println "Fibonacci of 7:" PUSH-( fibonacci 7 POP POP
+  PUSH-( println "Fibonacci of 10:" PUSH-( fibonacci 10 POP POP POP

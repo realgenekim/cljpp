@@ -1,0 +1,51 @@
+PUSH-( ns examples.program12 POP
+
+PUSH-( defn custom-transducer
+  PUSH-[ POP
+  PUSH-( comp
+    PUSH-( filter even? POP
+    PUSH-( map PUSH-( fn PUSH-[ x POP PUSH-( * x 2 POP POP POP POP
+  POP
+POP
+
+PUSH-( defn stateful-transducer
+  PUSH-[ POP
+  PUSH-( fn PUSH-[ rf POP
+    PUSH-( let PUSH-[ seen PUSH-( atom #{} POP POP
+      PUSH-( fn
+        PUSH-( PUSH-[ POP PUSH-( rf POP POP
+        PUSH-( PUSH-[ result POP PUSH-( rf result POP POP
+        PUSH-( PUSH-[ result input POP
+          PUSH-( if PUSH-( contains? @seen input POP
+            result
+            PUSH-( do
+              PUSH-( swap! seen conj input POP
+              PUSH-( rf result input POP
+            POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn process-with-transducers
+  PUSH-[ coll POP
+  PUSH-( let PUSH-[ xf PUSH-( comp
+                        PUSH-( custom-transducer POP
+                        PUSH-( stateful-transducer POP
+                      POP
+        POP
+    PUSH-( into PUSH-[ POP xf coll POP
+  POP
+POP
+
+PUSH-( defn -main
+  PUSH-[ & args POP
+  PUSH-( let PUSH-[ data PUSH-[ 1 2 3 4 5 6 7 8 9 10 2 4 6 8 POP
+        result PUSH-( process-with-transducers data POP
+      POP
+    PUSH-( println "Input:" data POP
+    PUSH-( println "Result:" result POP
+  POP
+POP

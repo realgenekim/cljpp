@@ -1,0 +1,5 @@
+(ns examples.program14)
+(defprotocol Drawable (draw [this]) (bounds [this]))
+(defrecord Circle [x y radius] Drawable (draw [this] (println (str "Drawing circle at " (:x this) "," (:y this) " with radius " (:radius this)))) (bounds [this] {:x-max (+ (:x this) (:radius this)), :y-min (- (:y this) (:radius this)), :y-max (+ (:y this) (:radius this)), :x-min (- (:x this) (:radius this))}))
+(defrecord Rectangle [x y width height] Drawable (draw [this] (println (str "Drawing rectangle at " (:x this) "," (:y this) " with dimensions " (:width this) "x" (:height this)))) (bounds [this] {:x-max (+ (:x this) (:width this)), :y-min (:y this), :y-max (+ (:y this) (:height this)), :x-min (:x this)}))
+(defn -main [& args] (let [c (->Circle 10 20 5) r (->Rectangle 0 0 100 50)] (draw c) (println "Circle bounds:" (bounds c)) (draw r) (println "Rectangle bounds:" (bounds r))))

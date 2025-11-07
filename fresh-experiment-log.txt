@@ -1,0 +1,45 @@
+Starting fresh Claude experiment - Round 2
+Each program will be written by a fresh Claude instance with no prior context
+
+Program 01: #'examples.program1/greet
+✅ Success
+Program 02: #'examples.program2/calculate
+✅ Success
+Program 03: #'examples.program3/-main
+✅ Success
+Program 04: #'examples.program4/-main
+✅ Success
+Program 05: #'examples.program5/transform-coll
+✅ Success
+Program 06: #'examples.program6/validate-user
+✅ Success
+Program 07: #object[clojure.lang.MultiFn 0x5af5def9 "clojure.lang.MultiFn@5af5def9"]
+✅ Success
+Program 08: ⚠️  Syntax error
+Program 09: #'examples.program9/run-machine
+✅ Success
+Program 10: #'examples.program10/stats-panel
+✅ Success
+Program 11: ⚠️  Syntax error
+Program 12: ⚠️  Syntax error
+Program 13: #'examples.program13/validate-user
+✅ Success
+Program 14: #'examples.program14/-main
+✅ Success
+Program 15: #'examples.program15/bfs
+✅ Success
+Program 16: #'examples.program16/many
+✅ Success
+Program 17: #'examples.program17/take-while-sum
+✅ Success
+Program 18: #'examples.program18/app
+✅ Success
+Program 19: #'examples.program19/-main
+✅ Success
+Program 20: ⚠️  Syntax error
+
+===== Results =====
+Total programs: 20
+Successful: 16
+Errors: 4
+Success rate: 80%

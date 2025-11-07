@@ -3,7 +3,13 @@
     "allow": [
       "WebFetch(domain:gist.github.com)",
       "WebFetch(domain:github.com)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(./bin/cljpp:*)",
+      "Bash(/tmp/test.cljp)",
+      "Bash(cat:*)",
+      "Bash(make install:*)",
+      "Bash(test2.cljp)",
+      "Bash(~/bin/cljpp:*)"
     ],
     "deny": [],
     "ask": []

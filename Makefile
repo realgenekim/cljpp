@@ -26,6 +26,20 @@ runtests-once:
 format:
 	npx @chrisoakman/standard-clojure-style fix src test deps.edn
 
+# Install cljpp command globally to ~/bin
+install:
+	@echo "Installing cljpp to ~/bin/cljpp..."
+	@mkdir -p ~/bin
+	@ln -sf $(PWD)/bin/cljpp ~/bin/cljpp
+	@echo "✓ Installed! Run 'cljpp input.cljpp' from anywhere"
+	@echo "  (Make sure ~/bin is in your PATH)"
+
+# Uninstall cljpp command
+uninstall:
+	@echo "Removing ~/bin/cljpp..."
+	@rm -f ~/bin/cljpp
+	@echo "✓ Uninstalled"
+
 # Clean compiled artifacts
 clean:
 	rm -rf .cpcache/ .nrepl-port target/
@@ -47,10 +61,14 @@ help:
 	@echo "  make repl                 - Start basic REPL"
 	@echo "  make format               - Format code with standard Clojure style"
 	@echo ""
+	@echo "📦 Installation:"
+	@echo "  make install              - Install 'cljpp' command globally to ~/bin"
+	@echo "  make uninstall            - Remove 'cljpp' command from ~/bin"
+	@echo ""
 	@echo "🧹 Maintenance:"
 	@echo "  make clean                - Clean compiled artifacts"
 	@echo "  make help                 - Show this help"
 	@echo ""
 	@echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 
-.PHONY: nrepl repl runtests runtests-once format clean help
+.PHONY: nrepl repl runtests runtests-once format install uninstall clean help

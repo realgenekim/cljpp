@@ -1,0 +1,59 @@
+Program 1: Simple Functions
+Write two simple functions: add (takes two numbers, returns sum) and greet (takes name, returns greeting string).
+
+Program 2: Let Binding
+Write a function calculate that takes x and y, uses let to bind sum and product, returns a map with both values.
+
+Program 3: Recursive Factorial/Fibonacci
+Write factorial and fibonacci functions using recursion and cond.
+
+Program 4: Collections & Higher-Order Functions
+Define a vector of user maps with :name, :age, :role. Write active-users (filters age > 18) and user-names (extracts names).
+
+Program 5: Threading Macros
+Write process-data using -> to update :count (inc), :items (count), :processed (true). Write transform-coll using ->> to filter odd, map *2, reduce +.
+
+Program 6: Error Handling
+Write safe-divide with try/catch returning {:status :ok :value} or {:status :error :message}. Write validate-user with cond checking nil, empty name, negative age.
+
+Program 7: Multimethods
+Define multimethod render-shape dispatching on :type. Implement :circle (radius), :rectangle (width x height), :default (error).
+
+Program 8: Complex Destructuring
+Write process-user destructuring {:keys [name age] :as user}. Write process-items destructuring [first second & rest]. Write nested-extract destructuring nested address.
+
+Program 9: State Machine
+Define transitions map for :idle/:running/:paused states. Write apply-event to get next state. Write run-machine using reduce to process event list.
+
+Program 10: Gnarly Hiccup
+Write user-badge component taking {:keys [name verified? role]}. Write user-list iterating users. Write stats-panel with let binding total, iterating stats map.
+
+Program 11: Core.Async Pipeline
+Write pipeline that takes input-ch, creates two step channels, uses go-loops to process (* 2) then (+ 10), returns final channel.
+
+Program 12: Transducers
+Write custom-transducer filtering even and doubling. Write stateful-transducer using atom to track seen values. Write process-with-transducers composing filters.
+
+Program 13: Spec Validation
+Define specs for ::name (string), ::age (int > 0), ::email (regex), ::user (keys). Write validate-user checking s/valid?.
+
+Program 14: Protocols & Records
+Define Drawable protocol with draw and bounds. Implement Circle and Rectangle records with protocol methods.
+
+Program 15: Graph DFS/BFS
+Write dfs using loop with stack, visited set, result vector. Write bfs using loop with queue. Both take graph and start node.
+
+Program 16: Parser Combinators
+Write parse-char, bind (monadic), return, choice, and many combinators. Each returns parser function taking input.
+
+Program 17: Lazy Sequences
+Write lazy-range using letfn and lazy-seq. Write lazy-fibonacci with multi-arity. Write take-while-sum with lazy-seq.
+
+Program 18: Web Handlers
+Write wrap-logging and wrap-auth middleware. Write app handler with case for routes. Compose with ->.
+
+Program 19: Datalog-style Queries
+Define db with :people and :projects. Write find-by, join (for comprehension with :when), query-projects-with-managers joining and mapping.
+
+Program 20: Mega Hiccup Form
+Write form-field component with input, label, error span. Write registration-form with let binding errors/loading/submitted, three form-field calls, actions div with button and conditional success message.

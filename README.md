@@ -98,32 +98,86 @@ Key differences:
 | 18 | [Web handlers](test-output/18-web-handler.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | Ring/Compojure routes clear |
 | 19 | [Datalog queries](test-output/19-datalog-style.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | for comprehensions with :when |
 | 20 | [**Mega hiccup form**](test-output/20-mega-hiccup-form.cljpp) | ⭐⭐⭐⭐⭐ | ✅ 🔥🔥🔥 | ✅ Very careful | Complex nested UI - CLJ-PP = FINAL BOSS trivial! |
+| **TOTAL** | **20 programs** | | **17/20 (85%)** | **19/20 (95%)** | **CLJ-PP = low effort, Regular = high effort** |
 
 **Complexity:** ⭐ = simple, ⭐⭐⭐⭐⭐ = very complex
 
-**CLJ-PP Results:**
+**CLJ-PP Results (single instance with context):**
 - **85% first-try success rate** (17/20)
 - **All errors fixed in <2 minutes** with precise error messages
 - **Zero delimiter-counting mistakes**
 - **Mental effort: LOW** - just push/pop, no counting
 
-**Regular Clojure Results:**
+**Regular Clojure Results (single instance with context):**
 - **95% first-try success rate** (19/20)
 - **1 logic error** (parser - wrong arg count, would happen in CLJ-PP too)
 - **Mental effort: HIGH** - constant delimiter counting, especially for complex nesting
 - **Required extreme care** on programs 8-11, 15-16, 20
 
-### The Key Insight
+**Regular Clojure Results (20 FRESH instances, no context):**
+- **80% first-try success rate** (16/20)
+- **2 tool-usage errors** (fresh instances tried to use file tools)
+- **1 dependency error** (core.async)
+- **1 syntax error** (complex destructuring)
+- **Key finding: Context matters** - performance dropped 15 points without prior examples
 
-**Regular Clojure works pretty well** (95% success) **BUT requires high mental effort**. For complex programs (#8-11, #15-16, #20), I had to carefully count delimiters while writing.
+**CLJ-PP Results (20 FRESH instances, no context):**
+- **50% first-try success rate** (10/20) ⚠️
+- **8 transpilation errors** (too many POPs, wrong containers, incomplete)
+- **2 load errors** (syntax valid but logically incorrect)
+- **CRITICAL finding: CLJ-PP requires examples** - 35 point drop without context!
 
-**CLJ-PP's value isn't fixing broken generation** - it's **reducing cognitive load**:
-- ✅ No mental counting required
-- ✅ Safer for editing deeply nested code
-- ✅ Precise error messages when errors occur
-- ✅ Works without relying on training data patterns
+### The Key Insights
 
-See detailed reactions in [`test-output/program-reactions.md`](test-output/program-reactions.md) and comparative analysis in [`test-output-clj/clj-writing-experience.md`](test-output-clj/clj-writing-experience.md).
+**1. CLJ-PP Requires Examples to Work - Fresh Instances Fail Dramatically**
+
+The most surprising finding:
+- **CLJ-PP with context**: 85% success
+- **CLJ-PP without context**: 50% success ⚠️
+- **Performance gap**: 35 percentage points!
+
+Fresh Claude instances with NO CLJ-PP examples:
+- Added too many POP tokens
+- Used wrong container types (PUSH-( vs PUSH-[ vs PUSH-{)
+- Often didn't finish programs
+- Couldn't apply "simple" stack rules without seeing examples first
+
+**Conclusion: CLJ-PP is learned, not innate. Explicit stack rules ≠ automatic success.**
+
+**2. Context Affects Regular Clojure Less Than CLJ-PP**
+
+Regular Clojure performance:
+- **With context**: 95% success
+- **Without context**: 80% success
+- **Gap**: 15 points (benefits from millions of training examples)
+
+CLJ-PP performance:
+- **With context**: 85% success
+- **Without context**: 50% success
+- **Gap**: 35 points (zero training examples, pure cold-start)
+
+**3. Training Data Is Critical**
+
+Regular Clojure has millions of examples in training data → fresh instances work reasonably well (80%)
+
+CLJ-PP has ZERO examples in training data → fresh instances fail (50%)
+
+**4. CLJ-PP's Value Proposition - Revised**
+
+Not "simpler for LLMs" (fresh instances prove otherwise)
+
+But "better for LLMs with context":
+- ✅ **Lower mental effort** when familiar (no counting)
+- ✅ **Safer for editing** within existing CLJ-PP codebases
+- ✅ **Precise error messages** when errors occur
+- ✅ **Good for ongoing projects** where examples accumulate
+- ❌ **Not good for one-off/fresh generation** without examples
+
+See detailed analyses:
+- CLJ-PP with context: [`test-output/program-reactions.md`](test-output/program-reactions.md)
+- Regular Clojure with context: [`test-output-clj/clj-writing-experience.md`](test-output-clj/clj-writing-experience.md)
+- Regular Clojure fresh instances: [`test-output-clj-round2/fresh-experiment-results.md`](test-output-clj-round2/fresh-experiment-results.md)
+- CLJ-PP fresh instances: [`test-output-clj-round2/fresh-cljpp-experiment-results.md`](test-output-clj-round2/fresh-cljpp-experiment-results.md)
 
 ## The Results
 
