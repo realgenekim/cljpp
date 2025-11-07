@@ -33,7 +33,7 @@ uberjar:
 	@echo "#!/usr/bin/env sh" > bin/cljpp
 	@echo '# Find the jar in the same directory as this script' >> bin/cljpp
 	@echo 'SCRIPT_DIR="$$(cd "$$(dirname "$$0")" && pwd)"' >> bin/cljpp
-	@echo 'exec java -jar "$$SCRIPT_DIR/cljpp.jar" "$$@"' >> bin/cljpp
+	@echo 'exec java -cp "$$SCRIPT_DIR/cljpp.jar" clojure.main -m cljp.core "$$@"' >> bin/cljpp
 	@chmod +x bin/cljpp
 	@echo "✓ Built target/cljpp.jar and bin/cljpp wrapper"
 

@@ -19,7 +19,9 @@
       "Bash(ubertest.cljp)",
       "Bash(cljpp ubertest.cljp:*)",
       "Bash(jar tf:*)",
-      "Bash(jar xf:*)"
+      "Bash(jar xf:*)",
+      "Bash(java:*)",
+      "Bash(unzip:*)"
     ],
     "deny": [],
     "ask": []
