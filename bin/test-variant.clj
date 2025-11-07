@@ -17,7 +17,15 @@
    :popall {:file "claude-prompts/CLJPP-PROMPT-WITH-POP-ALL-ONLY-v2.md" :name "CLJ-PP (POP-ALL v2)"}
    :v3     {:file "claude-prompts/CLJPP-PROMPT-WITH-POP-ALL-ONLY-v3.md" :name "CLJ-PP (POP-ALL v3)"}
    :v4     {:file "claude-prompts/CLJPP-PROMPT-v4.md" :name "CLJ-PP v4 (Hybrid)"}
-   :v5     {:file "claude-prompts/CLJPP-PROMPT-v5.md" :name "CLJ-PP v5 (v1 + #() fix)"}})
+   :v5     {:file "claude-prompts/CLJPP-PROMPT-v5.md" :name "CLJ-PP v5 (v1 + #() fix)"}
+   :play   {:file "claude-prompts/CLJPP-PROMPT-PLAY-v1.md" :name "CLJ-PP (Play v1)"}
+   :play2  {:file "claude-prompts/CLJPP-PROMPT-PLAY-v2.md" :name "CLJ-PP (Play v2: Format Enforcement)"}
+   :play2b {:file "claude-prompts/CLJPP-PROMPT-PLAY-v2b.md" :name "CLJ-PP (Play v2b: No explanations)"}
+   :play3  {:file "claude-prompts/CLJPP-PROMPT-PLAY-v3.md" :name "CLJ-PP (Play v3: #() Examples)"}
+   :play4  {:file "claude-prompts/CLJPP-PROMPT-PLAY-v4.md" :name "CLJ-PP (Play v4: Minimal+POP-ALL)"}
+   :play4b {:file "claude-prompts/CLJPP-PROMPT-PLAY-v4b.md" :name "CLJ-PP (Play v4b: Multiple defn fix)"}
+   :play4c {:file "claude-prompts/CLJPP-PROMPT-PLAY-v4c.md" :name "CLJ-PP (Play v4c: +Format warning)"}
+   :play4d {:file "claude-prompts/CLJPP-PROMPT-PLAY-v4d.md" :name "CLJ-PP (Play v4d: +POP counting)"}})
 
 (def timestamp (.format (java.time.LocalDateTime/now)
                        (java.time.format.DateTimeFormatter/ofPattern "yyyyMMdd-HHmmss")))
@@ -106,12 +114,14 @@
     (fs/create-dirs results-dir)
     (println "========================================")
     (println (str "Testing variant: " (name variant)))
-    (println (str "Programs: " (if (= program-nums :all) "1-20" (str/join ", " program-nums))))
+    (println (str "Programs: " (if (= program-nums :all)
+                                  "1-40"
+                                  (str/join ", " program-nums))))
     (println (str "Iterations: " iterations))
     (println (str "Results dir: " results-dir))
     (println "========================================")
 
-    (let [programs (if (= program-nums :all) (range 1 21) program-nums)
+    (let [programs (if (= program-nums :all) (range 1 41) program-nums)
           test-cases (for [prog programs
                            iter (range 1 (inc iterations))]
                        [prog iter])
@@ -146,18 +156,29 @@
   (println "Usage: bb bin/test-variant.clj <variant> <program> <iterations>")
   (println "")
   (println "Arguments:")
-  (println "  variant     One of: clj, pop, popall, v3, v4")
-  (println "  program     Program number (1-20) or 'all'")
+  (println "  variant     One of: clj, pop, popall, v3, v4, play2b, etc.")
+  (println "  program     Program number (1-40), 'all', 'holdout', or range like '1-20'")
   (println "  iterations  How many times to run (default: 1)")
   (println "")
   (println "Examples:")
   (println "  bb bin/test-variant.clj v4 3 10          # Test v4 on program 3, 10 times")
-  (println "  bb bin/test-variant.clj v4 all 1         # Test v4 on all programs, once")
-  (println "  bb bin/test-variant.clj pop 13 5         # Test explicit POP on program 13, 5 times")
+  (println "  bb bin/test-variant.clj v4 all 1         # Test v4 on all programs (1-40)")
+  (println "  bb bin/test-variant.clj play2b holdout 1 # Test on holdout set (21-40)")
+  (println "  bb bin/test-variant.clj pop 1-20 3       # Test on programs 1-20, 3 times")
   (println "")
   (println "Available variants:")
   (doseq [[k v] variants]
     (println (format "  %-7s %s" (name k) (:name v)))))
+
+;; Parse program argument (supports: number, "all", "holdout", "1-20")
+(defn parse-program-arg [arg]
+  (cond
+    (= arg "all") :all
+    (= arg "holdout") (range 21 41)
+    (re-find #"^\d+-\d+$" arg)
+    (let [[start end] (str/split arg #"-")]
+      (range (Integer/parseInt start) (inc (Integer/parseInt end))))
+    :else [(Integer/parseInt arg)]))
 
 ;; Main
 (let [args *command-line-args*]
@@ -170,9 +191,7 @@
           iterations (if (>= (count args) 3)
                       (Integer/parseInt (nth args 2))
                       1)
-          program-nums (if (= program-arg "all")
-                        :all
-                        [(Integer/parseInt program-arg)])]
+          program-nums (parse-program-arg program-arg)]
 
       (when-not (contains? variants variant)
         (println (str "Error: Unknown variant '" variant "'"))

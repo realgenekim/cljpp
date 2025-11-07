@@ -1,0 +1,30 @@
+PUSH-( ns examples.program22 POP
+
+PUSH-( defn fibonacci
+  "Basic recursive fibonacci implementation"
+  PUSH-[ n POP
+  PUSH-( cond
+    PUSH-( = n 0 POP 0
+    PUSH-( = n 1 POP 1
+    :else PUSH-( +
+      PUSH-( fibonacci PUSH-( - n 1 POP POP
+      PUSH-( fibonacci PUSH-( - n 2 POP POP POP POP POP
+
+PUSH-( def fibonacci-memo
+  "Memoized version using built-in memoize"
+  PUSH-( memoize fibonacci POP POP
+
+PUSH-( defn custom-memo
+  "Custom memoization implementation using atom"
+  PUSH-[ f POP
+  PUSH-( let PUSH-[ cache PUSH-( atom PUSH-{ POP POP POP
+    PUSH-( fn PUSH-[ & args POP
+      PUSH-( if-let PUSH-[ cached PUSH-( get @cache args POP POP
+        cached
+        PUSH-( let PUSH-[ result PUSH-( apply f args POP POP
+          PUSH-( swap! cache assoc args result POP
+          result POP POP POP POP POP
+
+PUSH-( def fibonacci-custom
+  "Fibonacci using custom memoization"
+  PUSH-( custom-memo fibonacci POP-ALL

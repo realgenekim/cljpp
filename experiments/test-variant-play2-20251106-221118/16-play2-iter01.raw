@@ -1,0 +1,59 @@
+```clojure
+PUSH-( ns examples.program16 POP
+
+PUSH-( defn parse-char PUSH-[ c POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( if PUSH-( and PUSH-( seq input POP PUSH-( = PUSH-( first input POP c POP POP
+      PUSH-[ PUSH-{ :result c :remaining PUSH-( rest input POP POP POP
+      PUSH-[ POP
+    POP
+  POP
+POP
+
+PUSH-( defn return PUSH-[ value POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-[ PUSH-{ :result value :remaining input POP POP
+  POP
+POP
+
+PUSH-( defn bind PUSH-[ parser f POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( let PUSH-[ results PUSH-( parser input POP POP
+      PUSH-( if PUSH-( seq results POP
+        PUSH-( let PUSH-[ PUSH-{ :keys PUSH-[ result remaining POP POP PUSH-( first results POP
+              parser2 PUSH-( f result POP POP
+          PUSH-( parser2 remaining POP
+        POP
+        PUSH-[ POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn choice PUSH-[ parser1 parser2 POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( let PUSH-[ results1 PUSH-( parser1 input POP POP
+      PUSH-( if PUSH-( seq results1 POP
+        results1
+        PUSH-( parser2 input POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn many PUSH-[ parser POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( loop PUSH-[ acc PUSH-[ POP
+                  remaining input POP
+      PUSH-( let PUSH-[ results PUSH-( parser remaining POP POP
+        PUSH-( if PUSH-( seq results POP
+          PUSH-( let PUSH-[ PUSH-{ :keys PUSH-[ result remaining POP POP PUSH-( first results POP POP
+            PUSH-( recur PUSH-( conj acc result POP remaining POP
+          POP
+          PUSH-[ PUSH-{ :result acc :remaining remaining POP POP
+        POP
+      POP
+    POP
+  POP
+POP-ALL
+```

@@ -1,0 +1,5 @@
+(ns examples.program22)
+(defn fibonacci "Basic recursive fibonacci implementation" [n] (cond (= n 0) 0 (= n 1) 1 :else (+ (fibonacci (- n 1)) (fibonacci (- n 2)))))
+(def fibonacci-memo "Memoized version using built-in memoize" (memoize fibonacci))
+(defn custom-memo "Custom memoization implementation using atom" [f] (let [cache (atom {})] (fn [& args] (if-let [cached (get @cache args)] cached (let [result (apply f args)] (swap! cache assoc args result) result)))))
+(def fibonacci-custom "Fibonacci using custom memoization" (custom-memo fibonacci))

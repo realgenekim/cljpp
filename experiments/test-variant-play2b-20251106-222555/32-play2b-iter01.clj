@@ -1,0 +1,5 @@
+(ns examples.program32)
+(defn get-box [board row col] (let [box-row (* 3 (quot row 3)) box-col (* 3 (quot col 3))] (for [r (range box-row (+ box-row 3)) c (range box-col (+ box-col 3))] (get-in board [r c]))))
+(defn valid? [board row col num] (let [row-vals (get board row) col-vals (map (fn [r] (get-in board [r col])) board) box-vals (get-box board row col)] (and (not (some {num true} (frequencies row-vals))) (not (some {num true} (frequencies col-vals))) (not (some {num true} (frequencies box-vals))))))
+(defn find-empty [board] (first (for [row (range 9) col (range 9) :when (zero? (get-in board [row col]))] [row col])))
+(defn solve-sudoku [board] (loop [current board] (if-let [[row col] (find-empty current)] (loop [nums (range 1 10)] (if (seq nums) (let [num (first nums)] (if (valid? current row col num) (let [updated (assoc-in current [row col] num) result (solve-sudoku updated)] (if result result (recur (rest nums)))) (recur (rest nums)))) nil)) current)))

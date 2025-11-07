@@ -1,0 +1,36 @@
+```clojure
+PUSH-( ns examples.program34
+  PUSH-( :require
+    PUSH-[ compojure.core :refer PUSH-[ defroutes GET POST POP POP
+    PUSH-[ compojure.route :as route POP
+    PUSH-[ ring.util.response :refer PUSH-[ response POP POP
+  POP
+POP
+
+PUSH-( defn list-users PUSH-[ request POP
+  PUSH-( response PUSH-{ :users PUSH-[ PUSH-{ :id 1 :name "Alice" POP
+                                PUSH-{ :id 2 :name "Bob" POP POP POP POP
+POP
+
+PUSH-( defn get-user PUSH-[ PUSH-{ :keys PUSH-[ id POP POP POP
+  PUSH-( response PUSH-{ :id PUSH-( Integer/parseInt id POP :name "User" :email "user@example.com" POP POP
+POP
+
+PUSH-( defn create-user PUSH-[ PUSH-{ :keys PUSH-[ params POP POP POP
+  PUSH-( response PUSH-{ :status "created" :user params POP POP
+POP
+
+PUSH-( defn get-user-posts PUSH-[ PUSH-{ :keys PUSH-[ id POP POP POP
+  PUSH-( response PUSH-{ :user-id PUSH-( Integer/parseInt id POP
+                 :posts PUSH-[ PUSH-{ :id 1 :title "First Post" POP
+                         PUSH-{ :id 2 :title "Second Post" POP POP POP POP
+POP
+
+PUSH-( defroutes app-routes
+  PUSH-( GET "/users" PUSH-[ POP request PUSH-( list-users request POP POP
+  PUSH-( GET "/users/:id" PUSH-[ id POP PUSH-( get-user PUSH-{ :id id POP POP POP
+  PUSH-( POST "/users" PUSH-[ POP request PUSH-( create-user request POP POP
+  PUSH-( GET "/users/:id/posts" PUSH-[ id POP PUSH-( get-user-posts PUSH-{ :id id POP POP POP
+  PUSH-( route/not-found PUSH-( response PUSH-{ :error "Not found" POP POP POP
+POP-ALL
+```

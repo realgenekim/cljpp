@@ -1,0 +1,28 @@
+PUSH-( ns examples.program20 POP
+
+PUSH-( defn form-field PUSH-[ PUSH-{ :keys PUSH-[ id label error POP POP POP
+  PUSH-[ :div PUSH-{ :class "form-field" POP
+    PUSH-[ :label PUSH-{ :for id POP label POP
+    PUSH-[ :input PUSH-{ :id id :type "text" :class PUSH-( if error "error" "" POP POP POP
+    PUSH-[ :span PUSH-{ :class "error-message" POP error POP
+  POP
+POP
+
+PUSH-( defn registration-form PUSH-[ POP
+  PUSH-( let PUSH-[ 
+    errors PUSH-{ :username "Username is required" :email nil :password "Password too short" POP
+    loading false
+    submitted true
+  POP
+    PUSH-[ :div PUSH-{ :class "registration-form" POP
+      PUSH-[ form-field PUSH-{ :id "username" :label "Username" :error PUSH-( :username errors POP POP POP
+      PUSH-[ form-field PUSH-{ :id "email" :label "Email" :error PUSH-( :email errors POP POP POP
+      PUSH-[ form-field PUSH-{ :id "password" :label "Password" :error PUSH-( :password errors POP POP POP
+      PUSH-[ :div PUSH-{ :class "actions" POP
+        PUSH-[ :button PUSH-{ :disabled loading POP "Submit" POP
+        PUSH-( when submitted
+          PUSH-[ :div PUSH-{ :class "success" POP "Registration successful!" POP
+        POP
+      POP
+    POP
+  POP-ALL

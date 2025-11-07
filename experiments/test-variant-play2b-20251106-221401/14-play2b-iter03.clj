@@ -1,0 +1,6 @@
+(ns examples.program14)
+(defprotocol Drawable (draw [this] "Render the shape") (bounds [this] "Return bounding box as {:x :y :width :height}"))
+(defrecord Circle [x y radius] Drawable (draw [this] (str "Circle at (" (:x this) ", " (:y this) ") radius " (:radius this))))
+(bounds [this] {:y (- (:y this) (:radius this)), :width (* 2 (:radius this)), :x (- (:x this) (:radius this)), :height (* 2 (:radius this))})
+(defrecord Rectangle [x y width height] Drawable (draw [this] (str "Rectangle at (" (:x this) ", " (:y this) ") " (:width this) "x" (:height this))))
+(bounds [this] {:y (:y this), :width (:width this), :x (:x this), :height (:height this)})

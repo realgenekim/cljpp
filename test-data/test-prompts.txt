@@ -57,3 +57,63 @@ Define db with :people and :projects. Write find-by, join (for comprehension wit
 
 Program 20: Mega Hiccup Form
 Write form-field component with input, label, error span. Write registration-form with let binding errors/loading/submitted, three form-field calls, actions div with button and conditional success message.
+
+Program 21: String Manipulation
+Write split-words (splits string on spaces), reverse-words (reverses each word), and title-case (capitalizes first letter of each word).
+
+Program 22: Memoization
+Write fibonacci-memo using memoize. Write custom-memo that takes a function and returns memoized version using atom with map.
+
+Program 23: Tree Traversal
+Define tree as nested maps with :value, :left, :right. Write tree-map applying function to all values. Write tree-reduce with accumulator.
+
+Program 24: Macro Basics
+Write when-let-all macro taking bindings and body, short-circuits on first nil. Write defn-timed macro that wraps function with timing printlns.
+
+Program 25: Nested Data Update
+Write update-in-multi updating multiple paths. Write transform-tree recursively updating all maps matching predicate. Use postwalk.
+
+Program 26: Ring Middleware Chain
+Write wrap-json (parses body), wrap-cors (adds headers), wrap-session (checks token). Chain with -> and call with request map.
+
+Program 27: Reagent Component with State
+Write counter component with ratom. Write todo-list with add/remove/toggle. Write filtered-list with search input and ratom.
+
+Program 28: Complex Pattern Matching
+Use core.match with match on nested structures. Pattern match on {:type :user :data {:role ...}}, handle :admin/:member/:guest.
+
+Program 29: Channel Coordination
+Create 3 channels, 3 go-loops producing values, 1 coordinator go-loop with alts!, collect results, return output channel.
+
+Program 30: Custom Collection Type
+Implement ISeq, ICollection, ICounted for custom SkipList. Implement seq, cons, count. Create constructor function.
+
+Program 31: SQL-like Query DSL
+Write from, where, select, order-by functions. Compose with ->. Each returns fn taking data. Test with vector of maps.
+
+Program 32: Constraint Solver
+Write solve-sudoku using backtracking. Represent as vector of vectors. Write valid? checking row/col/box. Use loop/recur.
+
+Program 33: Event Sourcing
+Write apply-event multimethod dispatching on event :type. Write aggregate reducing events. Write get-state-at-time filtering by timestamp.
+
+Program 34: Compojure Routes
+Define routes with GET/POST using compojure. Write handlers for /users, /users/:id, /users/:id/posts. Use destructuring.
+
+Program 35: Property-Based Testing
+Write gen/generators for user maps. Write prop/for-all properties checking invariants. Use test.check/quick-check.
+
+Program 36: Monadic Parser
+Write parser monad with return, bind, mzero, mplus. Write parse-digit, parse-number, parse-expr with recursive descent.
+
+Program 37: React Hooks Pattern
+Write use-state, use-effect hooks pattern in Reagent. Implement custom use-fetch hook. Handle loading/error/data states.
+
+Program 38: Symbolic Differentiation
+Write diff taking expr and var. Handle [:+ a b], [:* a b], [:exp a], [:var x], [:const n]. Simplify results.
+
+Program 39: B-tree Implementation
+Write b-tree-insert, b-tree-search, split-node. Handle underflow/overflow. Use records for Node. Maintain balance invariants.
+
+Program 40: Dataflow Computation Graph
+Define computation graph as map of nodes with :deps and :fn. Write execute-graph with topological sort. Handle cycles. Cache results.

@@ -1,0 +1,15 @@
+I'll write this program in CLJ-PP format to handle the nested spec definitions safely.
+
+PUSH-( ns examples.program13
+  PUSH-( :require PUSH-[ clojure.spec.alpha :as s POP POP POP
+
+PUSH-( s/def ::name string? POP
+
+PUSH-( s/def ::age PUSH-( fn PUSH-( PUSH-[ x POP PUSH-( and PUSH-( int? x POP PUSH-( pos? x POP POP POP POP POP
+
+PUSH-( s/def ::email PUSH-( fn PUSH-( PUSH-[ x POP PUSH-( and PUSH-( string? x POP PUSH-( re-matches #"^[^@]+@[^@]+\.[^@]+$" x POP POP POP POP POP
+
+PUSH-( s/def ::user PUSH-( s/keys :req-un PUSH-[ ::name ::age ::email POP POP POP
+
+PUSH-( defn validate-user PUSH-[ user POP
+  PUSH-( s/valid? ::user user POP-ALL

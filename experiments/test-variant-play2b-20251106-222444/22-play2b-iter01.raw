@@ -1,0 +1,39 @@
+I need permission to write the file. However, I can output the CLJ-PP code directly:
+
+```
+PUSH-( ns examples.program22 POP
+
+PUSH-( defn fibonacci PUSH-[ n POP
+  PUSH-( cond
+    PUSH-( = n 0 POP 0
+    PUSH-( = n 1 POP 1
+    :else PUSH-( +
+      PUSH-( fibonacci PUSH-( - n 1 POP POP
+      PUSH-( fibonacci PUSH-( - n 2 POP-ALL
+
+PUSH-( def fibonacci-memo PUSH-( memoize fibonacci POP-ALL
+
+PUSH-( defn custom-memo PUSH-[ f POP
+  PUSH-( let PUSH-[ cache PUSH-( atom PUSH-{ POP POP POP
+    PUSH-( fn PUSH-[ & args POP
+      PUSH-( if-let PUSH-[ cached PUSH-( get @cache args POP POP
+        cached
+        PUSH-( let PUSH-[ result PUSH-( apply f args POP POP
+          PUSH-( swap! cache assoc args result POP
+          result
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( def fibonacci-custom
+  PUSH-( custom-memo
+    PUSH-( fn fib PUSH-[ n POP
+      PUSH-( cond
+        PUSH-( = n 0 POP 0
+        PUSH-( = n 1 POP 1
+        :else PUSH-( +
+          PUSH-( fib PUSH-( - n 1 POP POP
+          PUSH-( fib PUSH-( - n 2 POP-ALL
+```

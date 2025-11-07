@@ -1,0 +1,66 @@
+PUSH-( ns examples.program35
+  PUSH-( :require
+    PUSH-[ clojure.test.check :as tc POP
+    PUSH-[ clojure.test.check.generators :as gen POP
+    PUSH-[ clojure.test.check.properties :as prop POP
+  POP
+POP
+
+PUSH-( def user-gen
+  PUSH-( gen/hash-map
+    :id PUSH-( gen/large-integer* PUSH-{ :min 1 POP POP
+    :name PUSH-( gen/not-empty gen/string-alphanumeric POP
+    :email PUSH-( gen/fmap
+      PUSH-( fn PUSH-[ s POP PUSH-( str s "@example.com" POP POP
+      gen/string-alphanumeric
+    POP
+    :age PUSH-( gen/large-integer* PUSH-{ :min 18 :max 100 POP POP
+    :active? gen/boolean
+  POP
+POP
+
+PUSH-( def user-id-positive
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( pos? PUSH-( :id user POP POP
+  POP
+POP
+
+PUSH-( def user-name-non-empty
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( not PUSH-( empty? PUSH-( :name user POP POP POP
+  POP
+POP
+
+PUSH-( def user-email-valid
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( clojure.string/includes? PUSH-( :email user POP "@example.com" POP
+  POP
+POP
+
+PUSH-( def user-age-in-range
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( and
+      PUSH-( >= PUSH-( :age user POP 18 POP
+      PUSH-( <= PUSH-( :age user POP 100 POP
+    POP
+  POP
+POP
+
+PUSH-( def user-has-all-keys
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( = PUSH-( set PUSH-( keys user POP POP PUSH-#{ :id :name :email :age :active? POP POP
+  POP
+POP
+
+PUSH-( defn run-tests PUSH-[ POP
+  PUSH-( println "Running property-based tests..." POP
+  PUSH-( println "Test 1: User ID is positive" POP
+  PUSH-( println PUSH-( tc/quick-check 100 user-id-positive POP POP
+  PUSH-( println "\nTest 2: User name is non-empty" POP
+  PUSH-( println PUSH-( tc/quick-check 100 user-name-non-empty POP POP
+  PUSH-( println "\nTest 3: User email is valid" POP
+  PUSH-( println PUSH-( tc/quick-check 100 user-email-valid POP POP
+  PUSH-( println "\nTest 4: User age in range" POP
+  PUSH-( println PUSH-( tc/quick-check 100 user-age-in-range POP POP
+  PUSH-( println "\nTest 5: User has all required keys" POP
+  PUSH-( println PUSH-( tc/quick-check 100 user-has-all-keys POP-ALL

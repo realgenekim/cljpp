@@ -1,0 +1,7 @@
+(ns examples.program30)
+(defrecord SkipListNode [value next down])
+(defrecord SkipList [head height cnt])
+(defn make-skip-list [] (->SkipList nil 0 0))
+(defn skip-list-seq [node] (when node (lazy-seq (cons (:value node) (skip-list-seq (:next node))))))
+(defn insert-skip-list [skip-list value] (let [new-node (->SkipListNode value nil nil) new-head (if (:head skip-list) (assoc new-node :next (:head skip-list)) new-node) new-count (inc (:cnt skip-list))] (->SkipList new-head (:height skip-list) new-count)))
+(extend-type SkipList clojure.lang.ISeq (seq [this] (when (pos? (:cnt this)) (skip-list-seq (:head this)))) clojure.lang.IPersistentCollection (cons [this value] (insert-skip-list this value)) (empty [this] (make-skip-list)) (equiv [this other] (and (instance? SkipList other) (= (:cnt this) (:cnt other)) (= (seq this) (seq other)))) clojure.lang.Counted (count [this] (:cnt this)))

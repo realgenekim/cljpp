@@ -1,0 +1,48 @@
+PUSH-( ns examples.program26 POP
+
+PUSH-( defn wrap-json PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( let PUSH-[ body PUSH-( get request :body POP
+                parsed-body PUSH-( if PUSH-( string? body POP
+                              PUSH-( clojure.data.json/read-str body :key-fn keyword POP
+                              body POP
+                updated-request PUSH-( assoc request :body parsed-body POP POP
+      PUSH-( handler updated-request POP-ALL
+
+PUSH-( defn wrap-cors PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( let PUSH-[ response PUSH-( handler request POP
+                headers PUSH-( get response :headers PUSH-{ POP POP
+                updated-headers PUSH-( assoc headers
+                                  "Access-Control-Allow-Origin" "*"
+                                  "Access-Control-Allow-Methods" "GET, POST, PUT, DELETE"
+                                  "Access-Control-Allow-Headers" "Content-Type" POP POP
+      PUSH-( assoc response :headers updated-headers POP-ALL
+
+PUSH-( defn wrap-session PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( let PUSH-[ token PUSH-( get-in request PUSH-[ :headers "authorization" POP POP POP
+      PUSH-( if PUSH-( and token PUSH-( not PUSH-( empty? token POP POP POP
+        PUSH-( let PUSH-[ updated-request PUSH-( assoc request :session PUSH-{ :token token :valid? true POP POP POP
+          PUSH-( handler updated-request POP POP
+        PUSH-( handler PUSH-( assoc request :session PUSH-{ :valid? false POP POP POP-ALL
+
+PUSH-( defn base-handler PUSH-[ request POP
+  PUSH-{ :status 200
+     :headers PUSH-{ "Content-Type" "application/json" POP
+     :body PUSH-{ :message "Success"
+              :session PUSH-( get request :session POP
+              :request-body PUSH-( get request :body POP POP POP-ALL
+
+PUSH-( defn app PUSH-[ POP
+  PUSH-( -> base-handler
+      wrap-session
+      wrap-cors
+      wrap-json POP-ALL
+
+PUSH-( defn -main PUSH-[ & args POP
+  PUSH-( let PUSH-[ handler PUSH-( app POP
+            test-request PUSH-{ :headers PUSH-{ "authorization" "token123" POP
+                            :body "{\"name\":\"test\",\"value\":42}" POP
+            response PUSH-( handler test-request POP POP
+    PUSH-( println "Response:" response POP-ALL

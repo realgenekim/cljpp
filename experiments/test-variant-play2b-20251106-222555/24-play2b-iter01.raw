@@ -1,0 +1,35 @@
+PUSH-( ns examples.program24 POP-ALL
+
+PUSH-( defmacro when-let-all PUSH-[ bindings & body POP
+  PUSH-( let PUSH-[ pairs PUSH-( partition 2 bindings POP POP
+    PUSH-( reduce
+      PUSH-( fn PUSH-[ acc PUSH-[ sym expr POP POP
+        PUSH-( list 'let PUSH-[ sym expr POP
+          PUSH-( list 'if sym acc nil POP
+        POP
+      POP
+      PUSH-( cons 'do body POP
+      PUSH-( reverse pairs POP
+    POP
+  POP
+POP-ALL
+
+PUSH-( defmacro defn-timed PUSH-[ name args & body POP
+  PUSH-( let PUSH-[ name-str PUSH-( str name POP POP
+    PUSH-( list 'defn name args
+      PUSH-( list 'let PUSH-[ 'start PUSH-( list 'System/nanoTime POP POP
+        PUSH-( list 'let PUSH-[ 'result PUSH-( cons 'do body POP POP
+          PUSH-( list 'let PUSH-[ 'end PUSH-( list 'System/nanoTime POP POP
+            PUSH-( list 'let PUSH-[ 'elapsed PUSH-( list '/ PUSH-( list '- 'end 'start POP 1000000.0 POP POP
+              PUSH-( list 'do
+                PUSH-( list 'println PUSH-( str "Entering " name-str POP POP
+                PUSH-( list 'println PUSH-( str name-str " completed in " POP 'elapsed PUSH-( str " ms" POP POP
+                'result
+              POP
+            POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP-ALL
