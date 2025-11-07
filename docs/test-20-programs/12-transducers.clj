@@ -1,0 +1,5 @@
+(ns examples.transducers)
+(def xf-pipeline (comp (map :data) (filter (fn (x) (> x 10))) (map (fn [x] (* x 2))) (take 5)))
+(defn process-with-transducer [coll] (transduce xf-pipeline conj [] coll))
+(defn custom-transducer [n] (fn [rf] (fn ([] (rf)) ([result] result) ([result input] (if (zero? (mod input n)) (rf result input) result)))))
+(defn stateful-transducer [] (fn [rf] (let [state (atom {:count 0, :sum 0})] (fn ([] (rf)) ([result] (rf result @state)) ([result input] (swap! state (fn [s] (-> s (update :sum + input) (update :count inc)))) result)))))

@@ -1,0 +1,61 @@
+PUSH-( ns examples.mega-form POP
+
+PUSH-( defn form-field PUSH-[ PUSH-{ :keys PUSH-[ label type value error POP POP POP
+  PUSH-[ :div.field
+    PUSH-[ :label label POP
+    PUSH-[ :input PUSH-{ :type type :value value :class PUSH-( when error "error" POP POP POP
+    PUSH-( when error
+      PUSH-[ :span.error-message error POP
+    POP
+  POP
+POP
+
+PUSH-( defn registration-form PUSH-[ state POP
+  PUSH-( let PUSH-[
+    errors PUSH-( :errors state POP
+    loading? PUSH-( :loading state POP
+    submitted? PUSH-( :submitted state POP
+  POP
+    PUSH-[ :form.registration PUSH-{ :on-submit PUSH-( :on-submit state POP POP
+      PUSH-[ :h2 "Create Account" POP
+
+      PUSH-( form-field PUSH-{
+        :label "Username"
+        :type "text"
+        :value PUSH-( get-in state PUSH-[ :values :username POP POP
+        :error PUSH-( :username errors POP
+      POP POP
+
+      PUSH-( form-field PUSH-{
+        :label "Email"
+        :type "email"
+        :value PUSH-( get-in state PUSH-[ :values :email POP POP
+        :error PUSH-( :email errors POP
+      POP POP
+
+      PUSH-( form-field PUSH-{
+        :label "Password"
+        :type "password"
+        :value PUSH-( get-in state PUSH-[ :values :password POP POP
+        :error PUSH-( :password errors POP
+      POP POP
+
+      PUSH-[ :div.actions
+        PUSH-[ :button PUSH-{
+          :type "submit"
+          :disabled loading?
+          :class PUSH-( if loading? "loading" "" POP
+        POP
+          PUSH-( if loading? "Creating..." "Create Account" POP
+        POP
+
+        PUSH-( when submitted?
+          PUSH-[ :div.success
+            PUSH-[ :p "Account created successfully!" POP
+            PUSH-[ :a PUSH-{ :href "/login" POP "Go to Login" POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP

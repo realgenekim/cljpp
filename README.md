@@ -91,26 +91,26 @@ Despite this, I still feel like CLJ-PP has promise. I'm going to keep exploring 
 
 | # | Program | Complexity | CLJ-PP | Regular .clj | Key Learning |
 |---|---------|-----------|--------|--------------|--------------|
-| 01 | [Simple functions](test-output/01-simple-function.cljpp) | ⭐ | ✅ 😐 | ✅ Easy | Both work fine - no advantage either way |
-| 02 | [Let bindings](test-output/02-let-binding.cljpp) | ⭐⭐ | ✅ 👍 | ✅ Easy | Maps in let feel clean in CLJ-PP |
-| 03 | [Recursive factorial/fib](test-output/03-recursive-factorial.cljpp) | ⭐⭐⭐ | ✅ 💚 | ✅ Easy | Deep nesting: CLJ-PP removes mental counting |
-| 04 | [Collections & HOFs](test-output/04-collections.cljpp) | ⭐⭐ | ✅ 👍 | ✅ Easy | Structure explicit in CLJ-PP |
-| 05 | [Threading macros](test-output/05-threading-macros.cljpp) | ⭐⭐ | ✅ 👍 | ✅ Easy | Each step self-contained |
-| 06 | [Error handling](test-output/06-error-handling.cljpp) | ⭐⭐⭐ | ✅ 💚 | ✅ Easy | try/catch nesting trivial in CLJ-PP |
-| 07 | [Multimethods](test-output/07-multimethods.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | defmethod bodies clear |
-| 08 | [Complex destructuring](test-output/08-complex-destructuring.cljpp) | ⭐⭐⭐⭐ | ✅ 🔥 | ✅ Careful | **KILLER APP #2** - No ambiguity in CLJ-PP! |
-| 09 | [State machine](test-output/09-state-machine.cljpp) | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | Nested if/do: CLJ-PP = no counting |
-| 10 | [**GNARLY hiccup**](test-output/10-gnarly-hiccup.cljpp) | ⭐⭐⭐⭐⭐ | ✅ 🔥🔥🔥 | ✅ Very careful | **KILLER APP #1** - CLJ-PP makes hiccup trivial! |
-| 11 | [Core.async pipeline](test-output/11-async-pipeline.cljpp) | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | go-loops with channels: CLJ-PP = linear thinking |
-| 12 | [Transducers](test-output/12-transducers.cljpp) | ⭐⭐⭐⭐ | ❌→✅ 💚 | ✅ Easy | Multi-arity wrapping revealed structure |
-| 13 | [Spec validation](test-output/13-spec-validation.cljpp) | ⭐⭐⭐ | ❌→✅ 👍 | ✅ Easy | Reader macros → expand to fn |
-| 14 | [Protocols & records](test-output/14-protocols-and-records.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | defprotocol/defrecord clean |
-| 15 | [Graph DFS/BFS](test-output/15-graph-traversal.cljpp) | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | loop/recur: CLJ-PP = stack ops natural match |
-| 16 | [**Parser combinators**](test-output/16-monadic-parser.cljpp) | ⭐⭐⭐⭐⭐ | ✅ 🔥 | ⚠️ Logic error | Monadic bind chains - CLJ-PP had zero errors! |
-| 17 | [Lazy sequences](test-output/17-lazy-sequences.cljpp) | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Easy | lazy-seq with letfn perfect |
-| 18 | [Web handlers](test-output/18-web-handler.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | Ring/Compojure routes clear |
-| 19 | [Datalog queries](test-output/19-datalog-style.cljpp) | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | for comprehensions with :when |
-| 20 | [**Mega hiccup form**](test-output/20-mega-hiccup-form.cljpp) | ⭐⭐⭐⭐⭐ | ✅ 🔥🔥🔥 | ✅ Very careful | Complex nested UI - CLJ-PP = FINAL BOSS trivial! |
+| 01 | Simple functions | ⭐ | ✅ 😐 | ✅ Easy | Both work fine - no advantage either way |
+| 02 | Let bindings | ⭐⭐ | ✅ 👍 | ✅ Easy | Maps in let feel clean in CLJ-PP |
+| 03 | Recursive factorial/fib | ⭐⭐⭐ | ✅ 💚 | ✅ Easy | Deep nesting: CLJ-PP removes mental counting |
+| 04 | Collections [Collections & HOFs](docs/test-20-programs/04-collections.cljpp) HOFs | ⭐⭐ | ✅ 👍 | ✅ Easy | Structure explicit in CLJ-PP |
+| 05 | Threading macros | ⭐⭐ | ✅ 👍 | ✅ Easy | Each step self-contained |
+| 06 | Error handling | ⭐⭐⭐ | ✅ 💚 | ✅ Easy | try/catch nesting trivial in CLJ-PP |
+| 07 | Multimethods | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | defmethod bodies clear |
+| 08 | Complex destructuring | ⭐⭐⭐⭐ | ✅ 🔥 | ✅ Careful | **KILLER APP #2** - No ambiguity in CLJ-PP! |
+| 09 | State machine | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | Nested if/do: CLJ-PP = no counting |
+| 10 | **GNARLY hiccup** | ⭐⭐⭐⭐⭐ | ✅ 🔥🔥🔥 | ✅ Very careful | **KILLER APP #1** - CLJ-PP makes hiccup trivial! |
+| 11 | Core.async pipeline | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | go-loops with channels: CLJ-PP = linear thinking |
+| 12 | Transducers | ⭐⭐⭐⭐ | ❌→✅ 💚 | ✅ Easy | Multi-arity wrapping revealed structure |
+| 13 | Spec validation | ⭐⭐⭐ | ❌→✅ 👍 | ✅ Easy | Reader macros → expand to fn |
+| 14 | Protocols [Protocols & records](docs/test-20-programs/14-protocols-and-records.cljpp) records | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | defprotocol/defrecord clean |
+| 15 | Graph DFS/BFS | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Careful | loop/recur: CLJ-PP = stack ops natural match |
+| 16 | **Parser combinators** | ⭐⭐⭐⭐⭐ | ✅ 🔥 | ⚠️ Logic error | Monadic bind chains - CLJ-PP had zero errors! |
+| 17 | Lazy sequences | ⭐⭐⭐⭐ | ✅ 💚 | ✅ Easy | lazy-seq with letfn perfect |
+| 18 | Web handlers | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | Ring/Compojure routes clear |
+| 19 | Datalog queries | ⭐⭐⭐ | ✅ 👍 | ✅ Easy | for comprehensions with :when |
+| 20 | **Mega hiccup form** | ⭐⭐⭐⭐⭐ | ✅ 🔥🔥🔥 | ✅ Very careful | Complex nested UI - CLJ-PP = FINAL BOSS trivial! |
 | **TOTAL** | **20 programs** | | **17/20 (85%)** | **19/20 (95%)** | **CLJ-PP = low effort, Regular = high effort** |
 
 **Complexity:** ⭐ = simple, ⭐⭐⭐⭐⭐ = very complex
@@ -210,7 +210,7 @@ But "better for LLMs with context":
 - ❌ **Not good for one-off/fresh generation** without examples
 
 See detailed analyses:
-- CLJ-PP with context: [`test-output/program-reactions.md`](test-output/program-reactions.md)
+- CLJ-PP with context: [`docs/test-20-programs/program-reactions.md`](docs/test-20-programs/program-reactions.md)
 - Regular Clojure with context: [`test-output-clj/clj-writing-experience.md`](test-output-clj/clj-writing-experience.md)
 - Regular Clojure fresh instances: [`test-output-clj-round2/fresh-experiment-results.md`](test-output-clj-round2/fresh-experiment-results.md)
 - CLJ-PP fresh instances: [`test-output-clj-round2/fresh-cljpp-experiment-results.md`](test-output-clj-round2/fresh-cljpp-experiment-results.md)
@@ -349,7 +349,7 @@ This repo contains:
 - **CLI** (`bin/cljp-convert`) - File transpiler
 - **Tests** (34 tests, all passing)
 - **Specification** (`docs/cljp-specification.md`)
-- **20 example programs** (`test-output/*.cljpp`)
+- **20 example programs** (`docs/test-20-programs/*.cljpp`)
 
 ### Quick Start
 
@@ -472,7 +472,7 @@ All 20 test programs transpile correctly.
 The tokenizer is simple and fast.
 Error messages are precise and helpful.
 
-See [`test-output/program-reactions.md`](test-output/program-reactions.md) for detailed analysis of all 20 programs, including error cases and learnings.
+See [`docs/test-20-programs/program-reactions.md`](docs/test-20-programs/program-reactions.md) for detailed analysis of all 20 programs, including error cases and learnings.
 
 ## License
 

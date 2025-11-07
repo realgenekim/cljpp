@@ -1,0 +1,40 @@
+PUSH-( ns examples.macros POP
+
+PUSH-( defmacro when-let-all PUSH-[ bindings & body POP
+  PUSH-( let PUSH-[
+    binding-pairs PUSH-( partition 2 bindings POP
+    checks PUSH-( map PUSH-( fn PUSH-[ PUSH-[ sym expr POP POP
+                     `PUSH-( let PUSH-[ ~sym ~expr POP
+                         PUSH-( if ~sym
+                           :continue
+                           PUSH-( reduced nil POP
+                         POP
+                       POP
+                   POP
+                   binding-pairs
+             POP
+  POP
+    `PUSH-( when-not PUSH-( nil? PUSH-( reduce PUSH-( fn PUSH-[ _ check# POP check# POP nil PUSH-[ ~@checks POP POP POP
+        ~@body
+      POP
+  POP
+POP
+
+PUSH-( defmacro cond-let PUSH-[ & clauses POP
+  PUSH-( when clauses
+    PUSH-( let PUSH-[ PUSH-[ test then & rest POP clauses POP
+      PUSH-( if PUSH-( vector? test POP
+        `PUSH-( let PUSH-[ ~@test POP
+            PUSH-( if ~PUSH-( first test POP
+              ~then
+              PUSH-( cond-let ~@rest POP
+            POP
+          POP
+        `PUSH-( if ~test
+            ~then
+            PUSH-( cond-let ~@rest POP
+          POP
+      POP
+    POP
+  POP
+POP

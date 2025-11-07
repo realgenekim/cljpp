@@ -1,0 +1,15 @@
+PUSH-( ns examples.collections POP
+
+PUSH-( def users PUSH-[
+  PUSH-{ :name "Alice" :age 30 :role :admin POP
+  PUSH-{ :name "Bob" :age 25 :role :user POP
+  PUSH-{ :name "Carol" :age 35 :role :user POP
+POP POP
+
+PUSH-( defn find-admins PUSH-[ users POP
+  PUSH-( filter PUSH-( fn PUSH-[ u POP PUSH-( = :admin PUSH-( :role u POP POP POP users POP
+POP
+
+PUSH-( defn get-names PUSH-[ users POP
+  PUSH-( map :name users POP
+POP

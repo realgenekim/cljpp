@@ -1,0 +1,38 @@
+PUSH-( ns examples.protocols POP
+
+PUSH-( defprotocol Renderable
+  PUSH-( render PUSH-[ this POP "Render the component" POP
+  PUSH-( update-state PUSH-[ this new-state POP "Update component state" POP
+POP
+
+PUSH-( defrecord Button PUSH-[ label enabled? on-click POP
+  Renderable
+  PUSH-( render PUSH-[ this POP
+    PUSH-{ :type :button
+       :label label
+       :enabled enabled?
+       :handler on-click
+    POP
+  POP
+  PUSH-( update-state PUSH-[ this new-state POP
+    PUSH-( merge this new-state POP
+  POP
+POP
+
+PUSH-( defrecord Input PUSH-[ placeholder value on-change POP
+  Renderable
+  PUSH-( render PUSH-[ this POP
+    PUSH-{ :type :input
+       :placeholder placeholder
+       :value value
+       :handler on-change
+    POP
+  POP
+  PUSH-( update-state PUSH-[ this new-state POP
+    PUSH-( assoc this :value PUSH-( :value new-state POP POP
+  POP
+POP
+
+PUSH-( defn render-all PUSH-[ components POP
+  PUSH-( mapv render components POP
+POP

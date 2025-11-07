@@ -1,0 +1,49 @@
+PUSH-( ns examples.web
+  PUSH-( :require
+    PUSH-[ ring.util.response :as resp POP
+    PUSH-[ compojure.core :refer PUSH-[ defroutes GET POST PUT DELETE POP POP
+    PUSH-[ clojure.data.json :as json POP
+  POP
+POP
+
+PUSH-( defn json-response PUSH-[ data & PUSH-[ status POP POP
+  PUSH-( -> data
+    json/write-str
+    resp/response
+    PUSH-( resp/content-type "application/json" POP
+    PUSH-( resp/status PUSH-( or status 200 POP POP
+  POP
+POP
+
+PUSH-( defn error-response PUSH-[ msg POP
+  PUSH-( json-response PUSH-{ :error msg POP 400 POP
+POP
+
+PUSH-( defn auth-middleware PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( let PUSH-[ token PUSH-( get-in request PUSH-[ :headers "authorization" POP POP POP
+      PUSH-( if PUSH-( and token PUSH-( = "Bearer secret" token POP POP
+        PUSH-( handler request POP
+        PUSH-( json-response PUSH-{ :error "Unauthorized" POP 401 POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defroutes app-routes
+  PUSH-( GET "/api/users" PUSH-[ POP
+    PUSH-( json-response PUSH-[ PUSH-{ :id 1 :name "Alice" POP PUSH-{ :id 2 :name "Bob" POP POP POP
+  POP
+
+  PUSH-( POST "/api/users" PUSH-[ req POP
+    PUSH-( let PUSH-[ body PUSH-( json/read-str PUSH-( slurp PUSH-( :body req POP POP :key-fn keyword POP
+              user PUSH-( assoc body :id PUSH-( rand-int 10000 POP POP
+    POP
+      PUSH-( json-response user 201 POP
+    POP
+  POP
+
+  PUSH-( GET "/api/users/:id" PUSH-[ PUSH-{ params :params POP POP
+    PUSH-( json-response PUSH-{ :id PUSH-( :id params POP :name "User" POP POP
+  POP
+POP

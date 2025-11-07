@@ -1,0 +1,6 @@
+(ns examples.parser)
+(defn return-parser [value] (fn [input] [{:remaining input, :value value}]))
+(defn bind-parser [parser f] (fn [input] (let [results (parser input)] (mapcat (fn [r] (let [next-parser (f (:value r))] (next-parser (:remaining r)))) results))))
+(defn char-parser [c] (fn [input] (if (and (seq input) (= c (first input))) [{:remaining (rest input), :value c}] [])))
+(defn or-parser [p1 p2] (fn (input) (let [r1 (p1 input) r2 (p2 input)] (concat r1 r2))))
+(defn many-parser [p] (fn many-fn [input] (let [first-results (p input)] (if (empty? first-results) [{:remaining input, :value []}] (mapcat (fn [r] (let [rest-results (many-fn (:remaining r))] (map (fn [rr] {:remaining (:remaining rr), :value (cons (:value r) (:value rr))}) rest-results))) first-results)))))
