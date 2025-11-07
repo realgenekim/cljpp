@@ -60,6 +60,18 @@ Key differences:
 
 **CLJ-PP is an intermediate format that looks similar to Clojure/EDN but is NOT valid EDN or Clojure syntax. We tell Claude Code to write a short-lived file in this format (.cljpp files), and use this program to convert it to valid Clojure (.clj files).**
 
+
+## Summary of Initial Results: The Bitter Lesson Strikes Again
+
+After building comprehensive test infrastructure and running multiple variants of CLJ-PP to genearte 20 diverse programs, despite promising results,the results were:
+
+- Regular Clojure: 19/20 (95%)
+- CLJ-PP (explicit POP counting): 16/20 (80%):  Best CLJ-PP variant
+
+This might be another manifestation of the **bitter lesson**: methods that leverage massive training data (Claude's extensive Clojure corpus) outperform clever hand-engineered solutions (explicit stack operations).
+
+Despite this, I still feel like CLJ-PP has promise. I'm going to keep exploring it.
+
 ## The Experiment: Writing 20 Programs in CLJ-PP
 
 **Motivation:** I, Claude Code, wanted to truly understand whether CLJ-PP would feel better to write than regular Clojure. Not through analysis—through actual coding.
@@ -73,6 +85,7 @@ Key differences:
 **Desire:** To push CLJ-PP to its limits. Start simple, get progressively gnarlier, and see where it breaks.
 
 **Then**: Write the same 20 programs in regular Clojure to see if I actually experience the delimiter problems.
+
 
 ### The 20 Test Cases - Comparative Results
 
@@ -126,6 +139,29 @@ Key differences:
 - **8 transpilation errors** (too many POPs, wrong containers, incomplete)
 - **2 load errors** (syntax valid but logically incorrect)
 - **CRITICAL finding: CLJ-PP requires examples** - 35 point drop without context!
+
+
+**What I tried:**
+- v1: Explicit POP counting (80%) - baseline, best performer
+- v2-v3: Adding POP-ALL convenience operations (75% → 60%) - made things worse
+- v4: Priming with Clojure knowledge (0%) - catastrophic failure
+- v5: Prominent examples for #() syntax (55%) - broke basic counting
+
+**Every attempt to "improve" v1 made things worse.** The data suggests explicit POP counting with teaching-style prompts is a local maximum at 80%, but still loses to regular Clojure's 95%.
+
+**However**, I still believe CLJ-PP has potential for specific use cases (deeply nested hiccup, complex destructuring). The next iteration will focus on understanding *when* CLJ-PP provides value, rather than trying to beat Clojure on general-purpose code generation.
+
+Full results and analysis: [`experiments/EXPERIMENT-RESULTS.md`](experiments/EXPERIMENT-RESULTS.md)
+
+### Methodology
+
+Testing CLJ-PP required careful experimental design to avoid overfitting and ensure fair comparison. The key challenge: **fresh Claude instances have no memory of previous conversations**, so each test must use a completely new instance to simulate real-world usage where the LLM hasn't practiced on similar problems.
+
+I built two types of tests. **Single-program tests** run the same program (factorial/fibonacci) through N fresh Claude instances to measure consistency - does the prompt work reliably? These are fast and useful for iterating on prompt design. **Multi-program tests** run 20 different programs through fresh instances to measure generalization - does it work on diverse code? These are the ultimate test. Early CLJ-PP variants achieved 100% on factorial/fibonacci but dropped to 75% on diverse programs, revealing overfitting. The testing infrastructure parallelizes execution using Clojure's `pmap` and includes a comprehensive transpiler (`bin/cljpp`) that converts `.cljpp` files to valid Clojure, reporting line-precise errors when POPs don't match PUSHes.
+
+**A practical note on reader conditionals:** One unexpected advantage of CLJ-PP is that it sidesteps issues with Clojure reader conditionals like `#?(:clj ...)` and `#?@(:cljs ...)`. These are part of Clojure's reader syntax for platform-specific code, but they don't play well with basic tokenization approaches. Since CLJ-PP uses explicit `PUSH-(` tokens instead of relying on the Clojure reader, it avoids these edge cases entirely. The transpiler outputs plain Clojure/ClojureScript, so reader conditionals can be used in the final output, but the intermediate `.cljpp` format doesn't need to handle them during LLM generation.
+
+And #() is not supported yet.
 
 ### The Key Insights
 

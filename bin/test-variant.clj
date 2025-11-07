@@ -13,18 +13,18 @@
 
 (def variants
   {:clj    {:file nil :name "Regular Clojure"}
-   :pop    {:file "CLJPP-PROMPT.md" :name "CLJ-PP (explicit POP)"}
-   :popall {:file "CLJPP-PROMPT-WITH-POP-ALL-ONLY-v2.md" :name "CLJ-PP (POP-ALL v2)"}
-   :v3     {:file "CLJPP-PROMPT-WITH-POP-ALL-ONLY-v3.md" :name "CLJ-PP (POP-ALL v3)"}
-   :v4     {:file "CLJPP-PROMPT-v4.md" :name "CLJ-PP v4 (Hybrid)"}
-   :v5     {:file "CLJPP-PROMPT-v5.md" :name "CLJ-PP v5 (v1 + #() fix)"}})
+   :pop    {:file "claude-prompts/CLJPP-PROMPT.md" :name "CLJ-PP (explicit POP)"}
+   :popall {:file "claude-prompts/CLJPP-PROMPT-WITH-POP-ALL-ONLY-v2.md" :name "CLJ-PP (POP-ALL v2)"}
+   :v3     {:file "claude-prompts/CLJPP-PROMPT-WITH-POP-ALL-ONLY-v3.md" :name "CLJ-PP (POP-ALL v3)"}
+   :v4     {:file "claude-prompts/CLJPP-PROMPT-v4.md" :name "CLJ-PP v4 (Hybrid)"}
+   :v5     {:file "claude-prompts/CLJPP-PROMPT-v5.md" :name "CLJ-PP v5 (v1 + #() fix)"}})
 
 (def timestamp (.format (java.time.LocalDateTime/now)
                        (java.time.format.DateTimeFormatter/ofPattern "yyyyMMdd-HHmmss")))
 
 (defn get-prompt [num]
   "Extract prompt for a specific program number from test-prompts.txt"
-  (let [lines (str/split-lines (slurp "test-prompts.txt"))
+  (let [lines (str/split-lines (slurp "test-data/test-prompts.txt"))
         start-pattern (re-pattern (str "^Program " num ":"))
         next-pattern #"^Program \d+:"]
     (->> lines

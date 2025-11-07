@@ -12,11 +12,11 @@
 | Rank | Approach | Success Rate | Prompt File | Notes |
 |------|----------|--------------|-------------|-------|
 | **🥇** | **Regular Clojure** | **19/20 (95%)** ✅ | *(standard Clojure)* | **Winner!** Best on diverse programs |
-| **🥈** | **CLJ-PP (explicit POP)** | **16/20 (80%)** ✅ | `CLJPP-PROMPT.md` | **Best CLJ-PP variant** - tedious but unambiguous |
-| 🥉 | CLJ-PP (POP-ALL v2) | 15/20 (75%) | `CLJPP-PROMPT-WITH-POP-ALL-ONLY-v2.md` | Overfitted to factorial/fibonacci |
-| 4 | CLJ-PP (POP-ALL v3) | **12/20 (60%)** ❌ | `CLJPP-PROMPT-WITH-POP-ALL-ONLY-v3.md` | **WORSE than v2** - more rules backfired |
-| 5 | CLJ-PP v5 (v1 + #() fix) | **11/20 (55%)** 🚨 | `CLJPP-PROMPT-v5.md` | **CATASTROPHIC** - Broke basic POP counting! |
-| 6 | CLJ-PP v4 (Hybrid) | **0/5 (0%)** 💀 | `CLJPP-PROMPT-v4.md` | **TOTAL FAILURE** - Wrote Clojure instead of CLJPP |
+| **🥈** | **CLJ-PP (explicit POP)** | **16/20 (80%)** ✅ | `claude-prompts/CLJPP-PROMPT.md` | **Best CLJ-PP variant** - tedious but unambiguous |
+| 🥉 | CLJ-PP (POP-ALL v2) | 15/20 (75%) | `claude-prompts/CLJPP-PROMPT-WITH-POP-ALL-ONLY-v2.md` | Overfitted to factorial/fibonacci |
+| 4 | CLJ-PP (POP-ALL v3) | **12/20 (60%)** ❌ | `claude-prompts/CLJPP-PROMPT-WITH-POP-ALL-ONLY-v3.md` | **WORSE than v2** - more rules backfired |
+| 5 | CLJ-PP v5 (v1 + #() fix) | **11/20 (55%)** 🚨 | `claude-prompts/CLJPP-PROMPT-v5.md` | **CATASTROPHIC** - Broke basic POP counting! |
+| 6 | CLJ-PP v4 (Hybrid) | **0/5 (0%)** 💀 | `claude-prompts/CLJPP-PROMPT-v4.md` | **TOTAL FAILURE** - Wrote Clojure instead of CLJPP |
 
 **🚨 CRITICAL FINDINGS:**
 
@@ -27,7 +27,7 @@
 5. **⚠️ v5 DISASTER:** Trying to "improve" v1 with prominent #() examples BROKE basic POP counting (55%)
 6. **💀 v4 TOTAL FAILURE:** "Bitter lesson" misapplication - priming with Clojure knowledge backfired (0%)
 
-**RECOMMENDATION:** **STOP trying to improve v1!** Use baseline CLJ-PP with explicit POP counting (`CLJPP-PROMPT.md`). Every attempt to "fix" it makes it worse.
+**RECOMMENDATION:** **STOP trying to improve v1!** Use baseline CLJ-PP with explicit POP counting (`claude-prompts/CLJPP-PROMPT.md`). Every attempt to "fix" it makes it worse.
 
 ---
 
@@ -449,7 +449,7 @@ POP                   ← Tries to close defn, but stack already empty!
 **v5 didn't fix #() issues - it broke POP counting instead.**
 
 **Files:**
-- Prompt: `CLJPP-PROMPT-v5.md`
+- Prompt: `claude-prompts/CLJPP-PROMPT-v5.md`
 - Results: `experiments/test-variant-v5-20251106-210424/`
 - Analysis: `experiments/test-variant-v5-20251106-210424/FAILURE-ANALYSIS.md`
 - Design doc: `plans/v5-design.md`

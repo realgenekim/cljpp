@@ -1,5 +1,0 @@
-(ns examples.web (:require [ring.util.response :as resp] [compojure.core :refer [defroutes GET POST PUT DELETE]] [clojure.data.json :as json]))
-(defn json-response [data & [status]] (-> data json/write-str resp/response (resp/content-type "application/json") (resp/status (or status 200))))
-(defn error-response [msg] (json-response {:error msg} 400))
-(defn auth-middleware [handler] (fn [request] (let [token (get-in request [:headers "authorization"])] (if (and token (= "Bearer secret" token)) (handler request) (json-response {:error "Unauthorized"} 401)))))
-(defroutes app-routes (GET "/api/users" [] (json-response [{:name "Alice", :id 1} {:name "Bob", :id 2}])) (POST "/api/users" [req] (let [body (json/read-str (slurp (:body req)) :key-fn keyword) user (assoc body :id (rand-int 10000))] (json-response user 201))) (GET "/api/users/:id" [{params :params}] (json-response {:name "User", :id (:id params)})))

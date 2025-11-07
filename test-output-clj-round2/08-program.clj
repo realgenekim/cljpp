@@ -1,5 +1,0 @@
-(ns examples.program8)
-(defn process-user [{:as user, :keys [name age]}] {:years-old age, :full-user user, :display-name name})
-(defn process-items [[first second & rest]] {:remaining rest, :count-remaining (count rest), :first-item first, :second-item second})
-(defn nested-extract [{address {:keys [city state]}, :keys [name]}] {:person-name name, :location (str city ", " state)})
-(defn -main [& args] (let [user-data {:email "alice@example.com", :age 30, :name "Alice"} items ["apple" "banana" "cherry" "date" "elderberry"] person {:address {:city "Portland", :state "OR", :zip "97201"}, :name "Bob"}] (println "User:" (process-user user-data)) (println "Items:" (process-items items)) (println "Person:" (nested-extract person))))

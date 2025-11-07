@@ -1,5 +1,0 @@
-(ns examples.protocols)
-(defprotocol Renderable (render [this] "Render the component") (update-state [this new-state] "Update component state"))
-(defrecord Button [label enabled? on-click] Renderable (render [this] {:type :button, :label label, :enabled enabled?, :handler on-click}) (update-state [this new-state] (merge this new-state)))
-(defrecord Input [placeholder value on-change] Renderable (render [this] {:placeholder placeholder, :value value, :type :input, :handler on-change}) (update-state [this new-state] (assoc this :value (:value new-state))))
-(defn render-all [components] (mapv render components))

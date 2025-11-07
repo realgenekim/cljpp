@@ -1,5 +1,11 @@
 target
 cljpp.jar
+
+# Test output directories (can regenerate)
+test-output/
+test-output-*/
+test-tuning/
+
 # Experiment artifacts to exclude from git
 
 # Raw Claude output (has markdown fences, redundant)

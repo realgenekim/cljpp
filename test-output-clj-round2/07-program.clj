@@ -1,6 +1,0 @@
-(ns examples.program7)
-(defmulti render-shape (fn [shape] (:type shape)))
-(defmethod render-shape :circle [shape] (let [radius (:radius shape)] (str "Circle with radius " radius)))
-(defmethod render-shape :rectangle [shape] (let [width (:width shape) height (:height shape)] (str "Rectangle " width " x " height)))
-(defmethod render-shape :default [shape] (str "Error: Unknown shape type " (:type shape)))
-(defn -main [& args] (println (render-shape {:type :circle, :radius 5})) (println (render-shape {:width 10, :type :rectangle, :height 20})) (println (render-shape {:type :triangle, :base 8})))
