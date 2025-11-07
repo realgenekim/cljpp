@@ -6,6 +6,17 @@ test-output/
 test-output-*/
 test-tuning/
 
+# Tool-specific directories
+.beads/
+.lsp/
+.clj-kondo/
+.cpcache/
+
+# Archive/deprecated directories
+ARCHIVE/
+META-INF/
+OLD/
+
 # Experiment artifacts to exclude from git
 
 # Raw Claude output (has markdown fences, redundant)
