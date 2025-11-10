@@ -1,0 +1,54 @@
+I need permission to write the test file. Let me provide you with the CLJ-PP code directly:
+
+```clojure
+PUSH-( ns examples.program24 POP
+
+PUSH-( defmacro when-let-all PUSH-[ bindings & body POP
+  PUSH-( if PUSH-( seq bindings POP
+    PUSH-( let PUSH-[ PUSH-[ sym expr POP PUSH-( take 2 bindings POP POP
+      PUSH-( list 'when-let PUSH-[ sym expr POP
+        PUSH-( if PUSH-( > PUSH-( count bindings POP 2 POP
+          PUSH-( list* 'when-let-all PUSH-( drop 2 bindings POP body POP
+          PUSH-( cons 'do body POP
+        POP
+      POP
+    POP
+    PUSH-( cons 'do body POP
+  POP
+POP
+
+PUSH-( defmacro defn-timed PUSH-[ name & fdecl POP
+  PUSH-( let PUSH-[ fname PUSH-( str name POP POP
+    PUSH-( list 'defn name
+      PUSH-( vec PUSH-( first fdecl POP POP
+      PUSH-( list 'let PUSH-[ 'start# PUSH-( list 'System/nanoTime POP
+                     'result# PUSH-( cons 'do PUSH-( rest fdecl POP POP
+                     'end# PUSH-( list 'System/nanoTime POP POP
+        PUSH-( list 'println PUSH-( str fname " took:" POP
+                    PUSH-( list '/ PUSH-( list '- 'end# 'start# POP 1000000.0 POP
+                    "ms" POP
+        'result#
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn-timed slow-calc PUSH-[ n POP
+  PUSH-( Thread/sleep 100 POP
+  PUSH-( * n n POP
+POP
+
+PUSH-( when-let-all PUSH-[ x 10
+                  y 20
+                  z 30 POP
+  PUSH-( println "All bound:" x y z POP
+POP
+
+PUSH-( when-let-all PUSH-[ a 5
+                  b nil
+                  c 15 POP
+  PUSH-( println "Should not print" POP
+POP
+
+PUSH-( slow-calc 7 POP
+```

@@ -1,0 +1,83 @@
+Now I can see the CLJ-PP format! Looking at this example, I notice it uses `POP-ALL` which closes all open containers at once. Let me write the Reagent component program using CLJ-PP format:
+
+```clojure
+PUSH-( ns examples.program27
+  PUSH-( :require
+    PUSH-[ reagent.core :as r POP
+    PUSH-[ reagent.dom :as rdom POP POP-ALL
+
+PUSH-( defn counter-component PUSH-[ POP
+  PUSH-( let PUSH-[ count PUSH-( r/atom 0 POP POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div
+        PUSH-[ :h3 "Counter" POP
+        PUSH-[ :p "Count: " @count POP
+        PUSH-[ :button PUSH-{ :on-click #PUSH-( swap! count inc POP POP "+" POP
+        PUSH-[ :button PUSH-{ :on-click #PUSH-( swap! count dec POP POP "-" POP
+        PUSH-[ :button PUSH-{ :on-click #PUSH-( reset! count 0 POP POP "Reset" POP POP-ALL
+
+PUSH-( defn todo-list PUSH-[ POP
+  PUSH-( let PUSH-[ todos PUSH-( r/atom PUSH-[ PUSH-{ :id 1 :text "First task" :done false POP POP POP
+           input-text PUSH-( r/atom "" POP
+           next-id PUSH-( r/atom 2 POP POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div
+        PUSH-[ :h3 "Todo List" POP
+        PUSH-[ :div
+          PUSH-[ :input PUSH-{ :type "text"
+                      :value @input-text
+                      :on-change #PUSH-( reset! input-text PUSH-( -> % .-target .-value POP POP POP POP
+          PUSH-[ :button PUSH-{ :on-click
+                      #PUSH-( when-not PUSH-( empty? @input-text POP
+                          PUSH-( swap! todos conj PUSH-{ :id @next-id
+                                                    :text @input-text
+                                                    :done false POP POP
+                          PUSH-( swap! next-id inc POP
+                          PUSH-( reset! input-text "" POP POP POP
+                   "Add" POP POP
+        PUSH-[ :ul
+          PUSH-( for PUSH-[ todo @todos POP
+            PUSH-[ :li PUSH-{ :key PUSH-( :id todo POP POP
+              PUSH-[ :input PUSH-{ :type "checkbox"
+                          :checked PUSH-( :done todo POP
+                          :on-change #PUSH-( swap! todos
+                                            PUSH-( fn PUSH-[ ts POP
+                                              PUSH-( mapv
+                                                PUSH-( fn PUSH-[ t POP
+                                                  PUSH-( if PUSH-( = PUSH-( :id t POP PUSH-( :id todo POP POP
+                                                    PUSH-( assoc t :done PUSH-( not PUSH-( :done t POP POP POP
+                                                    t POP-ALL
+                                                ts POP-ALL POP POP
+              PUSH-[ :span PUSH-{ :style PUSH-{ :text-decoration
+                                        PUSH-( if PUSH-( :done todo POP "line-through" "none" POP POP POP
+                PUSH-( :text todo POP POP
+              PUSH-[ :button PUSH-{ :on-click
+                          #PUSH-( swap! todos
+                                  PUSH-( fn PUSH-[ ts POP
+                                    PUSH-( filterv
+                                      PUSH-( fn PUSH-[ t POP
+                                        PUSH-( not= PUSH-( :id t POP PUSH-( :id todo POP POP-ALL
+                                      ts POP-ALL POP
+                     "Remove" POP POP-ALL POP-ALL
+
+PUSH-( defn filtered-list PUSH-[ POP
+  PUSH-( let PUSH-[ items PUSH-( r/atom PUSH-[ "Apple" "Banana" "Cherry" "Date" "Elderberry" "Fig" "Grape" POP POP
+           search PUSH-( r/atom "" POP POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-( let PUSH-[ filtered PUSH-( if PUSH-( empty? @search POP
+                                @items
+                                PUSH-( filterv
+                                  #PUSH-( clojure.string/includes?
+                                      PUSH-( clojure.string/lower-case % POP
+                                      PUSH-( clojure.string/lower-case @search POP POP
+                                  @items POP-ALL POP
+        PUSH-[ :div
+          PUSH-[ :h3 "Filtered List" POP
+          PUSH-[ :input PUSH-{ :type "text"
+                      :placeholder "Search..."
+                      :value @search
+                      :on-change #PUSH-( reset! search PUSH-( -> % .-target .-value POP POP POP POP
+          PUSH-[ :ul
+            PUSH-( for PUSH-[ item filtered POP
+              PUSH-[ :li PUSH-{ :key item POP item POP-ALL POP-ALL
+```

@@ -1,0 +1,19 @@
+(ns examples.program25
+  (:require [clojure.walk :as walk]))
+
+(defn update-in-multi
+  [m paths f & args]
+  (reduce
+    (fn [acc path]
+      (apply update-in acc path f args))
+    m
+    paths))
+
+(defn transform-tree
+  [pred f data]
+  (walk/postwalk
+    (fn [node]
+      (if (and (map? node) (pred node))
+        (f node)
+        node))
+    data))

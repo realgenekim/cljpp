@@ -1,0 +1,38 @@
+PUSH-( ns examples.program34
+  PUSH-( :require
+    PUSH-[ compojure.core :refer PUSH-[ defroutes GET POST POP POP
+    PUSH-[ compojure.route :as route POP
+    PUSH-[ ring.util.response :refer PUSH-[ response POP POP
+  POP
+POP
+
+PUSH-( defn users-handler PUSH-[ POP
+  PUSH-( response PUSH-{ :users PUSH-[ PUSH-{ :id 1 :name "Alice" POP
+                                        PUSH-{ :id 2 :name "Bob" POP POP POP POP
+POP
+
+PUSH-( defn user-handler PUSH-[ PUSH-{ :keys PUSH-[ id POP POP POP
+  PUSH-( response PUSH-{ :id PUSH-( Integer/parseInt id POP
+                         :name "User"
+                         :email PUSH-( str "user" id "@example.com" POP POP POP
+POP
+
+PUSH-( defn user-posts-handler PUSH-[ PUSH-{ :keys PUSH-[ id POP POP POP
+  PUSH-( response PUSH-{ :user-id PUSH-( Integer/parseInt id POP
+                         :posts PUSH-[ PUSH-{ :id 1 :title "First Post" POP
+                                       PUSH-{ :id 2 :title "Second Post" POP POP POP POP
+POP
+
+PUSH-( defn create-user-handler PUSH-[ request POP
+  PUSH-( let PUSH-[ PUSH-{ :keys PUSH-[ body POP POP PUSH-( :params request POP POP
+    PUSH-( response PUSH-{ :status "created" :user body POP POP
+  POP
+POP
+
+PUSH-( defroutes app-routes
+  PUSH-( GET "/users" PUSH-[ POP users-handler POP
+  PUSH-( GET "/users/:id" PUSH-[ id POP PUSH-( user-handler PUSH-{ :id id POP POP POP
+  PUSH-( GET "/users/:id/posts" PUSH-[ id POP PUSH-( user-posts-handler PUSH-{ :id id POP POP POP
+  PUSH-( POST "/users" request PUSH-( create-user-handler request POP POP
+  PUSH-( route/not-found PUSH-( response PUSH-{ :error "Not Found" POP POP POP
+POP

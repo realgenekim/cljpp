@@ -1,0 +1,1392 @@
+========================================
+Testing variant: neutral
+Programs: 3
+Iterations: 1
+Results dir: experiments/test-variant-neutral-20251110-120707
+========================================
+
+[03/neutral/iter01] Testing...
+  ✓ SUCCESS
+
+========================================
+SUMMARY
+========================================
+EXPERIMENT: Neutral (technical doc): 1/1 (100%)
+
+Results saved to: experiments/test-variant-neutral-20251110-120707
+========================================
+Testing variant: persuasive
+Programs: 3
+Iterations: 1
+Results dir: experiments/test-variant-persuasive-20251110-120714
+========================================
+
+[03/persuasive/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+
+========================================
+SUMMARY
+========================================
+EXPERIMENT: Persuasive (selling): 0/1 (0%)
+
+Failures:
+  - Program 03 iter 01: Transpile failed
+
+Results saved to: experiments/test-variant-persuasive-20251110-120714
+========================================
+Testing variant: negative
+Programs: 3
+Iterations: 1
+Results dir: experiments/test-variant-negative-20251110-120723
+========================================
+
+[03/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 21,
+ :line 1,
+ :col 21,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+========================================
+SUMMARY
+========================================
+EXPERIMENT: Negative (discouraging): 0/1 (0%)
+
+Failures:
+  - Program 03 iter 01: Transpile failed
+
+Results saved to: experiments/test-variant-negative-20251110-120723
+========================================
+Testing variant: neutral
+Programs: 1-40
+Iterations: 1
+Results dir: experiments/test-variant-neutral-20251110-120729
+========================================
+
+[09/neutral/iter01] Testing...
+
+[05/neutral/iter01] Testing...
+[08/neutral/iter01] Testing...
+[06/neutral/iter01] Testing...
+
+
+[04/neutral/iter01] Testing...
+
+[01/neutral/iter01] Testing...
+
+
+[02/neutral/iter01] Testing...
+
+[07/neutral/iter01] Testing...
+
+[11/neutral/iter01] Testing...
+
+[10/neutral/iter01] Testing...
+
+[03/neutral/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+
+[12/neutral/iter01] Testing...
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 165,
+ :line 3,
+ :col 21,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "Map has odd arity",
+ :code :map-odd-arity,
+ :kvs [address :keys [city]],
+ :count 3}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 177,
+ :line 5,
+ :col 34,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+[13/neutral/iter01] Testing...
+
+[15/neutral/iter01] Testing...
+
+[18/neutral/iter01] Testing...
+
+[14/neutral/iter01] Testing...
+
+[17/neutral/iter01] Testing...
+
+[19/neutral/iter01] Testing...
+
+[20/neutral/iter01] Testing...
+
+[16/neutral/iter01] Testing...
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 233,
+ :line 9,
+ :col 44,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 74,
+ :line 1,
+ :col 74,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "Based",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+
+[22/neutral/iter01] Testing...
+
+[24/neutral/iter01] Testing...
+
+[23/neutral/iter01] Testing...
+[21/neutral/iter01] Testing...
+
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+
+[26/neutral/iter01] Testing...
+
+[25/neutral/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 1101,
+ :line 42,
+ :col 67,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "Perfect!",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+
+[35/neutral/iter01] Testing...
+
+[27/neutral/iter01] Testing...
+
+[36/neutral/iter01] Testing...
+
+[37/neutral/iter01] Testing...
+
+[29/neutral/iter01] Testing...
+
+[33/neutral/iter01] Testing...
+
+[30/neutral/iter01] Testing...
+
+[34/neutral/iter01] Testing...
+
+[28/neutral/iter01] Testing...
+
+[31/neutral/iter01] Testing...
+
+[32/neutral/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 24, :col 62}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 23, :col 2}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "Based",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+
+[38/neutral/iter01] Testing...
+
+[39/neutral/iter01] Testing...
+
+[40/neutral/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 16, :col 4}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "Perfect!",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+
+========================================
+SUMMARY
+========================================
+EXPERIMENT: Neutral (technical doc): 14/40 (35%)
+
+Failures:
+  - Program 31 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ExceptionInfo
+Message:  Parameter declaration order-by should be a vector
+Data:     {:type :sci/error, :line 6, :column 281, :file "/Users/genekim/src.local/cljpp/experiments/test-variant-neutral-20251110-120729/31-neutral-iter01.clj"}
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-neutral-20251110-120729/31-neutral-iter01.clj:6:281
+Phase:    macroexpand
+
+----- Context ------------------------------------------------------------------
+2: (defn from [data] (fn [_] data))
+3: (defn where [pred] (fn [data] (filter pred data)))
+4: (defn select [& keys] (fn [data] (map (fn [row] (select-keys row keys)) data)))
+5: (defn order-by [key-fn] (fn [data] (sort-by key-fn data)))
+6: (defn -main [& args] (let [data [{:age 30, :name "Alice", :dept "IT"} {:age 25, :name "Bob", :dept "HR"} {:age 35, :name "Charlie", :dept "IT"} {:age 28, :name "Diana", :dept "Sales"}] result (-> (from data) (where (fn [x] (= (:dept x) "IT"))) (select :name :age) (order-by :age) (fn [f] (f nil)))] (println result)))
+                                                                                                                                                                                                                                                                                           ^--- Parameter declaration order-by should be a vector
+
+----- Stack trace --------------------------------------------------------------
+examples.program31     - /Users/genekim/src.local/cljpp/experiments/test-variant-neutral-20251110-120729/31-neutral-iter01.clj:6:281
+clojure.core/fn        - <built-in>
+examples.program31/->  - /Users/genekim/src.local/cljpp/experiments/test-variant-neutral-20251110-120729/31-neutral-iter01.clj:6:281
+examples.program31     - /Users/genekim/src.local/cljpp/experiments/test-variant-neutral-20251110-120729/31-neutral-iter01.clj:6:281
+clojure.core/->        - <built-in>
+... (run with --debug to see elided elements)
+examples.program31/fn  - /Users/genekim/src.local/cljpp/experiments/test-variant-neutral-20251110-120729/31-neutral-iter01.clj:6:22
+clojure.core/fn        - <built-in>
+examples.program31     - /Users/genekim/src.local/cljpp/experiments/test-variant-neutral-20251110-120729/31-neutral-iter01.clj:6:1
+clojure.core/defn      - <built-in>
+examples.program31     - /Users/genekim/src.local/cljpp/experiments/test-variant-neutral-20251110-120729/31-neutral-iter01.clj:6:1
+
+
+  - Program 34 iter 01: ----- Error --------------------------------------------------------------------
+Type:     java.io.FileNotFoundException
+Message:  Could not locate compojure/core.bb, compojure/core.clj or compojure/core.cljc on classpath.
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-neutral-20251110-120729/34-neutral-iter01.clj:1:24
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program34 (:require [compojure.core :refer [defroutes GET POST]] [compojure.route :as route] [ring.util.response :refer [response]]))
+                          ^--- Could not locate compojure/core.bb, compojure/core.clj or compojure/core.cljc on classpath.
+2: (defn list-users [request] (response {:users ["Alice" "Bob" "Charlie"]}))
+3: (defn get-user [{{:keys [id]} :params}] (response {:name (str "User " id), :id id}))
+4: (defn create-user [{{:keys [name email]} :params}] (response {:email email, :name name, :status "created"}))
+5: (defn get-user-posts [{{:keys [id]} :params}] (response {:user-id id, :posts [{:title "Post 1"} {:title "Post 2"}]}))
+6: (defroutes app-routes (GET "/users" [] request (list-users request)) (GET "/users/:id" [] request (get-user request)) (POST "/users" [] request (create-user request)) (GET "/users/:id/posts" [] request (get-user-posts request)) (route/not-found {:error "Not found"}))
+
+----- Stack trace --------------------------------------------------------------
+babashka.main/exec/fn--32036/load-fn--32047 - <built-in>
+examples.program34                          - /Users/genekim/src.local/cljpp/experiments/test-variant-neutral-20251110-120729/34-neutral-iter01.clj:1:24
+
+
+  - Program 01 iter 01: Transpile failed
+  - Program 02 iter 01: Transpile failed
+  - Program 03 iter 01: Transpile failed
+  - Program 05 iter 01: Transpile failed
+  - Program 08 iter 01: Transpile failed
+  - Program 10 iter 01: Transpile failed
+  - Program 13 iter 01: Transpile failed
+  - Program 14 iter 01: Transpile failed
+  - Program 16 iter 01: Transpile failed
+  - Program 17 iter 01: Transpile failed
+  - Program 18 iter 01: Transpile failed
+  - Program 21 iter 01: Transpile failed
+  - Program 23 iter 01: Transpile failed
+  - Program 24 iter 01: Transpile failed
+  - Program 26 iter 01: Transpile failed
+  - Program 27 iter 01: Transpile failed
+  - Program 29 iter 01: Transpile failed
+  - Program 30 iter 01: Transpile failed
+  - Program 32 iter 01: Transpile failed
+  - Program 33 iter 01: Transpile failed
+  - Program 37 iter 01: Transpile failed
+  - Program 38 iter 01: Transpile failed
+  - Program 39 iter 01: Transpile failed
+  - Program 40 iter 01: Transpile failed
+
+Results saved to: experiments/test-variant-neutral-20251110-120729
+========================================
+Testing variant: persuasive
+Programs: 1-40
+Iterations: 1
+Results dir: experiments/test-variant-persuasive-20251110-121016
+========================================
+
+[10/persuasive/iter01] Testing...
+
+[07/persuasive/iter01] Testing...
+
+[02/persuasive/iter01] Testing...
+
+[11/persuasive/iter01] Testing...
+
+[05/persuasive/iter01] Testing...
+
+[01/persuasive/iter01] Testing...
+
+[09/persuasive/iter01] Testing...
+
+[06/persuasive/iter01] Testing...
+
+[04/persuasive/iter01] Testing...
+
+[03/persuasive/iter01] Testing...
+
+[08/persuasive/iter01] Testing...
+  ✓ SUCCESS  ✓ SUCCESS
+
+
+[12/persuasive/iter01] Testing...
+
+[13/persuasive/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR:   ❌ ERROR:Transpile failed 
+Transpile failed
+
+[14/persuasive/iter01] Testing...
+  ❌ EXECUTION ERROR
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+
+[17/persuasive/iter01] Testing...
+
+[19/persuasive/iter01] Testing...
+
+[16/persuasive/iter01] Testing...
+[20/persuasive/iter01] Testing...
+
+
+[15/persuasive/iter01] Testing...
+
+[18/persuasive/iter01] Testing...
+  ❌ EXECUTION ERROR
+  ✓ SUCCESS
+
+[22/persuasive/iter01] Testing...
+
+[21/persuasive/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 364,
+ :line 11,
+ :col 69,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+
+[23/persuasive/iter01] Testing...
+
+[24/persuasive/iter01] Testing...
+  ✓ SUCCESS
+
+[25/persuasive/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+
+[26/persuasive/iter01] Testing...
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+
+[28/persuasive/iter01] Testing...
+
+[27/persuasive/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 278,
+ :line 11,
+ :col 37,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+
+[29/persuasive/iter01] Testing...
+  ✓ SUCCESS
+  ✓ SUCCESS
+
+[33/persuasive/iter01] Testing...
+
+[30/persuasive/iter01] Testing...
+
+[32/persuasive/iter01] Testing...
+
+[31/persuasive/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+
+[34/persuasive/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 35, :col 0}
+
+  ❌ ERROR: Transpile failed
+
+[35/persuasive/iter01] Testing...
+[36/persuasive/iter01] Testing...
+
+  ❌ EXECUTION ERROR
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I'll",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 56, :col 0}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 25, :col 2}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+
+[37/persuasive/iter01] Testing...
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "I",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "Now",
+ :line 1,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+
+[40/persuasive/iter01] Testing...
+
+[38/persuasive/iter01] Testing...
+
+[39/persuasive/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 45, :col 0}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 777,
+ :line 28,
+ :col 28,
+ :char \}}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+
+========================================
+SUMMARY
+========================================
+EXPERIMENT: Persuasive (selling): 16/40 (40%)
+
+Failures:
+  - Program 07 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ExceptionInfo
+Message:  Wrong number of args (0) passed to: :type
+Data:     {:type :sci/error, :line 2, :column 24, :file "/Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/07-persuasive-iter01.clj", :phase "analysis"}
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/07-persuasive-iter01.clj:2:24
+Phase:    analysis
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program7)
+2: (defmulti render-shape (:type))
+                          ^--- Wrong number of args (0) passed to: :type
+3: (defmethod render-shape :circle [shape] (str "Circle with radius: " (:radius shape)))
+4: (defmethod render-shape :rectangle [shape] (str "Rectangle " (:width shape) "x" (:height shape)))
+5: (defmethod render-shape :default [shape] (str "Error: Unknown shape type " (:type shape)))
+
+----- Stack trace --------------------------------------------------------------
+examples.program7          - /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/07-persuasive-iter01.clj:2:24
+clojure.core/multi-fn-impl - <built-in>
+clojure.core/when-not      - <built-in>
+examples.program7          - /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/07-persuasive-iter01.clj:2:1
+clojure.core/let           - <built-in>
+examples.program7/defmulti - /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/07-persuasive-iter01.clj:2:1
+examples.program7          - /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/07-persuasive-iter01.clj:2:1
+clojure.core/defmulti      - <built-in>
+examples.program7          - /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/07-persuasive-iter01.clj:2:1
+
+
+  - Program 11 iter 01: ----- Error --------------------------------------------------------------------
+Type:     java.lang.IndexOutOfBoundsException
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/11-persuasive-iter01.clj:2:78
+Phase:    macroexpand
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program11 (:require [clojure.core.async :refer [chan go-loop >! <! close!]]))
+2: (defn pipeline [input-ch] (let [step1-ch (chan) step2-ch (chan)] (go-loop [] (if-let [[val (<! input-ch)]] (do (>! step1-ch (* 2 val)) (recur)) (close! step1-ch))) (go-loop [] (if-let [[val (<! step1-ch)]] (do (>! step2-ch (+ 10 val)) (recur)) (close! step2-ch))) step2-ch))
+                                                                                ^--- 
+
+----- Stack trace --------------------------------------------------------------
+clojure.core/if-let        - <built-in>
+examples.program11/loop    - /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/11-persuasive-iter01.clj:2:78
+clojure.core/loop          - <built-in>
+clojure.core/fn            - <built-in>
+examples.program11/go      - /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/11-persuasive-iter01.clj:2:66
+... (run with --debug to see elided elements)
+examples.program11/fn      - /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/11-persuasive-iter01.clj:2:27
+clojure.core/fn            - <built-in>
+examples.program11         - /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/11-persuasive-iter01.clj:2:1
+clojure.core/defn          - <built-in>
+examples.program11         - /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/11-persuasive-iter01.clj:2:1
+
+
+  - Program 28 iter 01: ----- Error --------------------------------------------------------------------
+Type:     java.lang.AssertionError
+Message:  Pattern row 1: Pattern rows must be wrapped in []. Try changing {:type :user, :data {:role :admin}} to [{:type :user, :data {:role :admin}}].
+
+
+  - Program 30 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ExceptionInfo
+Message:  defrecord/deftype currently only support protocol implementations, found: clojure.lang.ISeq
+Data:     {:type :sci/error, :line 2, :column 1, :file "/Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/30-persuasive-iter01.clj"}
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/30-persuasive-iter01.clj:2:1
+Phase:    macroexpand
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program30)
+2: (deftype SkipList [elements size] clojure.lang.ISeq (seq [this] (when (pos? size) (seq elements))) (first [this] (when (pos? size) (first elements))) (next [this] (when-let [nxt (next elements)] (SkipList. nxt (dec size)))) (more [this] (if-let [nxt (next elements)] (SkipList. nxt (dec size)) (SkipList. [] 0))) clojure.lang.IPersistentCollection (cons [this x] (SkipList. (cons x elements) (inc size))) (empty [this] (SkipList. [] 0)) (equiv [this other] (and (instance? SkipList other) (= elements (.-elements other)))) clojure.lang.Counted (count [this] size))
+   ^--- defrecord/deftype currently only support protocol implementations, found: clojure.lang.ISeq
+3: (defn skip-list [& items] (SkipList. (vec items) (count items)))
+
+----- Stack trace --------------------------------------------------------------
+clojure.core/deftype - <built-in>
+examples.program30   - /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/30-persuasive-iter01.clj:2:1
+
+
+  - Program 34 iter 01: ----- Error --------------------------------------------------------------------
+Type:     java.io.FileNotFoundException
+Message:  Could not locate compojure/core.bb, compojure/core.clj or compojure/core.cljc on classpath.
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/34-persuasive-iter01.clj:1:24
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program34 (:require [compojure.core :refer [defroutes GET POST]] [compojure.route :as route] [ring.util.response :refer [response]]))
+                          ^--- Could not locate compojure/core.bb, compojure/core.clj or compojure/core.cljc on classpath.
+2: (defn users-handler [] (response {:users [{:name "Alice", :id 1} {:name "Bob", :id 2}]}))
+3: (defn user-handler [{:keys [id]}] (response {:email (str "user" id "@example.com"), :name "User", :id (Integer/parseInt id)}))
+4: (defn user-posts-handler [{:keys [id]}] (response {:user-id (Integer/parseInt id), :posts [{:title "First Post", :id 1} {:title "Second Post", :id 2}]}))
+5: (defn create-user-handler [request] (let [{:keys [body]} (:params request)] (response {:status "created", :user body})))
+6: (defroutes app-routes (GET "/users" [] users-handler) (GET "/users/:id" [id] (user-handler {:id id})) (GET "/users/:id/posts" [id] (user-posts-handler {:id id})) (POST "/users" request (create-user-handler request)) (route/not-found (response {:error "Not Found"})))
+
+----- Stack trace --------------------------------------------------------------
+babashka.main/exec/fn--32036/load-fn--32047 - <built-in>
+examples.program34                          - /Users/genekim/src.local/cljpp/experiments/test-variant-persuasive-20251110-121016/34-persuasive-iter01.clj:1:24
+
+
+  - Program 03 iter 01: Transpile failed
+  - Program 04 iter 01: Transpile failed
+  - Program 06 iter 01: Transpile failed
+  - Program 09 iter 01: Transpile failed
+  - Program 13 iter 01: Transpile failed
+  - Program 15 iter 01: Transpile failed
+  - Program 17 iter 01: Transpile failed
+  - Program 21 iter 01: Transpile failed
+  - Program 22 iter 01: Transpile failed
+  - Program 23 iter 01: Transpile failed
+  - Program 24 iter 01: Transpile failed
+  - Program 26 iter 01: Transpile failed
+  - Program 27 iter 01: Transpile failed
+  - Program 29 iter 01: Transpile failed
+  - Program 32 iter 01: Transpile failed
+  - Program 33 iter 01: Transpile failed
+  - Program 37 iter 01: Transpile failed
+  - Program 38 iter 01: Transpile failed
+  - Program 40 iter 01: Transpile failed
+
+Results saved to: experiments/test-variant-persuasive-20251110-121016
+========================================
+Testing variant: negative
+Programs: 1-40
+Iterations: 1
+Results dir: experiments/test-variant-negative-20251110-121232
+========================================
+
+[06/negative/iter01] Testing...
+
+[05/negative/iter01] Testing...
+[01/negative/iter01] Testing...
+[02/negative/iter01] Testing...
+
+[11/negative/iter01] Testing...
+
+[03/negative/iter01] Testing...
+
+[08/negative/iter01] Testing...
+
+[07/negative/iter01] Testing...
+
+[04/negative/iter01] Testing...
+
+
+[10/negative/iter01] Testing...
+
+
+[09/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 21,
+ :line 1,
+ :col 21,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 21,
+ :line 1,
+ :col 21,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 21,
+ :line 1,
+ :col 21,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 21,
+ :line 1,
+ :col 21,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+
+[12/negative/iter01] Testing...
+[13/negative/iter01] Testing...
+
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 21,
+ :line 1,
+ :col 21,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+[14/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 21,
+ :line 1,
+ :col 21,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+[16/negative/iter01] Testing...
+
+[15/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 21,
+ :line 1,
+ :col 21,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+[17/negative/iter01] Testing...
+
+[18/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 94,
+ :line 2,
+ :col 71,
+ :char \]}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+
+[19/negative/iter01] Testing...
+
+[20/negative/iter01] Testing...
+
+[21/negative/iter01] Testing...
+
+[22/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 60,
+ :line 2,
+ :col 37,
+ :char \]}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+[24/negative/iter01] Testing...
+
+[25/negative/iter01] Testing...
+
+[23/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+[27/negative/iter01] Testing...
+
+[26/negative/iter01] Testing...
+
+[28/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+[29/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 58,
+ :line 2,
+ :col 35,
+ :char \]}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+[30/negative/iter01] Testing...
+
+[31/negative/iter01] Testing...
+
+[32/negative/iter01] Testing...
+
+[33/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+[34/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 57,
+ :line 2,
+ :col 34,
+ :char \]}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+[36/negative/iter01] Testing...
+
+[35/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+[37/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 68,
+ :line 2,
+ :col 45,
+ :char \]}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 107,
+ :line 2,
+ :col 84,
+ :char \]}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 54,
+ :line 2,
+ :col 31,
+ :char \]}
+
+  ❌ ERROR: Transpile failed
+
+[39/negative/iter01] Testing...
+
+[38/negative/iter01] Testing...
+
+[40/negative/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 61,
+ :line 2,
+ :col 38,
+ :char \]}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 54,
+ :line 2,
+ :col 31,
+ :char \]}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 22,
+ :line 1,
+ :col 22,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+
+========================================
+SUMMARY
+========================================
+EXPERIMENT: Negative (discouraging): 1/40 (3%)
+
+Failures:
+  - Program 08 iter 01: ----- Error --------------------------------------------------------------------
+Type:     java.lang.ClassCastException
+Message:  clojure.lang.PersistentVector cannot be cast to clojure.lang.Named
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-negative-20251110-121232/08-negative-iter01.clj:4:1
+Phase:    macroexpand
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program8)
+2: (defn process-user [{:as user, :keys [name age]}] {:original user, :info (str "Age: " age), :greeting (str "Hello, " name)})
+3: (defn process-items [[first second & rest]] {:second second, :total (+ 2 (count rest)), :first first, :rest rest})
+4: (defn nested-extract [{:as nested, :keys [[{:as address, :keys [street city]}]]}] {:all-data nested, :city city, :full-address address, :street street})
+   ^--- clojure.lang.PersistentVector cannot be cast to clojure.lang.Named
+
+----- Stack trace --------------------------------------------------------------
+clojure.core/namespace - <built-in>
+examples.program8      - /Users/genekim/src.local/cljpp/experiments/test-variant-negative-20251110-121232/08-negative-iter01.clj:4:1
+clojure.core/defn      - <built-in>
+examples.program8      - /Users/genekim/src.local/cljpp/experiments/test-variant-negative-20251110-121232/08-negative-iter01.clj:4:1
+
+
+  - Program 34 iter 01: ----- Error --------------------------------------------------------------------
+Type:     java.io.FileNotFoundException
+Message:  Could not locate compojure/core.bb, compojure/core.clj or compojure/core.cljc on classpath.
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-negative-20251110-121232/34-negative-iter01.clj:1:24
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program34 (:require [compojure.core :refer [defroutes GET POST]] [compojure.route :as route] [ring.util.response :refer [response]]))
+                          ^--- Could not locate compojure/core.bb, compojure/core.clj or compojure/core.cljc on classpath.
+2: (defn get-users [request] (response {:users [{:name "Alice", :id 1} {:name "Bob", :id 2}]}))
+3: (defn get-user [{:keys [id]}] (response {:name (str "User " id), :id id}))
+4: (defn create-user [{:keys [body-params]}] (response {:status "created", :user body-params}))
+5: (defn get-user-posts [{{:keys [id]} :params}] (response {:user-id id, :posts [{:title "First Post", :id 1} {:title "Second Post", :id 2}]}))
+6: (defroutes app-routes (GET "/users" request (get-users request)) (GET "/users/:id" {:as request, :keys [params]} (get-user params)) (POST "/users" request (create-user request)) (GET "/users/:id/posts" request (get-user-posts request)) (route/not-found (response {:error "Not Found"})))
+
+----- Stack trace --------------------------------------------------------------
+babashka.main/exec/fn--32036/load-fn--32047 - <built-in>
+examples.program34                          - /Users/genekim/src.local/cljpp/experiments/test-variant-negative-20251110-121232/34-negative-iter01.clj:1:24
+
+
+  - Program 02 iter 01: Transpile failed
+  - Program 03 iter 01: Transpile failed
+  - Program 04 iter 01: Transpile failed
+  - Program 05 iter 01: Transpile failed
+  - Program 06 iter 01: Transpile failed
+  - Program 07 iter 01: Transpile failed
+  - Program 09 iter 01: Transpile failed
+  - Program 10 iter 01: Transpile failed
+  - Program 11 iter 01: Transpile failed
+  - Program 12 iter 01: Transpile failed
+  - Program 13 iter 01: Transpile failed
+  - Program 14 iter 01: Transpile failed
+  - Program 15 iter 01: Transpile failed
+  - Program 16 iter 01: Transpile failed
+  - Program 17 iter 01: Transpile failed
+  - Program 18 iter 01: Transpile failed
+  - Program 19 iter 01: Transpile failed
+  - Program 20 iter 01: Transpile failed
+  - Program 21 iter 01: Transpile failed
+  - Program 22 iter 01: Transpile failed
+  - Program 23 iter 01: Transpile failed
+  - Program 24 iter 01: Transpile failed
+  - Program 25 iter 01: Transpile failed
+  - Program 26 iter 01: Transpile failed
+  - Program 27 iter 01: Transpile failed
+  - Program 28 iter 01: Transpile failed
+  - Program 29 iter 01: Transpile failed
+  - Program 30 iter 01: Transpile failed
+  - Program 31 iter 01: Transpile failed
+  - Program 32 iter 01: Transpile failed
+  - Program 33 iter 01: Transpile failed
+  - Program 35 iter 01: Transpile failed
+  - Program 36 iter 01: Transpile failed
+  - Program 37 iter 01: Transpile failed
+  - Program 38 iter 01: Transpile failed
+  - Program 39 iter 01: Transpile failed
+  - Program 40 iter 01: Transpile failed
+
+Results saved to: experiments/test-variant-negative-20251110-121232

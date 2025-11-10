@@ -1,0 +1,30 @@
+```clojure
+(ns examples.program19)
+
+(def db
+  {:people [{:id 1 :name "Alice" :role :manager}
+            {:id 2 :name "Bob" :role :developer}
+            {:id 3 :name "Carol" :role :manager}
+            {:id 4 :name "Dave" :role :developer}]
+   :projects [{:id 101 :name "Project X" :manager-id 1}
+              {:id 102 :name "Project Y" :manager-id 3}
+              {:id 103 :name "Project Z" :manager-id 1}]})
+
+(defn find-by [coll pred]
+  (filter pred coll))
+
+(defn join [left-coll right-coll left-key right-key]
+  (for [left left-coll
+        right right-coll
+        :when (= (left-key left) (right-key right))]
+    [left right]))
+
+(defn query-projects-with-managers []
+  (let [people (:people db)
+        projects (:projects db)
+        joined (join projects people :manager-id :id)]
+    (map (fn [[project person]]
+           {:project-name (:name project)
+            :manager-name (:name person)})
+         joined)))
+```

@@ -1,0 +1,54 @@
+```clojure
+PUSH-( ns examples.program24 POP
+
+PUSH-( defmacro when-let-all PUSH-[ bindings & body POP
+  PUSH-( if PUSH-( empty? bindings POP
+    PUSH-( cons 'do body POP
+    PUSH-( let PUSH-[
+      PUSH-[ sym val POP PUSH-( take 2 bindings POP
+      rest-bindings PUSH-( drop 2 bindings POP
+    POP
+      PUSH-( list 'let PUSH-[ sym val POP
+        PUSH-( list 'if sym
+          PUSH-( cons 'when-let-all PUSH-( cons rest-bindings body POP POP
+          nil
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defmacro defn-timed PUSH-[ name args & body POP
+  PUSH-( let PUSH-[ fn-name PUSH-( str name POP POP
+    PUSH-( list 'defn name args
+      PUSH-( list 'let PUSH-[ 'start PUSH-( list 'System/nanoTime POP POP
+        PUSH-( list 'let PUSH-[ 'result PUSH-( cons 'do body POP POP
+          PUSH-( list 'let PUSH-[ 'elapsed PUSH-( list '/ PUSH-( list '- PUSH-( list 'System/nanoTime POP 'start POP POP 1000000.0 POP POP
+            PUSH-( list 'do
+              PUSH-( list 'println PUSH-( str fn-name " took" POP 'elapsed "ms" POP
+              'result
+            POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn-timed fibonacci PUSH-[ n POP
+  PUSH-( if PUSH-( <= n 1 POP
+    n
+    PUSH-( + PUSH-( fibonacci PUSH-( - n 1 POP POP PUSH-( fibonacci PUSH-( - n 2 POP POP POP
+  POP
+POP
+
+PUSH-( defn demo PUSH-[ POP
+  PUSH-( when-let-all PUSH-[ x 5 y 10 POP
+    PUSH-( println "Sum:" PUSH-( + x y POP POP
+  POP
+  PUSH-( when-let-all PUSH-[ x 5 y nil z 10 POP
+    PUSH-( println "This won't print" POP
+  POP
+  PUSH-( fibonacci 10 POP
+POP
+```

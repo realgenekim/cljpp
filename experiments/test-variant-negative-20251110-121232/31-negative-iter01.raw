@@ -1,0 +1,35 @@
+```clojure
+(ns examples.program31)
+
+(defn from [data]
+  (fn [query-fn]
+    (query-fn data)))
+
+(defn where [pred]
+  (fn [data]
+    (filter pred data)))
+
+(defn select [keys]
+  (fn [data]
+    (map #(select-keys % keys) data)))
+
+(defn order-by [key-fn]
+  (fn [data]
+    (sort-by key-fn data)))
+
+(def users
+  [{:id 1 :name "Alice" :age 30 :dept "Engineering"}
+   {:id 2 :name "Bob" :age 25 :dept "Sales"}
+   {:id 3 :name "Carol" :age 35 :dept "Engineering"}
+   {:id 4 :name "Dave" :age 28 :dept "Sales"}])
+
+(def query
+  (-> users
+      (where #(= (:dept %) "Engineering"))
+      (select [:name :age])
+      (order-by :age)))
+
+(println "Engineering employees by age:")
+(doseq [emp query]
+  (println emp))
+```

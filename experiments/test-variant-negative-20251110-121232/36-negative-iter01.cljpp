@@ -1,0 +1,72 @@
+(ns examples.program36)
+
+(defn m-return [v]
+  (fn [input]
+    [[v input]]))
+
+(defn m-bind [parser f]
+  (fn [input]
+    (mapcat (fn [[v rest-input]]
+              ((f v) rest-input))
+            (parser input))))
+
+(def m-zero
+  (fn [input] []))
+
+(defn m-plus [p1 p2]
+  (fn [input]
+    (concat (p1 input) (p2 input))))
+
+(defn parse-char [pred]
+  (fn [input]
+    (if (and (seq input) (pred (first input)))
+      [[(first input) (rest input)]]
+      [])))
+
+(def parse-digit
+  (parse-char #(Character/isDigit %)))
+
+(defn parse-number [input]
+  (let [digits (take-while #(Character/isDigit %) input)]
+    (if (seq digits)
+      [[(Long/parseLong (apply str digits)) (drop (count digits) input)]]
+      [])))
+
+(defn parse-plus [input]
+  ((parse-char #(= % \+)) input))
+
+(defn parse-mul [input]
+  ((parse-char #(= % \*)) input))
+
+(declare parse-expr)
+
+(defn parse-term [input]
+  (m-plus parse-number
+          (fn [inp]
+            (if (and (seq inp) (= (first inp) \())
+              (let [results (parse-expr (rest inp))]
+                (mapcat (fn [[val rest-inp]]
+                          (if (and (seq rest-inp) (= (first rest-inp) \)))
+                            [[val (rest rest-inp)]]
+                            []))
+                        results))
+              [])))
+  input)
+
+(defn parse-expr [input]
+  (let [term-results (parse-term input)]
+    (if (empty? term-results)
+      []
+      (mapcat (fn [[left-val rest-input]]
+                (if (and (seq rest-input)
+                         (or (= (first rest-input) \+)
+                             (= (first rest-input) \*)))
+                  (let [op (first rest-input)
+                        right-results (parse-expr (rest rest-input))]
+                    (if (empty? right-results)
+                      [[left-val rest-input]]
+                      (map (fn [[right-val final-input]]
+                             [((if (= op \+) + *) left-val right-val) final-input])
+                           right-results)))
+                  [[left-val rest-input]]))
+              term-results))))

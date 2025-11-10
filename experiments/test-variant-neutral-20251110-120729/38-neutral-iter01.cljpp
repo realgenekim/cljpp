@@ -1,0 +1,43 @@
+PUSH-( ns examples.program38 POP
+
+PUSH-( defn diff PUSH-[ expr var POP
+  PUSH-( let PUSH-[ PUSH-[ op & args POP expr POP
+    PUSH-( case op
+      :const 0
+      :var PUSH-( if PUSH-( = PUSH-( second expr POP var POP 1 0 POP POP
+      :+ PUSH-[ :+ PUSH-( diff PUSH-( first args POP var POP PUSH-( diff PUSH-( second args POP var POP POP
+      :* PUSH-( let PUSH-[ PUSH-[ u v POP args POP
+        PUSH-[ :+ PUSH-[ :* PUSH-( diff u var POP v POP PUSH-[ :* u PUSH-( diff v var POP POP POP
+      POP POP
+      :exp PUSH-( let PUSH-[ u PUSH-( first args POP POP
+        PUSH-[ :* PUSH-[ :exp u POP PUSH-( diff u var POP POP
+      POP POP
+      PUSH-( throw PUSH-( ex-info "Unknown operator" PUSH-{ :op op POP POP POP
+    POP
+  POP POP
+POP
+
+PUSH-( defn simplify PUSH-[ expr POP
+  PUSH-( if PUSH-( vector? expr POP
+    PUSH-( let PUSH-[ PUSH-[ op & args POP expr
+      args PUSH-( map simplify args POP
+    POP
+      PUSH-( case op
+        :+ PUSH-( cond
+          PUSH-( = PUSH-( first args POP 0 POP PUSH-( second args POP
+          PUSH-( = PUSH-( second args POP 0 POP PUSH-( first args POP
+          :else PUSH-( vec PUSH-( cons :+ args POP POP
+        POP POP
+        :* PUSH-( cond
+          PUSH-( = PUSH-( first args POP 0 POP 0
+          PUSH-( = PUSH-( second args POP 0 POP 0
+          PUSH-( = PUSH-( first args POP 1 POP PUSH-( second args POP
+          PUSH-( = PUSH-( second args POP 1 POP PUSH-( first args POP
+          :else PUSH-( vec PUSH-( cons :* args POP POP
+        POP POP
+        PUSH-( vec PUSH-( cons op args POP POP
+      POP
+    POP POP
+    expr
+  POP
+POP POP

@@ -1,0 +1,69 @@
+```clojure
+(ns examples.program37
+  (:require [reagent.core :as r]))
+
+(defn use-state [initial-value]
+  (r/atom initial-value))
+
+(defn use-effect [effect-fn deps]
+  (let [prev-deps (atom nil)]
+    (r/create-class
+     {:component-did-mount
+      (fn [_]
+        (reset! prev-deps deps)
+        (effect-fn))
+      :component-did-update
+      (fn [_ _]
+        (when (not= @prev-deps deps)
+          (reset! prev-deps deps)
+          (effect-fn)))
+      :reagent-render
+      (fn [] [:span])})))
+
+(defn use-fetch [url]
+  (let [state (r/atom {:loading true :error nil :data nil})]
+    (js/fetch url)
+    (.then (fn [response]
+             (if (.-ok response)
+               (.json response)
+               (throw (js/Error. (str "HTTP error " (.-status response)))))))
+    (.then (fn [data]
+             (swap! state assoc :loading false :data (js->clj data :keywordize-keys true))))
+    (.catch (fn [error]
+              (swap! state assoc :loading false :error (.-message error))))
+    state))
+
+(defn user-profile []
+  (let [user-data (use-fetch "https://api.example.com/user/123")]
+    (fn []
+      (cond
+        (:loading @user-data)
+        [:div "Loading..."]
+        
+        (:error @user-data)
+        [:div.error "Error: " (:error @user-data)]
+        
+        (:data @user-data)
+        [:div.profile
+         [:h2 (get-in @user-data [:data :name])]
+         [:p "Email: " (get-in @user-data [:data :email])]]
+        
+        :else
+        [:div "No data"]))))
+
+(defn counter-with-effect []
+  (let [count (use-state 0)]
+    (r/create-class
+     {:component-did-mount
+      (fn [_]
+        (js/console.log "Counter mounted"))
+      :component-did-update
+      (fn [_ _]
+        (js/console.log "Count updated:" @count))
+      :reagent-render
+      (fn []
+        [:div
+         [:p "Count: " @count]
+         [:button {:on-click #(swap! count inc)} "Increment"]
+         [:button {:on-click #(swap! count dec)} "Decrement"]])})))
+```

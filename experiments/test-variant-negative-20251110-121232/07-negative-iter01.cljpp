@@ -1,0 +1,15 @@
+(ns examples.program7)
+
+(defmulti render-shape :type)
+
+(defmethod render-shape :circle
+  [{:keys [radius]}]
+  (str "Circle with radius: " radius))
+
+(defmethod render-shape :rectangle
+  [{:keys [width height]}]
+  (str "Rectangle " width "x" height))
+
+(defmethod render-shape :default
+  [shape]
+  (throw (ex-info "Unknown shape type" {:shape shape})))

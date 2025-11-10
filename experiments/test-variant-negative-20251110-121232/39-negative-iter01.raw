@@ -1,0 +1,102 @@
+```clojure
+(ns examples.program39)
+
+(defrecord BTreeNode [leaf? keys children])
+
+(defn create-node
+  [leaf?]
+  (->BTreeNode leaf? [] []))
+
+(defn create-btree
+  [t]
+  {:root (create-node true)
+   :t t})
+
+(defn split-child
+  [parent idx child t]
+  (let [mid-idx (dec t)
+        mid-key (nth (:keys child) mid-idx)
+        left-keys (vec (take mid-idx (:keys child)))
+        right-keys (vec (drop t (:keys child)))
+        new-node (if (:leaf? child)
+                   (->BTreeNode true right-keys [])
+                   (let [left-children (vec (take t (:children child)))
+                         right-children (vec (drop t (:children child)))]
+                     (->BTreeNode false right-keys right-children)))
+        updated-child (if (:leaf? child)
+                       (->BTreeNode true left-keys [])
+                       (->BTreeNode false left-keys (vec (take t (:children child)))))
+        new-keys (vec (concat (take idx (:keys parent))
+                             [mid-key]
+                             (drop idx (:keys parent))))
+        new-children (vec (concat (take idx (:children parent))
+                                 [updated-child new-node]
+                                 (drop (inc idx) (:children parent))))]
+    (->BTreeNode (:leaf? parent) new-keys new-children)))
+
+(defn insert-non-full
+  [node key t]
+  (if (:leaf? node)
+    (let [idx (count (take-while #(< % key) (:keys node)))
+          new-keys (vec (concat (take idx (:keys node))
+                               [key]
+                               (drop idx (:keys node))))]
+      (->BTreeNode true new-keys []))
+    (let [idx (count (take-while #(< % key) (:keys node)))
+          child (nth (:children node) idx)]
+      (if (>= (count (:keys child)) (dec (* 2 t)))
+        (let [split-parent (split-child node idx child t)
+              new-idx (if (< key (nth (:keys split-parent) idx))
+                       idx
+                       (inc idx))
+              new-child (nth (:children split-parent) new-idx)
+              updated-child (insert-non-full new-child key t)
+              final-children (assoc (:children split-parent) new-idx updated-child)]
+          (->BTreeNode false (:keys split-parent) final-children))
+        (let [updated-child (insert-non-full child key t)
+              new-children (assoc (:children node) idx updated-child)]
+          (->BTreeNode false (:keys node) new-children))))))
+
+(defn b-tree-insert
+  [btree key]
+  (let [root (:root btree)
+        t (:t btree)]
+    (if (>= (count (:keys root)) (dec (* 2 t)))
+      (let [new-root (->BTreeNode false [] [root])
+            split-root (split-child new-root 0 root t)
+            final-root (insert-non-full split-root key t)]
+        (assoc btree :root final-root))
+      (assoc btree :root (insert-non-full root key t)))))
+
+(defn b-tree-search
+  [node key]
+  (if (nil? node)
+    nil
+    (let [idx (count (take-while #(< % key) (:keys node)))]
+      (cond
+        (and (< idx (count (:keys node)))
+             (= key (nth (:keys node) idx)))
+        true
+        
+        (:leaf? node)
+        false
+        
+        :else
+        (recur (nth (:children node) idx) key)))))
+
+(defn split-node
+  [node t]
+  (let [mid-idx (dec t)
+        mid-key (nth (:keys node) mid-idx)
+        left-keys (vec (take mid-idx (:keys node)))
+        right-keys (vec (drop t (:keys node)))]
+    (if (:leaf? node)
+      {:left (->BTreeNode true left-keys [])
+       :mid mid-key
+       :right (->BTreeNode true right-keys [])}
+      (let [left-children (vec (take t (:children node)))
+            right-children (vec (drop t (:children node)))]
+        {:left (->BTreeNode false left-keys left-children)
+         :mid mid-key
+         :right (->BTreeNode false right-keys right-children)}))))
+```

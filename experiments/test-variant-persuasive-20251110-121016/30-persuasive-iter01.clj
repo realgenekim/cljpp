@@ -1,0 +1,3 @@
+(ns examples.program30)
+(deftype SkipList [elements size] clojure.lang.ISeq (seq [this] (when (pos? size) (seq elements))) (first [this] (when (pos? size) (first elements))) (next [this] (when-let [nxt (next elements)] (SkipList. nxt (dec size)))) (more [this] (if-let [nxt (next elements)] (SkipList. nxt (dec size)) (SkipList. [] 0))) clojure.lang.IPersistentCollection (cons [this x] (SkipList. (cons x elements) (inc size))) (empty [this] (SkipList. [] 0)) (equiv [this other] (and (instance? SkipList other) (= elements (.-elements other)))) clojure.lang.Counted (count [this] size))
+(defn skip-list [& items] (SkipList. (vec items) (count items)))

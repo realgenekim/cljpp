@@ -1,0 +1,59 @@
+PUSH-( ns examples.program32 POP
+
+PUSH-( defn get-box PUSH-[ board row col POP
+  PUSH-( let PUSH-[
+    box-row PUSH-( * 3 PUSH-( quot row 3 POP POP
+    box-col PUSH-( * 3 PUSH-( quot col 3 POP POP
+  POP
+    PUSH-( for PUSH-[
+      r PUSH-( range box-row PUSH-( + box-row 3 POP POP
+      c PUSH-( range box-col PUSH-( + box-col 3 POP POP
+    POP
+      PUSH-( get-in board PUSH-[ r c POP POP
+    POP
+  POP
+POP
+
+PUSH-( defn valid? PUSH-[ board row col num POP
+  PUSH-( let PUSH-[
+    row-vals PUSH-( get board row POP
+    col-vals PUSH-( map #PUSH-( get % col POP PUSH-( range 9 POP POP
+    box-vals PUSH-( get-box board row col POP
+    all-vals PUSH-( concat row-vals col-vals box-vals POP
+  POP
+    PUSH-( not PUSH-( some #PUSH-( = % num POP all-vals POP POP
+  POP
+POP
+
+PUSH-( defn find-empty PUSH-[ board POP
+  PUSH-( first
+    PUSH-( for PUSH-[
+      row PUSH-( range 9 POP
+      col PUSH-( range 9 POP
+      :when PUSH-( = 0 PUSH-( get-in board PUSH-[ row col POP POP POP
+    POP
+      PUSH-[ row col POP
+    POP
+  POP
+POP
+
+PUSH-( defn solve-sudoku PUSH-[ board POP
+  PUSH-( if-let PUSH-[ PUSH-[ row col POP PUSH-( find-empty board POP POP
+    PUSH-( loop PUSH-[ nums PUSH-( range 1 10 POP POP
+      PUSH-( when PUSH-( seq nums POP
+        PUSH-( let PUSH-[ num PUSH-( first nums POP POP
+          PUSH-( if PUSH-( valid? board row col num POP
+            PUSH-( let PUSH-[
+              new-board PUSH-( assoc-in board PUSH-[ row col POP num POP
+              result PUSH-( solve-sudoku new-board POP
+            POP
+              PUSH-( or result PUSH-( recur PUSH-( rest nums POP POP POP
+            POP
+            PUSH-( recur PUSH-( rest nums POP POP
+          POP
+        POP
+      POP
+    POP
+    board
+  POP
+POP

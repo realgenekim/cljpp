@@ -1,0 +1,2 @@
+(ns examples.program11 (:require [clojure.core.async :refer [chan go-loop >! <! close!]]))
+(defn pipeline [input-ch] (let [step1-ch (chan) step2-ch (chan)] (go-loop [] (if-let [[val (<! input-ch)]] (do (>! step1-ch (* 2 val)) (recur)) (close! step1-ch))) (go-loop [] (if-let [[val (<! step1-ch)]] (do (>! step2-ch (+ 10 val)) (recur)) (close! step2-ch))) step2-ch))

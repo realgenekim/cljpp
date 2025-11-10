@@ -1,0 +1,64 @@
+(ns examples.program27
+  (:require [reagent.core :as r]))
+
+(defn counter-component []
+  (let [count (r/atom 0)]
+    (fn []
+      [:div
+       [:p "Count: " @count]
+       [:button {:on-click #(swap! count inc)} "Increment"]
+       [:button {:on-click #(swap! count dec)} "Decrement"]])))
+
+(defn todo-list []
+  (let [todos (r/atom [])
+        input (r/atom "")]
+    (fn []
+      [:div
+       [:input {:type "text"
+                :value @input
+                :on-change #(reset! input (-> % .-target .-value))}]
+       [:button {:on-click #(when (seq @input)
+                              (swap! todos conj {:id (random-uuid)
+                                                :text @input
+                                                :done false})
+                              (reset! input ""))}
+        "Add"]
+       [:ul
+        (for [todo @todos]
+          ^{:key (:id todo)}
+          [:li
+           [:input {:type "checkbox"
+                    :checked (:done todo)
+                    :on-change #(swap! todos
+                                      (fn [ts]
+                                        (mapv (fn [t]
+                                                (if (= (:id t) (:id todo))
+                                                  (update t :done not)
+                                                  t))
+                                              ts)))}]
+           [:span {:style {:text-decoration (when (:done todo) "line-through")}}
+            (:text todo)]
+           [:button {:on-click #(swap! todos
+                                      (fn [ts]
+                                        (filterv (fn [t]
+                                                  (not= (:id t) (:id todo)))
+                                                ts)))}
+            "Remove"]])]])))
+
+(defn filtered-list []
+  (let [items (r/atom ["Apple" "Banana" "Cherry" "Date" "Elderberry" "Fig" "Grape"])
+        search (r/atom "")]
+    (fn []
+      (let [filtered (filter #(clojure.string/includes?
+                               (clojure.string/lower-case %)
+                               (clojure.string/lower-case @search))
+                            @items)]
+        [:div
+         [:input {:type "text"
+                  :placeholder "Search..."
+                  :value @search
+                  :on-change #(reset! search (-> % .-target .-value))}]
+         [:ul
+          (for [item filtered]
+            ^{:key item}
+            [:li item])]]))))

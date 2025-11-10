@@ -1,0 +1,99 @@
+Perfect! Now I understand the explicit POP format. Based on the format specification and the examples, I need to write a Reagent hooks pattern program in CLJ-PP format. Here's the code:
+
+```clojure
+PUSH-( ns examples.program37
+  PUSH-( :require
+    PUSH-[ reagent.core :as r POP
+    PUSH-[ reagent.ratom :refer PUSH-[ atom POP POP
+  POP
+POP
+
+PUSH-( defn use-state PUSH-[ initial-value POP
+  PUSH-( r/atom initial-value POP
+POP
+
+PUSH-( defn use-effect PUSH-[ effect-fn deps POP
+  PUSH-( r/track!
+    PUSH-( fn PUSH-[ POP
+      PUSH-( effect-fn POP
+    POP
+  POP
+POP
+
+PUSH-( defn use-fetch PUSH-[ url POP
+  PUSH-( let PUSH-[
+    state PUSH-( r/atom PUSH-{ :loading true :error nil :data nil POP POP
+  POP
+    PUSH-( r/create-class
+      PUSH-{
+        :component-did-mount
+        PUSH-( fn PUSH-[ this POP
+          PUSH-( ->
+            PUSH-( js/fetch url POP
+            PUSH-( .then PUSH-( fn PUSH-[ response POP PUSH-( .json response POP POP POP
+            PUSH-( .then
+              PUSH-( fn PUSH-[ data POP
+                PUSH-( reset! state PUSH-{ :loading false :error nil :data data POP POP
+              POP
+            POP
+            PUSH-( .catch
+              PUSH-( fn PUSH-[ error POP
+                PUSH-( reset! state PUSH-{ :loading false :error PUSH-( str error POP :data nil POP POP
+              POP
+            POP
+          POP
+        POP
+        :reagent-render
+        PUSH-( fn PUSH-[ POP
+          PUSH-[ :div @state POP
+        POP
+      POP
+    POP
+    state
+  POP
+POP
+
+PUSH-( defn counter-component PUSH-[ POP
+  PUSH-( let PUSH-[
+    count PUSH-( use-state 0 POP
+  POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div
+        PUSH-[ :h2 PUSH-( str "Count: " @count POP POP
+        PUSH-[ :button
+          PUSH-{ :on-click PUSH-( fn PUSH-[ POP PUSH-( swap! count inc POP POP POP
+          "Increment"
+        POP
+        PUSH-[ :button
+          PUSH-{ :on-click PUSH-( fn PUSH-[ POP PUSH-( reset! count 0 POP POP POP
+          "Reset"
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn user-data-component PUSH-[ POP
+  PUSH-( let PUSH-[
+    fetch-state PUSH-( use-fetch "https://api.example.com/user" POP
+  POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-( let PUSH-[
+        PUSH-{ :keys PUSH-[ loading error data POP POP @fetch-state
+      POP
+        PUSH-[ :div
+          PUSH-( cond
+            loading PUSH-[ :p "Loading..." POP
+            error PUSH-[ :div.error PUSH-( str "Error: " error POP POP
+            data PUSH-[ :div.data
+              PUSH-[ :h3 "User Data" POP
+              PUSH-[ :pre PUSH-( pr-str data POP POP
+            POP
+            :else PUSH-[ :p "No data" POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP
+```

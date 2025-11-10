@@ -1,0 +1,21 @@
+(ns examples.program6)
+
+(defn safe-divide [a b]
+  (try
+    {:status :ok :value (/ a b)}
+    (catch ArithmeticException e
+      {:status :error :message (.getMessage e)})))
+
+(defn validate-user [user]
+  (cond
+    (nil? user)
+    {:status :error :message "User is nil"}
+    
+    (or (nil? (:name user)) (empty? (:name user)))
+    {:status :error :message "Name is required"}
+    
+    (or (nil? (:age user)) (neg? (:age user)))
+    {:status :error :message "Age must be non-negative"}
+    
+    :else
+    {:status :ok :user user}))

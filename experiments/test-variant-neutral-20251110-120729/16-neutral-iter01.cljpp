@@ -1,0 +1,54 @@
+Perfect! Now I have a reference implementation. Let me write the CLJ-PP version following the specification. Based on the spec and the reference implementation, I'll write the parser combinators in CLJ-PP format:
+
+PUSH-( ns examples.program16 POP
+
+PUSH-( defn parse-char PUSH-[ c POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( if PUSH-( and PUSH-( seq input POP PUSH-( = PUSH-( first input POP c POP POP POP
+      PUSH-[ PUSH-[ c PUSH-( rest input POP POP POP
+      PUSH-[ POP
+    POP
+  POP
+POP
+
+PUSH-( defn parse-return PUSH-[ v POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-[ PUSH-[ v input POP POP
+  POP
+POP
+
+PUSH-( defn bind PUSH-[ parser f POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( for PUSH-[ PUSH-[ result remaining POP PUSH-( parser input POP
+              PUSH-[ result2 remaining2 POP PUSH-( PUSH-( f result POP remaining POP POP
+      PUSH-[ result2 remaining2 POP
+    POP
+  POP
+POP
+
+PUSH-( defn choice PUSH-[ p1 p2 POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( let PUSH-[ r1 PUSH-( p1 input POP POP
+      PUSH-( if PUSH-( seq r1 POP
+        r1
+        PUSH-( p2 input POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn many PUSH-[ parser POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( loop PUSH-[ inp input
+              results PUSH-[ POP POP
+      PUSH-( let PUSH-[ parsed PUSH-( parser inp POP POP
+        PUSH-( if PUSH-( seq parsed POP
+          PUSH-( let PUSH-[ PUSH-[ PUSH-[ result remaining POP POP PUSH-( first parsed POP POP
+            PUSH-( recur remaining PUSH-( conj results result POP POP
+          POP
+          PUSH-[ PUSH-[ results inp POP POP
+        POP
+      POP
+    POP
+  POP
+POP

@@ -1,0 +1,22 @@
+I'll write this program using CLJ-PP to handle the nested structures cleanly.
+
+PUSH-( ns examples.program4 POP
+
+PUSH-( def users
+  PUSH-[ 
+    PUSH-{ :name "Alice" :age 25 :role "admin" POP
+    PUSH-{ :name "Bob" :age 17 :role "user" POP
+    PUSH-{ :name "Charlie" :age 30 :role "moderator" POP
+    PUSH-{ :name "Diana" :age 16 :role "user" POP
+  POP
+POP
+
+PUSH-( defn active-users PUSH-[ users POP
+  PUSH-( filter PUSH-( fn PUSH-[ user POP
+    PUSH-( > PUSH-( :age user POP 18 POP
+  POP POP users POP
+POP
+
+PUSH-( defn user-names PUSH-[ users POP
+  PUSH-( map :name users POP
+POP

@@ -1,0 +1,56 @@
+I'll write this program in CLJ-PP format:
+
+```clojure
+PUSH-( ns examples.program29
+  PUSH-( :require PUSH-[ clojure.core.async :refer PUSH-[ chan go go-loop alts! >! <! close! POP POP POP
+POP
+
+PUSH-( defn channel-coordination PUSH-[ POP
+  PUSH-( let PUSH-[
+    ch1 PUSH-( chan POP
+    ch2 PUSH-( chan POP
+    ch3 PUSH-( chan POP
+    out PUSH-( chan POP
+  POP
+    PUSH-( go-loop PUSH-[ i 0 POP
+      PUSH-( when PUSH-( < i 3 POP
+        PUSH-( >! ch1 PUSH-( str "ch1-" i POP POP
+        PUSH-( recur PUSH-( inc i POP POP
+      POP
+      PUSH-( close! ch1 POP
+    POP
+    PUSH-( go-loop PUSH-[ i 0 POP
+      PUSH-( when PUSH-( < i 3 POP
+        PUSH-( >! ch2 PUSH-( str "ch2-" i POP POP
+        PUSH-( recur PUSH-( inc i POP POP
+      POP
+      PUSH-( close! ch2 POP
+    POP
+    PUSH-( go-loop PUSH-[ i 0 POP
+      PUSH-( when PUSH-( < i 3 POP
+        PUSH-( >! ch3 PUSH-( str "ch3-" i POP POP
+        PUSH-( recur PUSH-( inc i POP POP
+      POP
+      PUSH-( close! ch3 POP
+    POP
+    PUSH-( go
+      PUSH-( loop PUSH-[ results PUSH-[ POP
+                   open-channels 3 POP
+        PUSH-( if PUSH-( zero? open-channels POP
+          PUSH-( do
+            PUSH-( >! out results POP
+            PUSH-( close! out POP
+          POP
+          PUSH-( let PUSH-[ PUSH-[ val port POP PUSH-( alts! PUSH-[ ch1 ch2 ch3 POP POP POP
+            PUSH-( if val
+              PUSH-( recur PUSH-( conj results val POP open-channels POP
+              PUSH-( recur results PUSH-( dec open-channels POP POP
+            POP
+          POP
+        POP
+      POP
+    POP
+    out
+  POP
+POP
+```

@@ -1,0 +1,17 @@
+```clojure
+PUSH-( ns examples.program7 POP
+
+PUSH-( defmulti render-shape PUSH-( :type POP POP
+
+PUSH-( defmethod render-shape :circle PUSH-[ shape POP
+  PUSH-( str "Circle with radius: " PUSH-( :radius shape POP POP
+POP
+
+PUSH-( defmethod render-shape :rectangle PUSH-[ shape POP
+  PUSH-( str "Rectangle " PUSH-( :width shape POP "x" PUSH-( :height shape POP POP
+POP
+
+PUSH-( defmethod render-shape :default PUSH-[ shape POP
+  PUSH-( str "Error: Unknown shape type " PUSH-( :type shape POP POP
+POP
+```

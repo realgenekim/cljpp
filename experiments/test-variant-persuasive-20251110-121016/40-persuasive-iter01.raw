@@ -1,0 +1,93 @@
+I'll write this program using CLJ-PP format for explicit stack management.
+
+```clojure
+PUSH-( ns examples.program40 POP
+
+PUSH-( defn find-cycles PUSH-[ graph POP
+  PUSH-( letfn PUSH-[
+    PUSH-( visit PUSH-[ node visiting visited POP
+      PUSH-( cond
+        PUSH-( visiting node POP PUSH-[ node POP
+        PUSH-( visited node POP nil
+        :else
+        PUSH-( let PUSH-[
+          deps PUSH-( get-in graph PUSH-[ node :deps POP PUSH-[ POP POP
+          new-visiting PUSH-( conj visiting node POP
+        POP
+          PUSH-( some
+            PUSH-( fn PUSH-[ dep POP
+              PUSH-( visit dep new-visiting visited POP
+            POP
+            deps
+          POP
+        POP
+      POP
+    POP
+  POP
+    PUSH-( some
+      PUSH-( fn PUSH-[ node POP
+        PUSH-( visit node #{} #{} POP
+      POP
+      PUSH-( keys graph POP
+    POP
+  POP
+POP
+
+PUSH-( defn topological-sort PUSH-[ graph POP
+  PUSH-( loop PUSH-[
+    sorted PUSH-[ POP
+    remaining PUSH-( set PUSH-( keys graph POP POP
+    visited #{}
+  POP
+    PUSH-( if PUSH-( empty? remaining POP
+      sorted
+      PUSH-( let PUSH-[
+        ready PUSH-( filter
+          PUSH-( fn PUSH-[ node POP
+            PUSH-( let PUSH-[ deps PUSH-( get-in graph PUSH-[ node :deps POP PUSH-[ POP POP POP
+              PUSH-( every? visited deps POP
+            POP
+          POP
+          remaining
+        POP
+        next-node PUSH-( first ready POP
+      POP
+        PUSH-( if next-node
+          PUSH-( recur
+            PUSH-( conj sorted next-node POP
+            PUSH-( disj remaining next-node POP
+            PUSH-( conj visited next-node POP
+          POP
+          PUSH-( throw PUSH-( ex-info "Cyclic dependency detected" PUSH-{ :remaining remaining POP POP POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn execute-graph PUSH-[ graph POP
+  PUSH-( if-let PUSH-[ cycle PUSH-( find-cycles graph POP POP
+    PUSH-( throw PUSH-( ex-info "Cycle detected in graph" PUSH-{ :cycle cycle POP POP POP
+    PUSH-( let PUSH-[
+      order PUSH-( topological-sort graph POP
+      cache PUSH-( atom PUSH-{ POP POP
+    POP
+      PUSH-( doseq PUSH-[ node order POP
+        PUSH-( let PUSH-[
+          node-def PUSH-( get graph node POP
+          deps PUSH-( :deps node-def POP
+          f PUSH-( :fn node-def POP
+          dep-results PUSH-( mapv
+            PUSH-( fn PUSH-[ dep POP PUSH-( get @cache dep POP POP
+            deps
+          POP
+          result PUSH-( apply f dep-results POP
+        POP
+          PUSH-( swap! cache assoc node result POP
+        POP
+      POP
+      @cache
+    POP
+  POP
+POP
+```

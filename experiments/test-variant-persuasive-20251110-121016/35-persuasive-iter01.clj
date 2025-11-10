@@ -1,0 +1,7 @@
+(ns examples.program35 (:require [clojure.test.check :as tc] [clojure.test.check.generators :as gen] [clojure.test.check.properties :as prop]))
+(def user-gen (gen/hash-map :id (gen/large-integer* {:min 1}) :name (gen/not-empty gen/string-alphanumeric) :email (gen/fmap (fn [s] (str s "@example.com")) gen/string-alphanumeric) :age (gen/large-integer* {:min 18, :max 100})))
+(def user-id-positive (prop/for-all [user user-gen] (pos? (:id user))))
+(def user-name-non-empty (prop/for-all [user user-gen] (not (empty? (:name user)))))
+(def user-email-valid (prop/for-all [user user-gen] (clojure.string/includes? (:email user) "@")))
+(def user-age-in-range (prop/for-all [user user-gen] (and (>= (:age user) 18) (<= (:age user) 100))))
+(defn run-tests [] (println "Running property-based tests...") (let [results [(tc/quick-check 100 user-id-positive) (tc/quick-check 100 user-name-non-empty) (tc/quick-check 100 user-email-valid) (tc/quick-check 100 user-age-in-range)]] (doseq [result results] (println (if (:pass? result) "✓ PASS" "✗ FAIL") (or (:result result) ""))) results))

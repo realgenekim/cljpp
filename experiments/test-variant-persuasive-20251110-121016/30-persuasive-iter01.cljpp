@@ -1,0 +1,48 @@
+PUSH-( ns examples.program30 POP
+
+PUSH-( deftype SkipList PUSH-[ elements size POP
+  clojure.lang.ISeq
+  PUSH-( seq PUSH-[ this POP
+    PUSH-( when PUSH-( pos? size POP
+      PUSH-( seq elements POP
+    POP
+  POP
+  PUSH-( first PUSH-[ this POP
+    PUSH-( when PUSH-( pos? size POP
+      PUSH-( first elements POP
+    POP
+  POP
+  PUSH-( next PUSH-[ this POP
+    PUSH-( when-let PUSH-[ nxt PUSH-( next elements POP POP
+      PUSH-( SkipList. nxt PUSH-( dec size POP POP
+    POP
+  POP
+  PUSH-( more PUSH-[ this POP
+    PUSH-( if-let PUSH-[ nxt PUSH-( next elements POP POP
+      PUSH-( SkipList. nxt PUSH-( dec size POP POP
+      PUSH-( SkipList. PUSH-[ POP 0 POP
+    POP
+  POP
+  
+  clojure.lang.IPersistentCollection
+  PUSH-( cons PUSH-[ this x POP
+    PUSH-( SkipList. PUSH-( cons x elements POP PUSH-( inc size POP POP
+  POP
+  PUSH-( empty PUSH-[ this POP
+    PUSH-( SkipList. PUSH-[ POP 0 POP
+  POP
+  PUSH-( equiv PUSH-[ this other POP
+    PUSH-( and PUSH-( instance? SkipList other POP
+         PUSH-( = elements PUSH-( .-elements other POP POP
+    POP
+  POP
+  
+  clojure.lang.Counted
+  PUSH-( count PUSH-[ this POP
+    size
+  POP
+POP
+
+PUSH-( defn skip-list PUSH-[ & items POP
+  PUSH-( SkipList. PUSH-( vec items POP PUSH-( count items POP POP
+POP

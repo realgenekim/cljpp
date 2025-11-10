@@ -1,0 +1,29 @@
+(ns examples.program26)
+
+(defn wrap-json [handler]
+  (fn [request]
+    (let [body (:body request)
+          parsed (when body {:json body})]
+      (handler (merge request parsed)))))
+
+(defn wrap-cors [handler]
+  (fn [request]
+    (let [response (handler request)]
+      (assoc-in response [:headers :access-control-allow-origin] "*"))))
+
+(defn wrap-session [handler]
+  (fn [request]
+    (if (get-in request [:headers :token])
+      (handler request)
+      {:status 401 :body "Unauthorized"})))
+
+(defn app [request]
+  {:status 200 :body (str "Processed: " (:json request))})
+
+(def wrapped-app
+  (-> app
+      wrap-json
+      wrap-cors
+      wrap-session))
+
+(wrapped-app {:headers {:token "abc123"} :body "data"})

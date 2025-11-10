@@ -1,0 +1,43 @@
+```clojure
+(ns examples.program30)
+
+(deftype SkipList [elements cnt]
+  clojure.lang.ISeq
+  (first [this]
+    (first elements))
+  (next [this]
+    (when-let [nxt (next elements)]
+      (SkipList. nxt (dec cnt))))
+  (more [this]
+    (if-let [nxt (next elements)]
+      (SkipList. nxt (dec cnt))
+      (empty this)))
+  (cons [this x]
+    (SkipList. (cons x elements) (inc cnt)))
+  
+  clojure.lang.Sequential
+  
+  clojure.lang.IPersistentCollection
+  (count [this]
+    cnt)
+  (empty [this]
+    (SkipList. () 0))
+  (equiv [this other]
+    (and (sequential? other)
+         (= (seq this) (seq other))))
+  
+  clojure.lang.Seqable
+  (seq [this]
+    (when (pos? cnt)
+      this))
+  
+  clojure.lang.Counted
+  (count [this]
+    cnt))
+
+(defn skip-list
+  ([]
+   (SkipList. () 0))
+  ([coll]
+   (SkipList. (vec coll) (count coll))))
+```

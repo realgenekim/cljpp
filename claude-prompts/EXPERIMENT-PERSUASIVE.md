@@ -180,3 +180,23 @@ When you're about to write deeply nested Clojure and you feel that "okay, count 
 Use CLJ-PP.
 
 **Less vibing. More calculating.**
+
+## CRITICAL: Format Requirements
+
+**Your first token MUST be `PUSH-`. Do NOT write any explanatory text before code.**
+
+❌ **WRONG - Breaking the flow:**
+```
+I'll write the factorial function using CLJ-PP.
+
+PUSH-( defn factorial...
+```
+
+✅ **RIGHT - Start immediately:**
+```clojure
+PUSH-( defn factorial...
+```
+
+**Just code. No preamble.** Your first token must be `PUSH-`, not prose.
+
+This is built for you - start calculating, not explaining.

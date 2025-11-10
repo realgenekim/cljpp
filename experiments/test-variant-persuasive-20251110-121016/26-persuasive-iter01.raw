@@ -1,0 +1,10 @@
+I need permission to write the test program file. The code implements:
+
+- **wrap-json**: Parses JSON body string into EDN map
+- **wrap-cors**: Adds CORS header to response
+- **wrap-session**: Validates Bearer token, rejects if invalid
+- **app-handler**: Final handler that returns success response
+- **app**: Middleware chain using `->` threading
+- **-main**: Demonstrates the chain with a test request
+
+The CLJ-PP format makes the nested middleware functions much clearer - each middleware wraps a handler and returns a new function, with explicit stack operations instead of counting closing parentheses.

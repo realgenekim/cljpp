@@ -1,0 +1,66 @@
+PUSH-( ns examples.program35
+  PUSH-( :require
+    PUSH-[ clojure.test.check :as tc POP
+    PUSH-[ clojure.test.check.generators :as gen POP
+    PUSH-[ clojure.test.check.properties :as prop POP
+  POP
+POP
+
+PUSH-( def user-gen
+  PUSH-( gen/hash-map
+    :id PUSH-( gen/large-integer* PUSH-{ :min 1 POP POP
+    :name PUSH-( gen/not-empty gen/string-alphanumeric POP
+    :email PUSH-( gen/fmap
+      PUSH-( fn PUSH-[ s POP PUSH-( str s "@example.com" POP POP
+      gen/string-alphanumeric
+    POP
+    :age PUSH-( gen/large-integer* PUSH-{ :min 18 :max 100 POP POP
+  POP
+POP
+
+PUSH-( def user-id-positive
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( pos? PUSH-( :id user POP POP
+  POP
+POP
+
+PUSH-( def user-name-non-empty
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( not PUSH-( empty? PUSH-( :name user POP POP POP
+  POP
+POP
+
+PUSH-( def user-email-valid
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( clojure.string/includes? PUSH-( :email user POP "@" POP
+  POP
+POP
+
+PUSH-( def user-age-in-range
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( and
+      PUSH-( >= PUSH-( :age user POP 18 POP
+      PUSH-( <= PUSH-( :age user POP 100 POP
+    POP
+  POP
+POP
+
+PUSH-( defn run-tests PUSH-[ POP
+  PUSH-( println "Running property-based tests..." POP
+  PUSH-( let PUSH-[
+    results PUSH-[ 
+      PUSH-( tc/quick-check 100 user-id-positive POP
+      PUSH-( tc/quick-check 100 user-name-non-empty POP
+      PUSH-( tc/quick-check 100 user-email-valid POP
+      PUSH-( tc/quick-check 100 user-age-in-range POP
+    POP
+  POP
+    PUSH-( doseq PUSH-[ result results POP
+      PUSH-( println
+        PUSH-( if PUSH-( :pass? result POP "✓ PASS" "✗ FAIL" POP
+        PUSH-( or PUSH-( :result result POP "" POP
+      POP
+    POP
+    results
+  POP
+POP

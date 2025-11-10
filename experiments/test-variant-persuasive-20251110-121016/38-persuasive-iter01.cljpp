@@ -1,0 +1,45 @@
+PUSH-( ns examples.program38 POP
+
+PUSH-( defn diff PUSH-[ expr var POP
+  PUSH-( let PUSH-[
+    PUSH-[ op & args POP expr
+  POP
+    PUSH-( case op
+      :const 0
+      :var PUSH-( if PUSH-( = PUSH-( second expr POP var POP 1 0 POP POP
+      :+ PUSH-( let PUSH-[
+           PUSH-[ a b POP args
+           da PUSH-( diff a var POP
+           db PUSH-( diff b var POP
+         POP
+         PUSH-( cond
+           PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP PUSH-( number? db POP PUSH-( zero? db POP POP 0
+           PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP POP db
+           PUSH-( and PUSH-( number? db POP PUSH-( zero? db POP POP da
+           :else PUSH-[ :+ da db POP
+         POP
+       POP
+      :* PUSH-( let PUSH-[
+           PUSH-[ a b POP args
+           da PUSH-( diff a var POP
+           db PUSH-( diff b var POP
+         POP
+         PUSH-( cond
+           PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP PUSH-( number? db POP PUSH-( zero? db POP POP 0
+           PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP POP PUSH-[ :* a db POP
+           PUSH-( and PUSH-( number? db POP PUSH-( zero? db POP POP PUSH-[ :* da b POP
+           :else PUSH-[ :+ PUSH-[ :* da b POP PUSH-[ :* a db POP POP
+         POP
+       POP
+      :exp PUSH-( let PUSH-[
+             PUSH-[ a POP args
+             da PUSH-( diff a var POP
+           POP
+           PUSH-( cond
+             PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP POP 0
+             :else PUSH-[ :* da PUSH-[ :exp a POP POP
+           POP
+         POP
+    POP
+  POP
+POP

@@ -1,0 +1,16 @@
+I'll help you write this program. Based on the context, I should output the regular Clojure version since you haven't specified CLJ-PP format.
+
+```clojure
+(ns examples.program3)
+
+(defn factorial [n]
+  (cond
+    (<= n 1) 1
+    :else (* n (factorial (- n 1)))))
+
+(defn fibonacci [n]
+  (cond
+    (<= n 0) 0
+    (= n 1) 1
+    :else (+ (fibonacci (- n 1)) (fibonacci (- n 2)))))
+```

@@ -1,0 +1,3 @@
+(ns examples.program28 (:require [clojure.core.match :refer [match]]))
+(defn handle-user [user] (match [user] {:type :user, :data {:role :admin}} "Admin access granted" {:type :user, :data {:role :member}} "Member access granted" {:type :user, :data {:role :guest}} "Guest access granted" :else "Unknown user type"))
+(defn -main [& args] (let [admin {:type :user, :data {:role :admin, :name "Alice"}} member {:type :user, :data {:role :member, :name "Bob"}} guest {:type :user, :data {:role :guest, :name "Charlie"}}] (println (str "Admin: " (handle-user admin))) (println (str "Member: " (handle-user member))) (println (str "Guest: " (handle-user guest)))))

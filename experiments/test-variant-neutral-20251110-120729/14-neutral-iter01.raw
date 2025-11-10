@@ -1,0 +1,33 @@
+I need permission to write the test file. Here's the CLJ-PP code for the Drawable protocol with Circle and Rectangle records:
+
+```clojure
+PUSH-( ns examples.program14 POP
+
+PUSH-( defprotocol Drawable
+  PUSH-( draw PUSH-[ this POP POP
+  PUSH-( bounds PUSH-[ this POP POP
+POP
+
+PUSH-( defrecord Circle PUSH-[ x y radius POP
+  Drawable
+  PUSH-( draw PUSH-[ this POP
+    PUSH-( str "Circle at " PUSH-( :x this POP "," PUSH-( :y this POP " with radius " PUSH-( :radius this POP POP
+  POP
+  PUSH-( bounds PUSH-[ this POP
+    PUSH-{ :x PUSH-( - PUSH-( :x this POP PUSH-( :radius this POP POP
+       :y PUSH-( - PUSH-( :y this POP PUSH-( :radius this POP POP
+       :width PUSH-( * 2 PUSH-( :radius this POP POP
+       :height PUSH-( * 2 PUSH-( :radius this POP POP POP
+  POP
+POP
+
+PUSH-( defrecord Rectangle PUSH-[ x y width height POP
+  Drawable
+  PUSH-( draw PUSH-[ this POP
+    PUSH-( str "Rectangle at " PUSH-( :x this POP "," PUSH-( :y this POP " with size " PUSH-( :width this POP "x" PUSH-( :height this POP POP
+  POP
+  PUSH-( bounds PUSH-[ this POP
+    PUSH-( select-keys this PUSH-[ :x :y :width :height POP POP
+  POP
+POP
+```

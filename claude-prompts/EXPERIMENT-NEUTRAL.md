@@ -122,3 +122,21 @@ When generating CLJ-PP code:
 2. Write content normally
 3. Close containers with POP operations
 4. Verify: count of PUSH operations equals count of POP operations
+
+## CRITICAL: Format Requirements
+
+**Your first token MUST be `PUSH-`. Do NOT write any explanatory text before code.**
+
+❌ **WRONG - Explanatory text first:**
+```
+I'll write the factorial function in CLJ-PP format.
+
+PUSH-( defn factorial...
+```
+
+✅ **RIGHT - Start immediately with PUSH-:**
+```clojure
+PUSH-( defn factorial...
+```
+
+**Rule:** Start code immediately. No "I'll...", "Based on...", "Perfect!", or any prose before the first `PUSH-`.

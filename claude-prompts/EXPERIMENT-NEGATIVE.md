@@ -124,3 +124,23 @@ When required to generate CLJ-PP:
 4. Verify: PUSH count equals POP count
 
 Note: This format is approximately 50% more verbose than standard Clojure and transpiles to standard .clj output. Use standard Clojure when possible.
+
+## Format Requirements
+
+When generating CLJ-PP output:
+
+**First token must be a PUSH operation. No explanatory text.**
+
+❌ **WRONG - Additional verbosity:**
+```
+I will generate the required CLJ-PP format.
+
+PUSH-( defn factorial...
+```
+
+✅ **RIGHT - Direct output:**
+```clojure
+PUSH-( defn factorial...
+```
+
+Additional prose before code increases verbosity further.

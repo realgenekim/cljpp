@@ -1,0 +1,42 @@
+PUSH-( ns examples.program31 POP
+
+PUSH-( defn from PUSH-[ data POP
+  PUSH-( fn PUSH-[ _ POP data POP
+POP
+
+PUSH-( defn where PUSH-[ pred POP
+  PUSH-( fn PUSH-[ data POP
+    PUSH-( filter pred data POP
+  POP
+POP
+
+PUSH-( defn select PUSH-[ & keys POP
+  PUSH-( fn PUSH-[ data POP
+    PUSH-( map PUSH-( fn PUSH-[ row POP
+      PUSH-( select-keys row keys POP
+    POP data POP
+  POP
+POP
+
+PUSH-( defn order-by PUSH-[ key-fn POP
+  PUSH-( fn PUSH-[ data POP
+    PUSH-( sort-by key-fn data POP
+  POP
+POP
+
+PUSH-( defn -main PUSH-[ & args POP
+  PUSH-( let PUSH-[
+    data PUSH-[ PUSH-{ :name "Alice" :age 30 :dept "IT" POP
+           PUSH-{ :name "Bob" :age 25 :dept "HR" POP
+           PUSH-{ :name "Charlie" :age 35 :dept "IT" POP
+           PUSH-{ :name "Diana" :age 28 :dept "Sales" POP POP
+    result PUSH-( -> PUSH-( from data POP
+                 PUSH-( where PUSH-( fn PUSH-[ x POP PUSH-( = PUSH-( :dept x POP "IT" POP POP POP
+                 PUSH-( select :name :age POP
+                 PUSH-( order-by :age POP
+                 PUSH-( fn PUSH-[ f POP PUSH-( f nil POP POP
+              POP
+  POP
+    PUSH-( println result POP
+  POP
+POP

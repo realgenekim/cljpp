@@ -28,10 +28,21 @@
    :play4d {:file "claude-prompts/CLJPP-PROMPT-PLAY-v4d.md" :name "CLJ-PP (Play v4d: +POP counting)"}
    :neutral    {:file "claude-prompts/EXPERIMENT-NEUTRAL.md" :name "EXPERIMENT: Neutral (technical doc)"}
    :persuasive {:file "claude-prompts/EXPERIMENT-PERSUASIVE.md" :name "EXPERIMENT: Persuasive (selling)"}
-   :negative   {:file "claude-prompts/EXPERIMENT-NEGATIVE.md" :name "EXPERIMENT: Negative (discouraging)"}})
+   :negative   {:file "claude-prompts/EXPERIMENT-NEGATIVE.md" :name "EXPERIMENT: Negative (discouraging)"}
+   :popall-exp {:file "claude-prompts/EXPERIMENT-POPALL.md" :name "EXPERIMENT: POP-ALL (counting-free)"}})
 
 (def timestamp (.format (java.time.LocalDateTime/now)
                        (java.time.format.DateTimeFormatter/ofPattern "yyyyMMdd-HHmmss")))
+
+(defn strip-explanatory-text [content]
+  "Remove any prose before the first PUSH- or ( token"
+  (let [lines (str/split-lines content)
+        code-start (some #(when (re-find #"^\s*(PUSH-|\()" %) %) lines)]
+    (if code-start
+      (->> lines
+           (drop-while #(not (re-find #"^\s*(PUSH-|\()" %)))
+           (str/join "\n"))
+      content)))
 
 (defn get-prompt [num]
   "Extract prompt for a specific program number from test-prompts.txt"
@@ -77,12 +88,13 @@
             result (shell/sh "claude" "--print" full-prompt)]
         (spit raw-file (:out result)))
 
-      ;; Clean markdown fences
+      ;; Clean markdown fences and strip explanatory text
       (let [content (slurp raw-file)
             cleaned (-> content
                        (str/replace #"```clojure\n" "")
                        (str/replace #"```\n" "")
-                       (str/replace #"```$" ""))]
+                       (str/replace #"```$" "")
+                       strip-explanatory-text)]
         (spit code-file cleaned))
 
       ;; Transpile if CLJPP

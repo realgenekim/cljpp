@@ -1,0 +1,16 @@
+```clojure
+(ns examples.program4)
+
+(def users
+  [{:name "Alice" :age 25 :role "admin"}
+   {:name "Bob" :age 17 :role "user"}
+   {:name "Carol" :age 30 :role "moderator"}
+   {:name "Dave" :age 16 :role "user"}
+   {:name "Eve" :age 22 :role "admin"}])
+
+(defn active-users [user-list]
+  (filter #(> (:age %) 18) user-list))
+
+(defn user-names [user-list]
+  (map :name user-list))
+```

@@ -1,0 +1,29 @@
+(ns examples.program28
+  (:require [clojure.core.match :refer [match]]))
+
+(defn handle-user [user]
+  (match user
+    {:type :user :data {:role :admin :name name}}
+    (str "Admin access granted: " name)
+    
+    {:type :user :data {:role :member :name name :level level}}
+    (str "Member " name " (level " level ")")
+    
+    {:type :user :data {:role :guest}}
+    "Guest access - limited permissions"
+    
+    :else
+    "Unknown user type"))
+
+(defn process-users [users]
+  (mapv handle-user users))
+
+(comment
+  (handle-user {:type :user :data {:role :admin :name "Alice"}})
+  (handle-user {:type :user :data {:role :member :name "Bob" :level 5}})
+  (handle-user {:type :user :data {:role :guest}})
+  
+  (process-users
+   [{:type :user :data {:role :admin :name "Alice"}}
+    {:type :user :data {:role :member :name "Bob" :level 5}}
+    {:type :user :data {:role :guest}}]))

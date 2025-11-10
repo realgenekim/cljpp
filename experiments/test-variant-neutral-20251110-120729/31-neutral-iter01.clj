@@ -1,0 +1,6 @@
+(ns examples.program31)
+(defn from [data] (fn [_] data))
+(defn where [pred] (fn [data] (filter pred data)))
+(defn select [& keys] (fn [data] (map (fn [row] (select-keys row keys)) data)))
+(defn order-by [key-fn] (fn [data] (sort-by key-fn data)))
+(defn -main [& args] (let [data [{:age 30, :name "Alice", :dept "IT"} {:age 25, :name "Bob", :dept "HR"} {:age 35, :name "Charlie", :dept "IT"} {:age 28, :name "Diana", :dept "Sales"}] result (-> (from data) (where (fn [x] (= (:dept x) "IT"))) (select :name :age) (order-by :age) (fn [f] (f nil)))] (println result)))

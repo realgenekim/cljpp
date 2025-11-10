@@ -1,0 +1,56 @@
+I'll write the Ring middleware chain program in CLJ-PP format.
+
+PUSH-( ns examples.program26 POP
+
+PUSH-( defn wrap-json PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( let PUSH-[
+      body PUSH-( get request :body POP
+      parsed PUSH-( if body
+                PUSH-{ :body PUSH-( read-string body POP POP
+                PUSH-{ POP
+              POP
+    POP
+      PUSH-( handler PUSH-( merge request parsed POP POP
+    POP
+  POP
+POP
+
+PUSH-( defn wrap-cors PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( let PUSH-[ response PUSH-( handler request POP POP
+      PUSH-( assoc-in response PUSH-[ :headers "Access-Control-Allow-Origin" POP "*" POP
+    POP
+  POP
+POP
+
+PUSH-( defn wrap-session PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( if PUSH-( get-in request PUSH-[ :headers "authorization" POP POP
+      PUSH-( handler PUSH-( assoc request :authenticated? true POP POP
+      PUSH-{ :status 401 :body "Unauthorized" POP
+    POP
+  POP
+POP
+
+PUSH-( defn app PUSH-[ request POP
+  PUSH-{ :status 200 :body PUSH-( str "Processed: " PUSH-( :body request POP POP POP
+POP
+
+PUSH-( def handler
+  PUSH-( -> app
+    wrap-session
+    wrap-cors
+    wrap-json
+  POP
+POP
+
+PUSH-( defn -main PUSH-[ & args POP
+  PUSH-( let PUSH-[
+    request PUSH-{ :headers PUSH-{ "authorization" "token123" POP
+                   :body "{:user \"Alice\"}" POP
+    response PUSH-( handler request POP
+  POP
+    PUSH-( println "Response:" response POP
+  POP
+POP

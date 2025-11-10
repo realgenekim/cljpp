@@ -1,0 +1,47 @@
+(ns examples.program29
+  (:require [clojure.core.async :as async :refer [go go-loop chan >! <! alts! close!]]))
+
+(defn channel-coordination []
+  (let [ch1 (chan)
+        ch2 (chan)
+        ch3 (chan)
+        output (chan)]
+    
+    ;; Producer 1
+    (go-loop [n 0]
+      (when (< n 5)
+        (>! ch1 {:source :ch1 :value (* n 10)})
+        (<! (async/timeout 100))
+        (recur (inc n)))
+      (close! ch1))
+    
+    ;; Producer 2
+    (go-loop [n 0]
+      (when (< n 5)
+        (>! ch2 {:source :ch2 :value (* n 20)})
+        (<! (async/timeout 150))
+        (recur (inc n)))
+      (close! ch2))
+    
+    ;; Producer 3
+    (go-loop [n 0]
+      (when (< n 5)
+        (>! ch3 {:source :ch3 :value (* n 30)})
+        (<! (async/timeout 200))
+        (recur (inc n)))
+      (close! ch3))
+    
+    ;; Coordinator
+    (go-loop [results []]
+      (let [[val port] (alts! [ch1 ch2 ch3])]
+        (if (nil? val)
+          (if (and (nil? (async/poll! ch1))
+                   (nil? (async/poll! ch2))
+                   (nil? (async/poll! ch3)))
+            (do
+              (>! output results)
+              (close! output))
+            (recur results))
+          (recur (conj results val)))))
+    
+    output))

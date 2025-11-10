@@ -1,0 +1,21 @@
+(ns examples.program24)
+
+(defmacro when-let-all
+  [bindings & body]
+  (if (empty? bindings)
+    `(do ~@body)
+    (let [[sym expr] (take 2 bindings)
+          remaining (drop 2 bindings)]
+      `(let [~sym ~expr]
+         (when ~sym
+           (when-let-all ~remaining ~@body))))))
+
+(defmacro defn-timed
+  [name args & body]
+  `(defn ~name ~args
+     (let [start# (System/nanoTime)
+           result# (do ~@body)
+           end# (System/nanoTime)
+           elapsed# (/ (- end# start#) 1000000.0)]
+       (println ~(str name) "took" elapsed# "ms")
+       result#)))

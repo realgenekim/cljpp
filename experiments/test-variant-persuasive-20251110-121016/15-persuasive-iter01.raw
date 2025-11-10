@@ -1,0 +1,61 @@
+I'll write this using CLJ-PP to ensure perfect delimiter balancing.
+
+```clojure
+PUSH-( ns examples.program15 POP
+
+PUSH-( defn dfs PUSH-[ graph start POP
+  PUSH-( loop PUSH-[
+    stack PUSH-[ start POP
+    visited PUSH-#{ POP
+    result PUSH-[ POP
+  POP
+    PUSH-( if PUSH-( empty? stack POP
+      result
+      PUSH-( let PUSH-[
+        node PUSH-( peek stack POP
+        new-stack PUSH-( pop stack POP
+      POP
+        PUSH-( if PUSH-( visited node POP
+          PUSH-( recur new-stack visited result POP
+          PUSH-( let PUSH-[
+            neighbors PUSH-( get graph node PUSH-[ POP POP
+            new-visited PUSH-( conj visited node POP
+            new-result PUSH-( conj result node POP
+            updated-stack PUSH-( into new-stack neighbors POP
+          POP
+            PUSH-( recur updated-stack new-visited new-result POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn bfs PUSH-[ graph start POP
+  PUSH-( loop PUSH-[
+    queue PUSH-[ start POP
+    visited PUSH-#{ POP
+    result PUSH-[ POP
+  POP
+    PUSH-( if PUSH-( empty? queue POP
+      result
+      PUSH-( let PUSH-[
+        node PUSH-( first queue POP
+        new-queue PUSH-( subvec PUSH-( vec queue POP 1 POP
+      POP
+        PUSH-( if PUSH-( visited node POP
+          PUSH-( recur new-queue visited result POP
+          PUSH-( let PUSH-[
+            neighbors PUSH-( get graph node PUSH-[ POP POP
+            new-visited PUSH-( conj visited node POP
+            new-result PUSH-( conj result node POP
+            updated-queue PUSH-( into new-queue neighbors POP
+          POP
+            PUSH-( recur updated-queue new-visited new-result POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP
+```

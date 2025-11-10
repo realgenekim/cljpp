@@ -1,0 +1,35 @@
+I'll analyze this task and generate the CLJ-PP code.
+
+The task requires:
+1. A function named `calculate` that takes two parameters `x` and `y`
+2. Uses `let` to bind `sum` (x + y) and `product` (x * y)
+3. Returns a map with both values
+
+Let me generate the CLJ-PP code:
+
+```clojure
+PUSH-( ns examples.program2 POP
+
+PUSH-( defn calculate PUSH-[ x y POP
+  PUSH-( let PUSH-[
+    sum PUSH-( + x y POP
+    product PUSH-( * x y POP
+  POP
+    PUSH-{ :sum sum :product product POP
+  POP
+POP
+```
+
+Let me verify the POP count:
+- `PUSH-(` ns → POP (1)
+- `PUSH-(` defn → needs POP
+  - `PUSH-[` args → POP (inside defn)
+  - `PUSH-(` let → needs POP
+    - `PUSH-[` bindings → POP (inside let)
+      - `PUSH-(` + → POP (for sum)
+      - `PUSH-(` * → POP (for product)
+    - `PUSH-{` map → POP (let body)
+  - (close let) POP
+- (close defn) POP
+
+Total: 8 PUSH operations, 8 POP operations ✓

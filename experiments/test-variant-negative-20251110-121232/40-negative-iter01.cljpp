@@ -1,0 +1,59 @@
+(ns examples.program40)
+
+(defn find-cycles
+  "Returns set of nodes involved in cycles, or nil if no cycles"
+  [graph]
+  (letfn [(visit [node path visited]
+            (cond
+              (contains? path node) #{node}
+              (contains? visited node) nil
+              :else
+              (let [deps (get-in graph [node :deps] [])]
+                (reduce
+                  (fn [acc dep]
+                    (if-let [cycle (visit dep (conj path node) visited)]
+                      (into (or acc #{}) cycle)
+                      acc))
+                  nil
+                  deps))))]
+    (reduce
+      (fn [acc node]
+        (if-let [cycle (visit node #{} #{})]
+          (into (or acc #{}) cycle)
+          acc))
+      nil
+      (keys graph))))
+
+(defn topological-sort
+  "Returns sorted sequence of nodes, or nil if cycles detected"
+  [graph]
+  (when-let [cycles (find-cycles graph)]
+    (throw (ex-info "Graph contains cycles" {:cycles cycles})))
+  (loop [sorted []
+         remaining (set (keys graph))
+         visited #{}]
+    (if (empty? remaining)
+      sorted
+      (let [ready (filter
+                    (fn [node]
+                      (let [deps (get-in graph [node :deps] [])]
+                        (every? visited deps)))
+                    remaining)
+            next-node (first ready)]
+        (if next-node
+          (recur (conj sorted next-node)
+                 (disj remaining next-node)
+                 (conj visited next-node))
+          (throw (ex-info "Cannot find next node" {:remaining remaining})))))))
+
+(defn execute-graph
+  "Execute computation graph with caching"
+  [graph inputs]
+  (let [order (topological-sort graph)
+        cache (atom inputs)]
+    (doseq [node order]
+      (let [{:keys [deps fn]} (get graph node)
+            args (mapv #(get @cache %) deps)
+            result (apply fn args)]
+        (swap! cache assoc node result)))
+    @cache))

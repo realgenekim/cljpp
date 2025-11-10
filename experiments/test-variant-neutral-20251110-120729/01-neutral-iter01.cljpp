@@ -1,0 +1,18 @@
+I'll analyze this request and generate the appropriate CLJ-PP code.
+
+Looking at the task, I need to:
+1. Create a namespace `examples.program1`
+2. Define function `add` that takes two numbers and returns their sum
+3. Define function `greet` that takes a name and returns a greeting string
+
+Based on the specification, I'll use the CLJ-PP format with proper PUSH and POP operations:
+
+PUSH-( ns examples.program1 POP
+
+PUSH-( defn add PUSH-[ a b POP
+  PUSH-( + a b POP
+POP
+
+PUSH-( defn greet PUSH-[ name POP
+  PUSH-( str "Hello, " name "!" POP
+POP

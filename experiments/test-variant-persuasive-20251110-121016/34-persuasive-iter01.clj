@@ -1,0 +1,6 @@
+(ns examples.program34 (:require [compojure.core :refer [defroutes GET POST]] [compojure.route :as route] [ring.util.response :refer [response]]))
+(defn users-handler [] (response {:users [{:name "Alice", :id 1} {:name "Bob", :id 2}]}))
+(defn user-handler [{:keys [id]}] (response {:email (str "user" id "@example.com"), :name "User", :id (Integer/parseInt id)}))
+(defn user-posts-handler [{:keys [id]}] (response {:user-id (Integer/parseInt id), :posts [{:title "First Post", :id 1} {:title "Second Post", :id 2}]}))
+(defn create-user-handler [request] (let [{:keys [body]} (:params request)] (response {:status "created", :user body})))
+(defroutes app-routes (GET "/users" [] users-handler) (GET "/users/:id" [id] (user-handler {:id id})) (GET "/users/:id/posts" [id] (user-posts-handler {:id id})) (POST "/users" request (create-user-handler request)) (route/not-found (response {:error "Not Found"})))

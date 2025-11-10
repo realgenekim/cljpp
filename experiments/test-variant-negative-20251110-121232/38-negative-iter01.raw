@@ -1,0 +1,50 @@
+```clojure
+(ns examples.program38)
+
+(defn diff [expr var]
+  (cond
+    (and (vector? expr) (= :const (first expr)))
+    [:const 0]
+    
+    (and (vector? expr) (= :var (first expr)))
+    (if (= (second expr) var)
+      [:const 1]
+      [:const 0])
+    
+    (and (vector? expr) (= :+ (first expr)))
+    (let [a (second expr)
+          b (nth expr 2)
+          da (diff a var)
+          db (diff b var)]
+      (cond
+        (and (vector? da) (= :const (first da)) (zero? (second da))) db
+        (and (vector? db) (= :const (first db)) (zero? (second db))) da
+        :else [:+ da db]))
+    
+    (and (vector? expr) (= :* (first expr)))
+    (let [a (second expr)
+          b (nth expr 2)
+          da (diff a var)
+          db (diff b var)]
+      (cond
+        (and (vector? da) (= :const (first da)) (zero? (second da))
+             (vector? db) (= :const (first db)) (zero? (second db)))
+        [:const 0]
+        
+        (and (vector? da) (= :const (first da)) (zero? (second da)))
+        [:* a db]
+        
+        (and (vector? db) (= :const (first db)) (zero? (second db)))
+        [:* da b]
+        
+        :else [:+ [:* da b] [:* a db]]))
+    
+    (and (vector? expr) (= :exp (first expr)))
+    (let [a (second expr)
+          da (diff a var)]
+      (if (and (vector? da) (= :const (first da)) (zero? (second da)))
+        [:const 0]
+        [:* da [:exp a]]))
+    
+    :else [:const 0]))
+```

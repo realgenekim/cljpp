@@ -1,0 +1,38 @@
+```clojure
+(ns examples.program35
+  (:require [clojure.test.check :as tc]
+            [clojure.test.check.generators :as gen]
+            [clojure.test.check.properties :as prop]))
+
+(def user-gen
+  (gen/hash-map :id gen/pos-int
+                :name (gen/not-empty gen/string-alphanumeric)
+                :age (gen/choose 0 120)
+                :email (gen/fmap #(str % "@example.com")
+                                 (gen/not-empty gen/string-alphanumeric))))
+
+(def valid-user?
+  (prop/for-all [user user-gen]
+    (and (pos-int? (:id user))
+         (string? (:name user))
+         (not (empty? (:name user)))
+         (int? (:age user))
+         (<= 0 (:age user) 120)
+         (string? (:email user))
+         (re-matches #".+@.+" (:email user)))))
+
+(def age-consistency
+  (prop/for-all [user user-gen]
+    (let [age (:age user)]
+      (= age (int age)))))
+
+(def id-uniqueness-property
+  (prop/for-all [users (gen/vector user-gen 10)]
+    (let [ids (map :id users)]
+      (<= (count (distinct ids)) (count ids)))))
+
+(defn run-tests []
+  {:user-validity (tc/quick-check 100 valid-user?)
+   :age-consistency (tc/quick-check 100 age-consistency)
+   :id-distribution (tc/quick-check 100 id-uniqueness-property)})
+```

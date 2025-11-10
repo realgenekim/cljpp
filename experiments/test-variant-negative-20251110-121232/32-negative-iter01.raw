@@ -1,0 +1,39 @@
+```clojure
+(ns examples.program32)
+
+(defn get-box [grid row col]
+  (let [box-row (* 3 (quot row 3))
+        box-col (* 3 (quot col 3))]
+    (for [r (range box-row (+ box-row 3))
+          c (range box-col (+ box-col 3))]
+      (get-in grid [r c]))))
+
+(defn valid? [grid row col num]
+  (let [row-vals (get grid row)
+        col-vals (map #(get % col) grid)
+        box-vals (get-box grid row col)]
+    (and (not (some #(= % num) row-vals))
+         (not (some #(= % num) col-vals))
+         (not (some #(= % num) box-vals)))))
+
+(defn find-empty [grid]
+  (first
+   (for [row (range 9)
+         col (range 9)
+         :when (zero? (get-in grid [row col]))]
+     [row col])))
+
+(defn solve-sudoku [grid]
+  (if-let [[row col] (find-empty grid)]
+    (loop [num 1]
+      (cond
+        (> num 9) nil
+        (valid? grid row col num)
+        (let [new-grid (assoc-in grid [row col] num)
+              result (solve-sudoku new-grid)]
+          (if result
+            result
+            (recur (inc num))))
+        :else (recur (inc num))))
+    grid))
+```

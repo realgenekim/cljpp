@@ -1,0 +1,24 @@
+```clojure
+(ns examples.program23)
+
+(defn tree-map [f tree]
+  (when tree
+    {:value (f (:value tree))
+     :left (tree-map f (:left tree))
+     :right (tree-map f (:right tree))}))
+
+(defn tree-reduce
+  ([f tree]
+   (tree-reduce f (:value tree) tree))
+  ([f acc tree]
+   (if tree
+     (let [acc' (f acc (:value tree))
+           acc'' (if (:left tree)
+                   (tree-reduce f acc' (:left tree))
+                   acc')
+           acc''' (if (:right tree)
+                    (tree-reduce f acc'' (:right tree))
+                    acc'')]
+       acc''')
+     acc)))
+```

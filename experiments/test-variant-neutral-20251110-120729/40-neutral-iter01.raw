@@ -1,0 +1,90 @@
+I'll write this program in CLJ-PP format implementing a computation graph with topological sort, cycle detection, and result caching.
+
+```clojure
+PUSH-( ns examples.program40 POP
+
+PUSH-( defn find-cycles PUSH-[ graph POP
+  PUSH-( letfn PUSH-[
+    PUSH-( visit PUSH-[ node visited path POP
+      PUSH-( cond
+        PUSH-( contains? path node POP
+        PUSH-[ node POP
+        
+        PUSH-( contains? visited node POP
+        nil
+        
+        :else
+        PUSH-( some identity
+          PUSH-( map
+            PUSH-( fn PUSH-[ dep POP
+              PUSH-( visit dep PUSH-( conj visited node POP PUSH-( conj path node POP POP
+            POP
+            PUSH-( get-in graph PUSH-[ node :deps POP PUSH-[ POP POP
+          POP
+        POP
+      POP
+    POP
+  POP
+    PUSH-( some
+      PUSH-( fn PUSH-[ node POP
+        PUSH-( visit node PUSH-{ POP PUSH-{ POP POP
+      POP
+      PUSH-( keys graph POP
+    POP
+  POP
+POP
+
+PUSH-( defn topological-sort PUSH-[ graph POP
+  PUSH-( loop PUSH-[
+    sorted PUSH-[ POP
+    remaining PUSH-( set PUSH-( keys graph POP POP
+  POP
+    PUSH-( if PUSH-( empty? remaining POP
+      sorted
+      PUSH-( let PUSH-[
+        no-deps PUSH-( filter
+          PUSH-( fn PUSH-[ node POP
+            PUSH-( every?
+              PUSH-( fn PUSH-[ dep POP
+                PUSH-( not PUSH-( contains? remaining dep POP POP
+              POP
+              PUSH-( get-in graph PUSH-[ node :deps POP PUSH-[ POP POP
+            POP
+          POP
+          remaining
+        POP
+      POP
+        PUSH-( if PUSH-( empty? no-deps POP
+          PUSH-( throw PUSH-( ex-info "Cycle detected" PUSH-{ :remaining remaining POP POP POP
+          PUSH-( recur
+            PUSH-( into sorted no-deps POP
+            PUSH-( apply disj remaining no-deps POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn execute-graph PUSH-[ graph POP
+  PUSH-( if-let PUSH-[ cycle PUSH-( find-cycles graph POP POP
+    PUSH-( throw PUSH-( ex-info "Graph contains cycle" PUSH-{ :cycle cycle POP POP POP
+    PUSH-( let PUSH-[
+      order PUSH-( topological-sort graph POP
+      cache PUSH-( atom PUSH-{ POP POP
+    POP
+      PUSH-( doseq PUSH-[ node order POP
+        PUSH-( let PUSH-[
+          node-def PUSH-( get graph node POP
+          deps PUSH-( get node-def :deps PUSH-[ POP POP
+          dep-values PUSH-( mapv PUSH-( fn PUSH-[ dep POP PUSH-( get @cache dep POP POP deps POP
+          result PUSH-( apply PUSH-( get node-def :fn POP dep-values POP
+        POP
+          PUSH-( swap! cache assoc node result POP
+        POP
+      POP
+      @cache
+    POP
+  POP
+POP
+```

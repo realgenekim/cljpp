@@ -1,0 +1,43 @@
+I need permission to create the test file. Here's the CLJ-PP code for Program 17:
+
+PUSH-( ns examples.program17 POP
+
+PUSH-( defn lazy-range PUSH-[ start end POP
+  PUSH-( letfn PUSH-[
+    PUSH-( step PUSH-[ n POP
+      PUSH-( when PUSH-( < n end POP
+        PUSH-( lazy-seq
+          PUSH-( cons n PUSH-( step PUSH-( inc n POP POP POP
+        POP
+      POP
+    POP
+  POP
+    PUSH-( step start POP
+  POP
+POP
+
+PUSH-( defn lazy-fibonacci
+  PUSH-( PUSH-[ POP PUSH-( lazy-fibonacci 0 1 POP POP
+  PUSH-( PUSH-[ a b POP
+    PUSH-( lazy-seq
+      PUSH-( cons a PUSH-( lazy-fibonacci b PUSH-( + a b POP POP POP
+    POP
+  POP
+POP
+
+PUSH-( defn take-while-sum PUSH-[ pred coll POP
+  PUSH-( lazy-seq
+    PUSH-( when-let PUSH-[ PUSH-[ s PUSH-( seq coll POP POP POP
+      PUSH-( let PUSH-[ f PUSH-( first s POP POP
+        PUSH-( when PUSH-( pred f POP
+          PUSH-( cons f PUSH-( take-while-sum pred PUSH-( rest s POP POP POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+This implements:
+- `lazy-range` using `letfn` with a recursive `step` function
+- `lazy-fibonacci` with multi-arity (0-arity calls 2-arity with 0,1)
+- `take-while-sum` using `lazy-seq` with `when-let` and `when`
