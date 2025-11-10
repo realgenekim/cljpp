@@ -25,7 +25,10 @@
    :play4  {:file "claude-prompts/CLJPP-PROMPT-PLAY-v4.md" :name "CLJ-PP (Play v4: Minimal+POP-ALL)"}
    :play4b {:file "claude-prompts/CLJPP-PROMPT-PLAY-v4b.md" :name "CLJ-PP (Play v4b: Multiple defn fix)"}
    :play4c {:file "claude-prompts/CLJPP-PROMPT-PLAY-v4c.md" :name "CLJ-PP (Play v4c: +Format warning)"}
-   :play4d {:file "claude-prompts/CLJPP-PROMPT-PLAY-v4d.md" :name "CLJ-PP (Play v4d: +POP counting)"}})
+   :play4d {:file "claude-prompts/CLJPP-PROMPT-PLAY-v4d.md" :name "CLJ-PP (Play v4d: +POP counting)"}
+   :neutral    {:file "claude-prompts/EXPERIMENT-NEUTRAL.md" :name "EXPERIMENT: Neutral (technical doc)"}
+   :persuasive {:file "claude-prompts/EXPERIMENT-PERSUASIVE.md" :name "EXPERIMENT: Persuasive (selling)"}
+   :negative   {:file "claude-prompts/EXPERIMENT-NEGATIVE.md" :name "EXPERIMENT: Negative (discouraging)"}})
 
 (def timestamp (.format (java.time.LocalDateTime/now)
                        (java.time.format.DateTimeFormatter/ofPattern "yyyyMMdd-HHmmss")))
