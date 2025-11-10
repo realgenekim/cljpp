@@ -1,4 +1,7 @@
-#!/usr/bin/env sh
-# Find the jar in the same directory as this script
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-exec java -cp "$SCRIPT_DIR/cljpp.jar" clojure.main -m cljp.core "$@"
+#!/usr/bin/env bb
+;; CLJPP transpiler using Babashka
+;; Load modules from project root
+(load-file "src/cljp/tokenizer.clj")
+(load-file "src/cljp/assembler.clj")
+(load-file "src/cljp/core.clj")
+(apply cljp.core/-main *command-line-args*)

@@ -1,0 +1,12 @@
+#!/usr/bin/env bb
+
+;; Babashka version of cljpp transpiler
+;; Usage: ./bin/cljpp-bb input.cljpp [output.clj]
+
+;; Load transpiler modules directly
+(load-file (str (System/getProperty "user.dir") "/src/cljp/tokenizer.clj"))
+(load-file (str (System/getProperty "user.dir") "/src/cljp/assembler.clj"))
+(load-file (str (System/getProperty "user.dir") "/src/cljp/core.clj"))
+
+;; Run transpiler
+(apply cljp.core/-main *command-line-args*)
