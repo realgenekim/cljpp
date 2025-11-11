@@ -1,0 +1,30 @@
+(ns examples.program16)
+
+(defn parse-char [expected]
+  (fn [input]
+    (when (and (seq input) (= (first input) expected))
+      [{:result (first input) :rest (subs input 1)}])))
+
+(defn bind [parser f]
+  (fn [input]
+    (mapcat (fn [{:keys [result rest]}]
+              ((f result) rest))
+            (parser input))))
+
+(defn return [value]
+  (fn [input]
+    [{:result value :rest input}]))
+
+(defn choice [& parsers]
+  (fn [input]
+    (mapcat (fn [parser] (parser input)) parsers)))
+
+(defn many [parser]
+  (fn [input]
+    (letfn [(step [inp acc]
+              (if-let [results (seq (parser inp))]
+                (mapcat (fn [{:keys [result rest]}]
+                          (step rest (conj acc result)))
+                        results)
+                [{:result acc :rest inp}]))]
+      (step input []))))

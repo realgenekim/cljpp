@@ -1,0 +1,33 @@
+(ns examples.program33)
+
+(defmulti apply-event
+  (fn [state event] (:type event)))
+
+(defmethod apply-event :user-created
+  [state event]
+  (assoc state :user-id (:user-id event)
+               :name (:name event)
+               :created-at (:timestamp event)))
+
+(defmethod apply-event :name-changed
+  [state event]
+  (assoc state :name (:name event)
+               :updated-at (:timestamp event)))
+
+(defmethod apply-event :balance-updated
+  [state event]
+  (assoc state :balance (:balance event)
+               :updated-at (:timestamp event)))
+
+(defmethod apply-event :default
+  [state _event]
+  state)
+
+(defn aggregate
+  [events]
+  (reduce apply-event {} events))
+
+(defn get-state-at-time
+  [events timestamp]
+  (let [filtered-events (filter #(<= (:timestamp %) timestamp) events)]
+    (aggregate filtered-events)))

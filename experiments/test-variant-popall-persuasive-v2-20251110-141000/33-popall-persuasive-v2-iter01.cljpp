@@ -1,0 +1,42 @@
+PUSH-( ns examples.program33 POP-ALL
+
+PUSH-( defmulti apply-event
+  PUSH-( fn PUSH-[ state event POP
+    PUSH-( :type event POP-ALL
+POP-ALL
+
+PUSH-( defmethod apply-event :created
+  PUSH-[ state event POP
+  PUSH-{ :id PUSH-( :entity-id event POP
+     :status :active
+     :data PUSH-( :data event POP
+     :created-at PUSH-( :timestamp event POP POP-ALL
+POP-ALL
+
+PUSH-( defmethod apply-event :updated
+  PUSH-[ state event POP
+  PUSH-( assoc state
+    :data PUSH-( :data event POP
+    :updated-at PUSH-( :timestamp event POP-ALL
+POP-ALL
+
+PUSH-( defmethod apply-event :deleted
+  PUSH-[ state event POP
+  PUSH-( assoc state
+    :status :deleted
+    :deleted-at PUSH-( :timestamp event POP-ALL
+POP-ALL
+
+PUSH-( defn aggregate
+  PUSH-[ events POP
+  PUSH-( reduce apply-event PUSH-{ POP events POP-ALL
+POP-ALL
+
+PUSH-( defn get-state-at-time
+  PUSH-[ events timestamp POP
+  PUSH-( ->> events
+    PUSH-( filter PUSH-( fn PUSH-[ e POP
+                    PUSH-( <= PUSH-( :timestamp e POP timestamp POP-ALL
+           POP POP
+    aggregate POP-ALL
+POP-ALL

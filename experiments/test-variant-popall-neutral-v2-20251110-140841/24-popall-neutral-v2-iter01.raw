@@ -1,0 +1,22 @@
+```clojure
+PUSH-( ns examples.program24 POP-ALL
+
+PUSH-( defmacro when-let-all PUSH-[ bindings & body POP
+  PUSH-( if PUSH-( seq bindings POP
+    PUSH-( let PUSH-[ PUSH-[ PUSH-( first bindings POP PUSH-( second bindings POP POP POP
+      PUSH-( if PUSH-( first bindings POP
+        PUSH-( when-let-all PUSH-( into PUSH-[ POP PUSH-( drop 2 bindings POP POP & body POP
+        nil POP-ALL
+    PUSH-( do & body POP-ALL
+
+PUSH-( defmacro defn-timed PUSH-[ name args & body POP
+  PUSH-( let PUSH-[ fname# PUSH-( str PUSH-( quote name POP POP POP
+    `PUSH-( defn ~ name ~ args
+      PUSH-( let PUSH-[ start# PUSH-( System/nanoTime POP POP
+        PUSH-( println PUSH-( str "Starting " ~ fname# POP POP
+        PUSH-( let PUSH-[ result# PUSH-( do ~@ body POP
+               end# PUSH-( System/nanoTime POP
+               elapsed# PUSH-( / PUSH-( - end# start# POP 1000000.0 POP POP
+          PUSH-( println PUSH-( str "Finished " ~ fname# " in " elapsed# "ms" POP POP
+          result# POP-ALL
+```

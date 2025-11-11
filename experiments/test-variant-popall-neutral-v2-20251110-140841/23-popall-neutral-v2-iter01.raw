@@ -1,0 +1,21 @@
+```clojure
+PUSH-( ns examples.program23 POP-ALL
+
+PUSH-( defn tree-map PUSH-[ f tree POP
+  PUSH-( if PUSH-( nil? tree POP
+    nil
+    PUSH-{ 
+      :value PUSH-( f PUSH-( :value tree POP POP
+      :left PUSH-( tree-map f PUSH-( :left tree POP POP
+      :right PUSH-( tree-map f PUSH-( :right tree POP POP
+    POP-ALL
+
+PUSH-( defn tree-reduce PUSH-[ f acc tree POP
+  PUSH-( if PUSH-( nil? tree POP
+    acc
+    PUSH-( let PUSH-[
+      acc1 PUSH-( f acc PUSH-( :value tree POP POP
+      acc2 PUSH-( tree-reduce f acc1 PUSH-( :left tree POP POP
+    POP
+      PUSH-( tree-reduce f acc2 PUSH-( :right tree POP POP-ALL
+```

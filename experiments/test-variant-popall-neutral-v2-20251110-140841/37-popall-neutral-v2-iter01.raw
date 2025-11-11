@@ -1,0 +1,107 @@
+```clojure
+PUSH-( ns examples.program37
+  PUSH-( :require PUSH-[ reagent.core :as r POP PUSH-[ reagent.dom :as rdom POP POP-ALL
+
+PUSH-( defn use-state PUSH-[ initial-value POP
+  PUSH-( r/atom initial-value POP-ALL
+
+PUSH-( defn use-effect PUSH-[ effect deps POP
+  PUSH-( r/create-class
+    PUSH-{
+      :component-did-mount
+      PUSH-( fn PUSH-[ this POP
+        PUSH-( effect POP-ALL
+      
+      :component-did-update
+      PUSH-( fn PUSH-[ this old-argv POP
+        PUSH-( let PUSH-[ old-deps PUSH-( second old-argv POP POP
+          PUSH-( when PUSH-( not= @deps old-deps POP
+            PUSH-( effect POP POP POP-ALL
+      
+      :reagent-render
+      PUSH-( fn PUSH-[ POP
+        PUSH-[ :div POP-ALL
+    POP POP-ALL
+
+PUSH-( defn use-fetch PUSH-[ url POP
+  PUSH-( let PUSH-[
+    loading PUSH-( r/atom true POP
+    error PUSH-( r/atom nil POP
+    data PUSH-( r/atom nil POP
+    
+    fetch-data
+    PUSH-( fn PUSH-[ POP
+      PUSH-( reset! loading true POP
+      PUSH-( reset! error nil POP
+      PUSH-( -> PUSH-( js/fetch url POP
+        PUSH-( .then PUSH-( fn PUSH-[ response POP
+          PUSH-( if PUSH-( .-ok response POP
+            PUSH-( .json response POP
+            PUSH-( throw PUSH-( js/Error. PUSH-( str "HTTP error: " PUSH-( .-status response POP POP POP POP POP POP
+        PUSH-( .then PUSH-( fn PUSH-[ json-data POP
+          PUSH-( reset! data PUSH-( js->clj json-data :keywordize-keys true POP POP
+          PUSH-( reset! loading false POP POP-ALL
+        PUSH-( .catch PUSH-( fn PUSH-[ err POP
+          PUSH-( reset! error PUSH-( .-message err POP POP
+          PUSH-( reset! loading false POP POP POP-ALL
+  POP
+    PUSH-( fetch-data POP
+    PUSH-{
+      :loading loading
+      :error error
+      :data data
+      :refetch fetch-data
+    POP POP-ALL
+
+PUSH-( defn user-profile PUSH-[ POP
+  PUSH-( let PUSH-[
+    PUSH-{ :keys PUSH-[ loading error data refetch POP POP
+    PUSH-( use-fetch "https://api.example.com/user/1" POP
+  POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div
+        PUSH-[ :h2 "User Profile" POP
+        PUSH-( cond
+          @loading
+          PUSH-[ :p "Loading..." POP
+          
+          @error
+          PUSH-[ :div
+            PUSH-[ :p PUSH-( str "Error: " @error POP POP
+            PUSH-[ :button PUSH-{ :on-click refetch POP "Retry" POP
+          POP
+          
+          @data
+          PUSH-[ :div
+            PUSH-[ :h3 PUSH-( :name @data POP POP
+            PUSH-[ :p PUSH-( str "Email: " PUSH-( :email @data POP POP POP
+            PUSH-[ :p PUSH-( str "Age: " PUSH-( :age @data POP POP POP
+            PUSH-[ :button PUSH-{ :on-click refetch POP "Refresh" POP
+          POP
+          
+          :else
+          PUSH-[ :p "No data" POP
+        POP
+      POP POP POP-ALL
+
+PUSH-( defn counter PUSH-[ POP
+  PUSH-( let PUSH-[ count PUSH-( use-state 0 POP POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div
+        PUSH-[ :h2 "Counter" POP
+        PUSH-[ :p PUSH-( str "Count: " @count POP POP
+        PUSH-[ :button PUSH-{ :on-click PUSH-( fn PUSH-[ POP PUSH-( swap! count inc POP-ALL POP "Increment" POP
+        PUSH-[ :button PUSH-{ :on-click PUSH-( fn PUSH-[ POP PUSH-( swap! count dec POP-ALL POP "Decrement" POP
+        PUSH-[ :button PUSH-{ :on-click PUSH-( fn PUSH-[ POP PUSH-( reset! count 0 POP-ALL POP "Reset" POP
+      POP POP POP-ALL
+
+PUSH-( defn app PUSH-[ POP
+  PUSH-[ :div
+    PUSH-[ counter POP
+    PUSH-[ :hr POP
+    PUSH-[ user-profile POP
+  POP-ALL
+
+PUSH-( defn ^:export init PUSH-[ POP
+  PUSH-( rdom/render PUSH-[ app POP PUSH-( js/document.getElementById "app" POP POP-ALL
+```

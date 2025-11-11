@@ -29,7 +29,10 @@
    :neutral    {:file "claude-prompts/EXPERIMENT-NEUTRAL.md" :name "EXPERIMENT: Neutral (technical doc)"}
    :persuasive {:file "claude-prompts/EXPERIMENT-PERSUASIVE.md" :name "EXPERIMENT: Persuasive (selling)"}
    :negative   {:file "claude-prompts/EXPERIMENT-NEGATIVE.md" :name "EXPERIMENT: Negative (discouraging)"}
-   :popall-exp {:file "claude-prompts/EXPERIMENT-POPALL.md" :name "EXPERIMENT: POP-ALL (counting-free)"}})
+   :popall-exp {:file "claude-prompts/EXPERIMENT-POPALL.md" :name "EXPERIMENT: POP-ALL (counting-free)"}
+   :popall-neutral-v2 {:file "claude-prompts/EXPERIMENT-POPALL-NEUTRAL-V2.md" :name "EXPERIMENT: POP-ALL v2 Neutral (prevents underflow)"}
+   :popall-persuasive-v2 {:file "claude-prompts/EXPERIMENT-POPALL-PERSUASIVE-V2.md" :name "EXPERIMENT: POP-ALL v2 Persuasive (we built this for you!)"}
+   :popall-negative-v2 {:file "claude-prompts/EXPERIMENT-POPALL-NEGATIVE-V2.md" :name "EXPERIMENT: POP-ALL v2 Negative (cognitive overhead)"}})
 
 (def timestamp (.format (java.time.LocalDateTime/now)
                        (java.time.format.DateTimeFormatter/ofPattern "yyyyMMdd-HHmmss")))

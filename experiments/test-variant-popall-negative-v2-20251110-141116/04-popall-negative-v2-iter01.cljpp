@@ -1,0 +1,15 @@
+PUSH-( ns examples.program4 POP-ALL
+
+PUSH-( def users
+  PUSH-[
+    PUSH-{ :name "Alice" :age 25 :role "admin" POP
+    PUSH-{ :name "Bob" :age 17 :role "user" POP
+    PUSH-{ :name "Carol" :age 30 :role "moderator" POP
+    PUSH-{ :name "Dave" :age 16 :role "user" POP
+  POP-ALL
+
+PUSH-( defn active-users PUSH-[ user-list POP
+  PUSH-( filter PUSH-( fn PUSH-[ u POP PUSH-( > PUSH-( :age u POP 18 POP POP user-list POP-ALL
+
+PUSH-( defn user-names PUSH-[ user-list POP
+  PUSH-( map :name user-list POP-ALL

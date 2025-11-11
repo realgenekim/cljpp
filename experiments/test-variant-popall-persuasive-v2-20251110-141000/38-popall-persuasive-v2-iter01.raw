@@ -1,0 +1,67 @@
+```clojure
+PUSH-( ns examples.program38 POP-ALL
+
+PUSH-( defn diff PUSH-[ expr var POP
+  PUSH-( cond
+    PUSH-( vector? expr POP
+    PUSH-( let PUSH-[
+      op PUSH-( first expr POP
+      args PUSH-( rest expr POP
+    POP
+      PUSH-( case op
+        :const 0
+        :var PUSH-( if PUSH-( = PUSH-( second expr POP var POP 1 0 POP-ALL
+        :+ PUSH-( vec PUSH-( cons :+ PUSH-( map #PUSH-( diff % var POP args POP POP POP-ALL
+        :* PUSH-( let PUSH-[
+          a PUSH-( first args POP
+          b PUSH-( second args POP
+          da PUSH-( diff a var POP
+          db PUSH-( diff b var POP
+        POP
+          PUSH-[ :+ PUSH-[ :* da b POP PUSH-[ :* a db POP POP-ALL
+        :exp PUSH-( let PUSH-[
+          base PUSH-( first args POP
+          dbase PUSH-( diff base var POP
+        POP
+          PUSH-[ :* PUSH-[ :exp base POP dbase POP-ALL
+      POP-ALL
+    POP-ALL
+    :else 0
+  POP-ALL
+POP-ALL
+
+PUSH-( defn simplify PUSH-[ expr POP
+  PUSH-( if PUSH-( vector? expr POP
+    PUSH-( let PUSH-[
+      op PUSH-( first expr POP
+      args PUSH-( map simplify PUSH-( rest expr POP POP
+    POP
+      PUSH-( case op
+        :const expr
+        :var expr
+        :+ PUSH-( let PUSH-[
+          terms PUSH-( remove #PUSH-( = % 0 POP args POP
+        POP
+          PUSH-( cond
+            PUSH-( empty? terms POP 0
+            PUSH-( = PUSH-( count terms POP 1 POP PUSH-( first terms POP
+            :else PUSH-( vec PUSH-( cons :+ terms POP POP-ALL
+        POP-ALL
+        :* PUSH-( let PUSH-[
+          factors PUSH-( remove #PUSH-( = % 1 POP args POP
+        POP
+          PUSH-( cond
+            PUSH-( some #PUSH-( = % 0 POP args POP 0
+            PUSH-( empty? factors POP 1
+            PUSH-( = PUSH-( count factors POP 1 POP PUSH-( first factors POP
+            :else PUSH-( vec PUSH-( cons :* factors POP POP-ALL
+        POP-ALL
+        :exp PUSH-( let PUSH-[ base PUSH-( first args POP POP
+          PUSH-( if PUSH-( = base 0 POP 1 PUSH-( vec PUSH-( cons :exp args POP POP-ALL
+        POP-ALL
+      POP-ALL
+    POP-ALL
+    expr
+  POP-ALL
+POP-ALL
+```

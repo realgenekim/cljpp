@@ -1,0 +1,38 @@
+PUSH-( ns examples.program38 POP-ALL
+
+PUSH-( defn diff PUSH-[ expr var POP
+  PUSH-( let PUSH-[
+    PUSH-[ tag & args POP expr
+  POP
+    PUSH-( case tag
+      :const 0
+      :var PUSH-( if PUSH-( = PUSH-( second expr POP var POP 1 0 POP
+      :+ PUSH-( let PUSH-[
+           PUSH-[ a b POP args
+           da PUSH-( diff a var POP
+           db PUSH-( diff b var POP
+         POP
+         PUSH-( cond
+           PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP POP db
+           PUSH-( and PUSH-( number? db POP PUSH-( zero? db POP POP da
+           :else PUSH-[ :+ da db POP-ALL
+      :* PUSH-( let PUSH-[
+           PUSH-[ a b POP args
+           da PUSH-( diff a var POP
+           db PUSH-( diff b var POP
+         POP
+         PUSH-( cond
+           PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP PUSH-( number? db POP PUSH-( zero? db POP POP 0
+           PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP POP PUSH-[ :* b da POP
+           PUSH-( and PUSH-( number? db POP PUSH-( zero? db POP POP PUSH-[ :* a db POP
+           PUSH-( and PUSH-( = da 1 POP PUSH-( number? da POP POP b
+           PUSH-( and PUSH-( = db 1 POP PUSH-( number? db POP POP a
+           :else PUSH-[ :+ PUSH-[ :* a db POP PUSH-[ :* b da POP POP-ALL
+      :exp PUSH-( let PUSH-[
+             PUSH-[ a POP args
+             da PUSH-( diff a var POP
+           POP
+           PUSH-( if PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP POP
+             0
+             PUSH-[ :* PUSH-[ :exp a POP da POP-ALL
+      :else PUSH-( throw PUSH-( IllegalArgumentException. PUSH-( str "Unknown operator: " tag POP-ALL POP-ALL

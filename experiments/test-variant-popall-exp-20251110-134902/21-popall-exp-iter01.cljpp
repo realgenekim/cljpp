@@ -1,0 +1,17 @@
+PUSH-( ns examples.program21
+  PUSH-( :require PUSH-[ clojure.string :as str POP POP-ALL
+
+PUSH-( defn split-words PUSH-[ s POP
+  PUSH-( str/split s #"\s+" POP-ALL
+
+PUSH-( defn reverse-words PUSH-[ s POP
+  PUSH-( ->> PUSH-( split-words s POP
+    PUSH-( map str/reverse POP
+    PUSH-( str/join " " POP POP-ALL
+
+PUSH-( defn title-case PUSH-[ s POP
+  PUSH-( ->> PUSH-( split-words s POP
+    PUSH-( map PUSH-( fn PUSH-[ word POP
+      PUSH-( str PUSH-( str/upper-case PUSH-( first word POP POP
+        PUSH-( subs word 1 POP POP POP POP
+    PUSH-( str/join " " POP POP-ALL

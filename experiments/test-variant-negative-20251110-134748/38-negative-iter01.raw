@@ -1,0 +1,49 @@
+```clojure
+(ns examples.program38)
+
+(defn diff [expr var]
+  (cond
+    (vector? expr)
+    (let [[op & args] expr]
+      (case op
+        :const 0
+        :var (if (= (first args) var) 1 0)
+        :+ (let [[a b] args]
+             [:+ (diff a var) (diff b var)])
+        :* (let [[a b] args]
+             [:+ [:* (diff a var) b]
+                 [:* a (diff b var)]])
+        :exp (let [[a] args]
+               [:* (diff a var) [:exp a]])))
+    :else 0))
+
+(defn simplify [expr]
+  (if (vector? expr)
+    (let [[op & args] expr
+          simplified-args (map simplify args)]
+      (case op
+        :+ (let [[a b] simplified-args]
+             (cond
+               (= a 0) b
+               (= b 0) a
+               (and (number? a) (number? b)) (+ a b)
+               :else [:+ a b]))
+        :* (let [[a b] simplified-args]
+             (cond
+               (= a 0) 0
+               (= b 0) 0
+               (= a 1) b
+               (= b 1) a
+               (and (number? a) (number? b)) (* a b)
+               :else [:* a b]))
+        :exp (let [[a] simplified-args]
+               (if (= a 0)
+                 1
+                 [:exp a]))
+        :const (first simplified-args)
+        :var (first simplified-args)))
+    expr))
+
+(defn differentiate [expr var]
+  (simplify (diff expr var)))
+```

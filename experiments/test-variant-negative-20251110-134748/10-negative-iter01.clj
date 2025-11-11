@@ -1,0 +1,4 @@
+(ns examples.program10)
+(defn user-badge [{:keys [name verified? role]}] [:div.user-badge [:span.name name] (when verified? [:span.verified "✓"]) [:span.role role]])
+(defn user-list [users] [:div.user-list (map user-badge users)])
+(defn stats-panel [stats] (let [total (reduce + (vals stats))] [:div.stats-panel [:div.total (str "Total: " total)] (for [[k v] stats] [:div.stat (str k ": " v)])]))

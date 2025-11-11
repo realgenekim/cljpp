@@ -1,0 +1,31 @@
+```clojure
+PUSH-( ns examples.program33 POP
+
+PUSH-( defmulti apply-event
+  PUSH-( fn PUSH-[ state event POP PUSH-( :type event POP POP POP-ALL
+
+PUSH-( defmethod apply-event :user-created
+  PUSH-[ state event POP
+  PUSH-( assoc state
+    :id PUSH-( :user-id event POP
+    :name PUSH-( :name event POP
+    :email PUSH-( :email event POP POP-ALL
+
+PUSH-( defmethod apply-event :email-changed
+  PUSH-[ state event POP
+  PUSH-( assoc state :email PUSH-( :email event POP POP-ALL
+
+PUSH-( defmethod apply-event :name-changed
+  PUSH-[ state event POP
+  PUSH-( assoc state :name PUSH-( :name event POP POP-ALL
+
+PUSH-( defn aggregate
+  PUSH-[ events POP
+  PUSH-( reduce apply-event PUSH-{ POP events POP-ALL
+
+PUSH-( defn get-state-at-time
+  PUSH-[ events timestamp POP
+  PUSH-( ->> events
+    PUSH-( filter PUSH-( fn PUSH-[ e POP PUSH-( <= PUSH-( :timestamp e POP timestamp POP POP POP
+    aggregate POP-ALL
+```

@@ -1,0 +1,51 @@
+PUSH-( ns examples.program35
+  PUSH-( :require
+    PUSH-[ clojure.test.check :as tc POP
+    PUSH-[ clojure.test.check.generators :as gen POP
+    PUSH-[ clojure.test.check.properties :as prop POP
+  POP
+POP
+
+PUSH-( def user-gen
+  PUSH-( gen/hash-map
+    :id PUSH-( gen/large-integer* PUSH-{ :min 1 POP POP
+    :name PUSH-( gen/not-empty gen/string-alphanumeric POP
+    :age PUSH-( gen/large-integer* PUSH-{ :min 18 :max 120 POP POP
+    :email PUSH-( gen/fmap
+      PUSH-( fn PUSH-[ s POP PUSH-( str s "@example.com" POP POP
+      gen/string-alphanumeric
+    POP
+  POP
+POP
+
+PUSH-( def age-valid-prop
+  PUSH-( prop/for-all PUSH-[ u user-gen POP
+    PUSH-( and
+      PUSH-( >= PUSH-( :age u POP 18 POP
+      PUSH-( <= PUSH-( :age u POP 120 POP
+    POP
+  POP
+POP
+
+PUSH-( def id-positive-prop
+  PUSH-( prop/for-all PUSH-[ u user-gen POP
+    PUSH-( pos? PUSH-( :id u POP POP
+  POP
+POP
+
+PUSH-( def email-format-prop
+  PUSH-( prop/for-all PUSH-[ u user-gen POP
+    PUSH-( clojure.string/includes? PUSH-( :email u POP "@example.com" POP
+  POP
+POP
+
+PUSH-( defn run-tests PUSH-[ POP
+  PUSH-( println "Testing age validity..." POP
+  PUSH-( println PUSH-( tc/quick-check 100 age-valid-prop POP POP
+  
+  PUSH-( println "\nTesting ID positivity..." POP
+  PUSH-( println PUSH-( tc/quick-check 100 id-positive-prop POP POP
+  
+  PUSH-( println "\nTesting email format..." POP
+  PUSH-( println PUSH-( tc/quick-check 100 email-format-prop POP POP
+POP

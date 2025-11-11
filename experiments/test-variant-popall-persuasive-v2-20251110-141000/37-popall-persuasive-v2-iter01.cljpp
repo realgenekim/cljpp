@@ -1,0 +1,112 @@
+PUSH-( ns examples.program37
+  PUSH-( :require
+    PUSH-[ reagent.core :as r POP
+    PUSH-[ reagent.ratom :refer PUSH-[ atom POP POP
+    PUSH-[ clojure.string :as str POP-ALL
+
+PUSH-( defn use-state PUSH-[ initial-value POP
+  PUSH-( r/atom initial-value POP-ALL
+
+PUSH-( defn use-effect PUSH-[ state-atom effect-fn deps POP
+  PUSH-( r/track! 
+    PUSH-( fn POP
+      PUSH-( apply effect-fn 
+        PUSH-( map deref deps POP-ALL
+
+PUSH-( defn use-fetch PUSH-[ url POP
+  PUSH-( let PUSH-[
+    data PUSH-( r/atom nil POP
+    loading PUSH-( r/atom true POP
+    error PUSH-( r/atom nil POP
+  POP
+    PUSH-( fn POP
+      PUSH-( try
+        PUSH-( reset! loading true POP
+        PUSH-( reset! error nil POP
+        PUSH-( future
+          PUSH-( try
+            PUSH-( let PUSH-[ response PUSH-( slurp url POP POP
+              PUSH-( reset! data response POP
+              PUSH-( reset! loading false POP-ALL
+            PUSH-( catch Exception e
+              PUSH-( reset! error PUSH-( str e POP POP
+              PUSH-( reset! loading false POP-ALL
+        PUSH-( catch Exception e
+          PUSH-( reset! error PUSH-( str e POP POP
+          PUSH-( reset! loading false POP-ALL
+      PUSH-{ :data data
+         :loading loading
+         :error error
+         :refetch PUSH-( fn POP 
+           PUSH-( reset! data nil POP
+           PUSH-( reset! loading true POP
+           PUSH-( reset! error nil POP-ALL
+
+PUSH-( defn user-component POP
+  PUSH-( let PUSH-[
+    count-state PUSH-( use-state 0 POP
+    name-state PUSH-( use-state "" POP
+    PUSH-{ :keys PUSH-[ data loading error refetch POP POP 
+      PUSH-( use-fetch "https://api.example.com/users" POP
+  POP
+    PUSH-( fn POP
+      PUSH-[ :div
+        PUSH-[ :h2 "Counter Example" POP
+        PUSH-[ :p "Count: " @count-state POP
+        PUSH-[ :button 
+          PUSH-{ :on-click PUSH-( fn POP PUSH-( swap! count-state inc POP-ALL
+          "Increment" POP
+        
+        PUSH-[ :h2 "Input Example" POP
+        PUSH-[ :input 
+          PUSH-{ :type "text"
+             :value @name-state
+             :on-change PUSH-( fn PUSH-[ e POP
+                         PUSH-( reset! name-state 
+                           PUSH-( -> e .-target .-value POP-ALL
+        POP
+        PUSH-[ :p "Name: " @name-state POP
+        
+        PUSH-[ :h2 "Fetch Example" POP
+        PUSH-( if @loading
+          PUSH-[ :p "Loading..." POP
+          PUSH-( if @error
+            PUSH-[ :div
+              PUSH-[ :p "Error: " @error POP
+              PUSH-[ :button PUSH-{ :on-click refetch POP "Retry" POP-ALL
+            PUSH-[ :div
+              PUSH-[ :p "Data: " PUSH-( str @data POP POP
+              PUSH-[ :button PUSH-{ :on-click refetch POP "Refresh" POP-ALL
+
+PUSH-( defn custom-use-interval PUSH-[ callback delay POP
+  PUSH-( let PUSH-[
+    saved-callback PUSH-( r/atom callback POP
+  POP
+    PUSH-( r/create-class
+      PUSH-{ :component-did-mount
+         PUSH-( fn PUSH-[ this POP
+           PUSH-( let PUSH-[
+             interval-id PUSH-( js/setInterval 
+                          PUSH-( fn POP PUSH-( @saved-callback POP POP
+                          delay POP
+           POP
+             PUSH-( aset this "intervalId" interval-id POP-ALL
+         
+         :component-will-unmount
+         PUSH-( fn PUSH-[ this POP
+           PUSH-( js/clearInterval PUSH-( aget this "intervalId" POP-ALL
+         
+         :reagent-render
+         PUSH-( fn POP nil POP-ALL
+
+PUSH-( defn timer-component POP
+  PUSH-( let PUSH-[
+    seconds PUSH-( use-state 0 POP
+  POP
+    PUSH-( custom-use-interval
+      PUSH-( fn POP PUSH-( swap! seconds inc POP POP
+      1000 POP
+    PUSH-( fn POP
+      PUSH-[ :div
+        PUSH-[ :h2 "Timer" POP
+        PUSH-[ :p "Seconds: " @seconds POP-ALL

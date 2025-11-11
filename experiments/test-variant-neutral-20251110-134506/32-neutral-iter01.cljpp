@@ -1,0 +1,69 @@
+PUSH-( ns examples.program32 POP
+
+PUSH-( defn get-val PUSH-[ board row col POP
+  PUSH-( get-in board PUSH-[ row col POP POP
+POP
+
+PUSH-( defn set-val PUSH-[ board row col val POP
+  PUSH-( assoc-in board PUSH-[ row col POP val POP
+POP
+
+PUSH-( defn valid-in-row? PUSH-[ board row val POP
+  PUSH-( not PUSH-( some #PUSH-( = % val POP PUSH-( get board row POP POP POP
+POP
+
+PUSH-( defn valid-in-col? PUSH-[ board col val POP
+  PUSH-( not PUSH-( some #PUSH-( = % val POP PUSH-( map #PUSH-( get % col POP board POP POP POP
+POP
+
+PUSH-( defn valid-in-box? PUSH-[ board row col val POP
+  PUSH-( let PUSH-[
+    box-row PUSH-( * 3 PUSH-( quot row 3 POP POP
+    box-col PUSH-( * 3 PUSH-( quot col 3 POP POP
+    cells PUSH-( for PUSH-[ r PUSH-( range box-row PUSH-( + box-row 3 POP POP
+                    c PUSH-( range box-col PUSH-( + box-col 3 POP POP POP
+            PUSH-( get-val board r c POP
+          POP
+  POP
+    PUSH-( not PUSH-( some #PUSH-( = % val POP cells POP POP
+  POP
+POP
+
+PUSH-( defn valid? PUSH-[ board row col val POP
+  PUSH-( and
+    PUSH-( valid-in-row? board row val POP
+    PUSH-( valid-in-col? board col val POP
+    PUSH-( valid-in-box? board row col val POP
+  POP
+POP
+
+PUSH-( defn find-empty PUSH-[ board POP
+  PUSH-( loop PUSH-[ row 0 POP
+    PUSH-( when PUSH-( < row 9 POP
+      PUSH-( loop PUSH-[ col 0 POP
+        PUSH-( cond
+          PUSH-( >= col 9 POP PUSH-( recur PUSH-( inc row POP POP
+          PUSH-( = 0 PUSH-( get-val board row col POP POP PUSH-[ row col POP
+          :else PUSH-( recur PUSH-( inc col POP POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn solve-sudoku PUSH-[ board POP
+  PUSH-( if-let PUSH-[ PUSH-[ row col POP PUSH-( find-empty board POP POP
+    PUSH-( loop PUSH-[ n 1 POP
+      PUSH-( cond
+        PUSH-( > n 9 POP nil
+        PUSH-( valid? board row col n POP
+        PUSH-( or
+          PUSH-( solve-sudoku PUSH-( set-val board row col n POP POP
+          PUSH-( recur PUSH-( inc n POP POP
+        POP
+        :else PUSH-( recur PUSH-( inc n POP POP
+      POP
+    POP
+    board
+  POP
+POP

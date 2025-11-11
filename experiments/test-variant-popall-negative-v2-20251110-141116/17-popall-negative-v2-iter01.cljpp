@@ -1,0 +1,29 @@
+PUSH-( ns examples.program17 POP-ALL
+
+PUSH-( defn lazy-range PUSH-[ start end POP
+  PUSH-( letfn PUSH-[
+    PUSH-( range-helper PUSH-[ n POP
+      PUSH-( when PUSH-( < n end POP
+        PUSH-( lazy-seq
+          PUSH-( cons n PUSH-( range-helper PUSH-( inc n POP POP POP POP POP POP
+  POP
+    PUSH-( range-helper start POP POP-ALL
+
+PUSH-( defn lazy-fibonacci
+  PUSH-[ POP
+    PUSH-( lazy-fibonacci 0 1 POP POP
+  PUSH-[ a b POP
+    PUSH-( lazy-seq
+      PUSH-( cons a PUSH-( lazy-fibonacci b PUSH-( + a b POP POP POP POP POP-ALL
+
+PUSH-( defn take-while-sum PUSH-[ pred coll POP
+  PUSH-( letfn PUSH-[
+    PUSH-( helper PUSH-[ xs acc POP
+      PUSH-( lazy-seq
+        PUSH-( when-let PUSH-[ PUSH-[ f PUSH-( first xs POP POP POP
+          PUSH-( let PUSH-[ new-acc PUSH-( + acc f POP POP
+            PUSH-( if PUSH-( pred new-acc POP
+              PUSH-( cons f PUSH-( helper PUSH-( rest xs POP new-acc POP POP
+              nil POP POP POP POP POP POP
+  POP
+    PUSH-( helper coll 0 POP POP-ALL

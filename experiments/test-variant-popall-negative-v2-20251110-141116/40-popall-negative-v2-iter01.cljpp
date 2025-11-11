@@ -1,0 +1,44 @@
+PUSH-( ns examples.program40 POP-ALL
+
+PUSH-( defn has-cycle? PUSH-[ graph POP
+  PUSH-( letfn PUSH-[
+    PUSH-( visit PUSH-[ node visited path POP
+      PUSH-( cond
+        PUSH-( contains? path node POP true
+        PUSH-( contains? visited node POP false
+        :else
+        PUSH-( let PUSH-[ deps PUSH-( get-in graph PUSH-[ node :deps POP POP POP
+          PUSH-( some PUSH-( fn PUSH-[ dep POP
+                       PUSH-( visit dep visited PUSH-( conj path node POP POP POP
+                     deps POP POP POP POP POP
+  POP
+    PUSH-( some PUSH-( fn PUSH-[ node POP PUSH-( visit node #{} #{} POP POP PUSH-( keys graph POP POP POP POP
+
+PUSH-( defn topological-sort PUSH-[ graph POP
+  PUSH-( loop PUSH-[ remaining PUSH-( set PUSH-( keys graph POP POP
+         result PUSH-[ POP POP
+    PUSH-( if PUSH-( empty? remaining POP
+      result
+      PUSH-( let PUSH-[ ready PUSH-( filter
+                      PUSH-( fn PUSH-[ node POP
+                        PUSH-( let PUSH-[ deps PUSH-( get-in graph PUSH-[ node :deps POP POP POP
+                          PUSH-( every? PUSH-( set result POP deps POP POP POP
+                      remaining POP POP
+        PUSH-( if PUSH-( empty? ready POP
+          PUSH-( throw PUSH-( ex-info "Cycle detected" PUSH-{ :remaining remaining POP POP POP
+          PUSH-( recur PUSH-( disj remaining PUSH-( first ready POP POP
+                      PUSH-( conj result PUSH-( first ready POP POP POP POP POP POP POP
+
+PUSH-( defn execute-graph PUSH-[ graph POP
+  PUSH-( if PUSH-( has-cycle? graph POP
+    PUSH-( throw PUSH-( ex-info "Graph contains cycle" PUSH-{ POP POP POP
+    PUSH-( let PUSH-[ order PUSH-( topological-sort graph POP POP
+      PUSH-( reduce
+        PUSH-( fn PUSH-[ cache node POP
+          PUSH-( let PUSH-[ node-spec PUSH-( get graph node POP
+                deps PUSH-( :deps node-spec POP
+                node-fn PUSH-( :fn node-spec POP
+                dep-values PUSH-( mapv cache deps POP POP
+            PUSH-( assoc cache node PUSH-( apply node-fn dep-values POP POP POP POP
+        PUSH-{ POP
+        order POP POP POP POP

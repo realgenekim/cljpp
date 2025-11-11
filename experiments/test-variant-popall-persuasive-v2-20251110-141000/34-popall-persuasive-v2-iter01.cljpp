@@ -1,0 +1,27 @@
+PUSH-( ns examples.program34
+  PUSH-( :require
+    PUSH-[ compojure.core :refer PUSH-[ GET POST defroutes POP POP
+    PUSH-[ compojure.route :as route POP
+    PUSH-[ ring.util.response :refer PUSH-[ response POP POP POP POP
+
+PUSH-( defn get-users PUSH-[ request POP
+  PUSH-( response PUSH-{ :users PUSH-[ PUSH-{ :id 1 :name "Alice" POP
+                                 PUSH-{ :id 2 :name "Bob" POP POP POP POP-ALL
+
+PUSH-( defn get-user-by-id PUSH-[ PUSH-{ PUSH-{ :params PUSH-{ :id id POP POP :as request POP POP
+  PUSH-( response PUSH-{ :id id :name PUSH-( str "User " id POP POP POP-ALL
+
+PUSH-( defn get-user-posts PUSH-[ PUSH-{ PUSH-{ :params PUSH-{ :id user-id POP POP POP POP
+  PUSH-( response PUSH-{ :user-id user-id
+                   :posts PUSH-[ PUSH-{ :id 1 :title "First Post" POP
+                            PUSH-{ :id 2 :title "Second Post" POP POP POP POP-ALL
+
+PUSH-( defn create-user PUSH-[ PUSH-{ :body body :as request POP POP
+  PUSH-( response PUSH-{ :message "User created" :data body POP POP-ALL
+
+PUSH-( defroutes app-routes
+  PUSH-( GET "/users" request PUSH-( get-users request POP POP
+  PUSH-( GET "/users/:id" request PUSH-( get-user-by-id request POP POP
+  PUSH-( GET "/users/:id/posts" request PUSH-( get-user-posts request POP POP
+  PUSH-( POST "/users" request PUSH-( create-user request POP POP
+  PUSH-( route/not-found PUSH-( response PUSH-{ :error "Not Found" POP POP POP-ALL

@@ -1,0 +1,29 @@
+PUSH-( ns examples.program16 POP
+
+PUSH-( defn parse-char PUSH-[ expected POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( if PUSH-( and PUSH-( seq input POP PUSH-( = expected PUSH-( first input POP POP POP
+      PUSH-[ PUSH-[ PUSH-( first input POP PUSH-( rest input POP POP POP
+      nil POP-ALL
+
+PUSH-( defn return PUSH-[ value POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-[ PUSH-[ value input POP POP-ALL
+
+PUSH-( defn bind PUSH-[ parser f POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( when-let PUSH-[ result PUSH-( parser input POP POP
+      PUSH-( let PUSH-[ PUSH-[ value rest-input POP result POP
+        PUSH-( PUSH-( f value POP rest-input POP-ALL
+
+PUSH-( defn choice PUSH-[ parser1 parser2 POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( or PUSH-( parser1 input POP PUSH-( parser2 input POP POP-ALL
+
+PUSH-( defn many PUSH-[ parser POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( loop PUSH-[ acc PUSH-[ POP remaining input POP
+      PUSH-( if-let PUSH-[ result PUSH-( parser remaining POP POP
+        PUSH-( let PUSH-[ PUSH-[ value rest-input POP result POP
+          PUSH-( recur PUSH-( conj acc value POP rest-input POP POP
+        PUSH-[ PUSH-[ acc remaining POP POP-ALL

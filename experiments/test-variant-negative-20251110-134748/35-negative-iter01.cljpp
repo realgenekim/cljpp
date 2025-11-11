@@ -1,0 +1,31 @@
+(ns examples.program35
+  (:require [clojure.test.check :as tc]
+            [clojure.test.check.generators :as gen]
+            [clojure.test.check.properties :as prop]))
+
+(def user-gen
+  (gen/hash-map
+   :id gen/nat
+   :name (gen/not-empty gen/string-alphanumeric)
+   :email (gen/fmap #(str % "@example.com") gen/string-alphanumeric)
+   :age (gen/choose 18 100)))
+
+(def user-invariants
+  (prop/for-all [user user-gen]
+    (and (nat-int? (:id user))
+         (string? (:name user))
+         (not (empty? (:name user)))
+         (string? (:email user))
+         (re-matches #".+@.+" (:email user))
+         (>= (:age user) 18)
+         (<= (:age user) 100))))
+
+(def email-domain-invariant
+  (prop/for-all [user user-gen]
+    (clojure.string/ends-with? (:email user) "@example.com")))
+
+(defn run-tests []
+  (let [result1 (tc/quick-check 100 user-invariants)
+        result2 (tc/quick-check 100 email-domain-invariant)]
+    {:user-invariants result1
+     :email-domain result2}))

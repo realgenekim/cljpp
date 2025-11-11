@@ -1,0 +1,6 @@
+(ns examples.program37 (:require [reagent.core :as r] [cljs.core.async :refer [go <!]] [cljs-http.client :as http]))
+(defn use-state [initial-value] (r/atom initial-value))
+(defn use-effect [state-atom effect-fn] (r/track! (fn [] (deref state-atom) (effect-fn))))
+(defn use-fetch [url] (let [loading (r/atom true) error (r/atom nil) data (r/atom nil)] (go (let [response (<! (http/get url))] (if (:success response) (do (reset! data (:body response)) (reset! loading false)) (do (reset! error (:error-text response)) (reset! loading false))))) {:loading loading, :error error, :data data}))
+(defn user-profile [] (let [user-id (use-state 1) {:keys [loading error data]} (use-fetch (str "https://api.example.com/users/" (deref user-id)))] (use-effect user-id (fn [] (js/console.log "User ID changed:" (deref user-id)))) (fn [] [:div [:h2 "User Profile"] (cond (deref loading) [:p "Loading..."] (deref error) [:p.error (str "Error: " (deref error))] (deref data) [:div [:p (str "Name: " (:name (deref data)))] [:p (str "Email: " (:email (deref data)))]]) [:button {:on-click (fn [] (swap! user-id inc))} "Next User"]])))
+(defn mount-root [] (r/render [user-profile] (js/document.getElementById "app")))

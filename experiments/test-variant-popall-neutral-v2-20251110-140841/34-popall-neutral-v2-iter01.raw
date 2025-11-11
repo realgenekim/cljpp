@@ -1,0 +1,23 @@
+```clojure
+PUSH-( ns examples.program34
+  PUSH-( :require
+    PUSH-[ compojure.core :refer PUSH-[ defroutes GET POST POP POP
+    PUSH-[ compojure.route :as route POP
+    PUSH-[ ring.util.response :refer PUSH-[ response POP POP POP POP-ALL
+
+PUSH-( defn users-handler PUSH-[ request POP
+  PUSH-( response PUSH-{ :users PUSH-[ PUSH-{ :id 1 :name "Alice" POP PUSH-{ :id 2 :name "Bob" POP POP POP POP-ALL
+
+PUSH-( defn user-handler PUSH-[ PUSH-{ PUSH-{ :keys PUSH-[ id POP POP :params POP POP POP
+  PUSH-( response PUSH-{ :id id :name PUSH-( str "User " id POP POP POP-ALL
+
+PUSH-( defn user-posts-handler PUSH-[ PUSH-{ PUSH-{ :keys PUSH-[ id POP POP :params POP POP POP
+  PUSH-( response PUSH-{ :user-id id :posts PUSH-[ PUSH-{ :id 1 :title "First Post" POP PUSH-{ :id 2 :title "Second Post" POP POP POP POP-ALL
+
+PUSH-( defroutes app-routes
+  PUSH-( GET "/users" PUSH-[ POP request PUSH-( users-handler request POP POP
+  PUSH-( GET "/users/:id" PUSH-[ POP request PUSH-( user-handler request POP POP
+  PUSH-( GET "/users/:id/posts" PUSH-[ POP request PUSH-( user-posts-handler request POP POP
+  PUSH-( POST "/users" PUSH-[ POP request PUSH-( response PUSH-{ :status "created" POP POP POP
+  PUSH-( route/not-found PUSH-{ :error "Not Found" POP POP-ALL
+```

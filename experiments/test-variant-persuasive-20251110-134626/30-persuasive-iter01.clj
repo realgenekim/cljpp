@@ -1,0 +1,4 @@
+(ns examples.program30)
+(defrecord SkipNode [value next down])
+(deftype SkipList [head height cnt] clojure.lang.ISeq (seq [this] (when head (loop [node head acc []] (if node (recur (:next node) (conj acc (:value node))) (seq (reverse acc)))))) (first [this] (when head (:value head))) (next [this] (when head (let [n (:next head)] (when n (SkipList. n height (dec cnt)))))) (more [this] (or (.next this) (list))) clojure.lang.ICollection (cons [this x] (let [new-node (->SkipNode x head nil)] (SkipList. new-node height (inc cnt)))) (empty [this] (SkipList. nil 0 0)) (equiv [this other] (and (instance? SkipList other) (= cnt (.-cnt other)) (= (seq this) (seq other)))) clojure.lang.ICounted (count [this] cnt))
+(defn make-skip-list [& items] (reduce (fn [sl item] (cons sl item)) (SkipList. nil 0 0) (reverse items)))

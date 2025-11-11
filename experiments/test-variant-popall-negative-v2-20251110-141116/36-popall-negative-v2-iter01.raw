@@ -1,0 +1,79 @@
+```clojure
+PUSH-( ns examples.program36 POP-ALL
+
+PUSH-( defn m-return PUSH-[ x POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-[ PUSH-[ x input POP POP POP-ALL
+
+PUSH-( defn m-bind PUSH-[ m f POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( let PUSH-[
+      results PUSH-( m input POP
+    POP
+      PUSH-( if PUSH-( empty? results POP
+        PUSH-[ POP
+        PUSH-( let PUSH-[
+          PUSH-[ v rest-input POP PUSH-( first results POP
+        POP
+          PUSH-( PUSH-( f v POP rest-input POP POP POP POP POP-ALL
+
+PUSH-( def mzero
+  PUSH-( fn PUSH-[ input POP
+    PUSH-[ POP POP POP-ALL
+
+PUSH-( defn mplus PUSH-[ p1 p2 POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( let PUSH-[
+      r1 PUSH-( p1 input POP
+    POP
+      PUSH-( if PUSH-( empty? r1 POP
+        PUSH-( p2 input POP
+        r1 POP POP POP POP-ALL
+
+PUSH-( defn parse-char PUSH-[ pred POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( if PUSH-( and PUSH-( seq input POP PUSH-( pred PUSH-( first input POP POP POP
+      PUSH-[ PUSH-[ PUSH-( first input POP PUSH-( rest input POP POP POP
+      PUSH-[ POP POP POP POP-ALL
+
+PUSH-( def parse-digit
+  PUSH-( parse-char PUSH-( fn PUSH-[ c POP PUSH-( Character/isDigit c POP POP POP POP-ALL
+
+PUSH-( defn parse-number PUSH-[ POP
+  PUSH-( m-bind parse-digit
+    PUSH-( fn PUSH-[ d POP
+      PUSH-( m-bind PUSH-( mplus PUSH-( parse-number POP PUSH-( m-return nil POP POP
+        PUSH-( fn PUSH-[ rest-digits POP
+          PUSH-( if rest-digits
+            PUSH-( m-return PUSH-( str d rest-digits POP POP
+            PUSH-( m-return PUSH-( str d POP POP POP POP POP POP POP POP-ALL
+
+PUSH-( declare parse-expr POP-ALL
+
+PUSH-( defn parse-term PUSH-[ POP
+  PUSH-( mplus
+    parse-number
+    PUSH-( m-bind PUSH-( parse-char PUSH-( fn PUSH-[ c POP PUSH-( = c \PUSH-( POP POP POP
+      PUSH-( fn PUSH-[ _ POP
+        PUSH-( m-bind parse-expr
+          PUSH-( fn PUSH-[ e POP
+            PUSH-( m-bind PUSH-( parse-char PUSH-( fn PUSH-[ c POP PUSH-( = c \POP POP POP POP
+              PUSH-( fn PUSH-[ _ POP
+                PUSH-( m-return e POP POP POP POP POP POP POP POP POP-ALL
+
+PUSH-( defn parse-op PUSH-[ POP
+  PUSH-( mplus
+    PUSH-( parse-char PUSH-( fn PUSH-[ c POP PUSH-( = c \+ POP POP POP
+    PUSH-( parse-char PUSH-( fn PUSH-[ c POP PUSH-( = c \- POP POP POP POP POP-ALL
+
+PUSH-( defn parse-expr PUSH-[ POP
+  PUSH-( m-bind PUSH-( parse-term POP
+    PUSH-( fn PUSH-[ t1 POP
+      PUSH-( mplus
+        PUSH-( m-bind PUSH-( parse-op POP
+          PUSH-( fn PUSH-[ op POP
+            PUSH-( m-bind parse-expr
+              PUSH-( fn PUSH-[ t2 POP
+                PUSH-( m-return PUSH-( str t1 op t2 POP POP POP POP POP POP
+        PUSH-( m-return t1 POP POP POP POP POP-ALL
+```

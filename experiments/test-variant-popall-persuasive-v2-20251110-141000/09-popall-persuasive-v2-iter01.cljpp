@@ -1,0 +1,12 @@
+PUSH-( ns examples.program9 POP-ALL
+
+PUSH-( def transitions
+  PUSH-{ :idle PUSH-{ :start :running POP
+     :running PUSH-{ :pause :paused :stop :idle POP
+     :paused PUSH-{ :resume :running :stop :idle POP-ALL
+
+PUSH-( defn apply-event PUSH-[ state event POP
+  PUSH-( get-in transitions PUSH-[ state event POP state POP-ALL
+
+PUSH-( defn run-machine PUSH-[ events POP
+  PUSH-( reduce apply-event :idle events POP-ALL

@@ -1,0 +1,68 @@
+```clojure
+(ns examples.program40)
+
+(defn- find-cycles
+  "Detect cycles using DFS"
+  [graph]
+  (let [visit (fn visit [node path visited]
+                (cond
+                  (contains? path node) {:cycle true :path (conj path node)}
+                  (contains? visited node) {:cycle false :visited visited}
+                  :else
+                  (let [deps (get-in graph [node :deps] [])
+                        result (reduce
+                                (fn [acc dep]
+                                  (if (:cycle acc)
+                                    (reduced acc)
+                                    (visit dep (conj path node) (:visited acc))))
+                                {:cycle false :visited visited}
+                                deps)]
+                    (if (:cycle result)
+                      result
+                      {:cycle false :visited (conj (:visited result) node)}))))]
+    (reduce
+     (fn [acc node]
+       (if (:cycle acc)
+         (reduced acc)
+         (visit node #{} (:visited acc))))
+     {:cycle false :visited #{}}
+     (keys graph))))
+
+(defn- topological-sort
+  "Return nodes in dependency order"
+  [graph]
+  (loop [result []
+         remaining (set (keys graph))
+         resolved #{}]
+    (if (empty? remaining)
+      result
+      (let [ready (filter
+                   (fn [node]
+                     (every? resolved (get-in graph [node :deps] [])))
+                   remaining)]
+        (if (empty? ready)
+          (throw (ex-info "Cycle detected" {:remaining remaining}))
+          (recur
+           (into result ready)
+           (apply disj remaining ready)
+           (into resolved ready)))))))
+
+(defn execute-graph
+  "Execute computation graph with caching"
+  [graph inputs]
+  (let [cycle-check (find-cycles graph)]
+    (when (:cycle cycle-check)
+      (throw (ex-info "Graph contains cycles" {:path (:path cycle-check)}))))
+  
+  (let [order (topological-sort graph)
+        cache (atom inputs)]
+    (doseq [node order]
+      (when-not (contains? @cache node)
+        (let [node-def (get graph node)
+              deps (:deps node-def [])
+              dep-vals (mapv #(get @cache %) deps)
+              f (:fn node-def)
+              result (apply f dep-vals)]
+          (swap! cache assoc node result))))
+    @cache))
+```

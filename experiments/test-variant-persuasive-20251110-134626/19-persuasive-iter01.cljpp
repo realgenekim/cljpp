@@ -1,0 +1,43 @@
+PUSH-( ns examples.program19 POP
+
+PUSH-( def db
+  PUSH-{ :people
+    PUSH-[ PUSH-{ :id 1 :name "Alice" :role "manager" POP
+           PUSH-{ :id 2 :name "Bob" :role "developer" POP
+           PUSH-{ :id 3 :name "Carol" :role "manager" POP POP
+    :projects
+    PUSH-[ PUSH-{ :id 101 :name "Project Alpha" :manager-id 1 POP
+           PUSH-{ :id 102 :name "Project Beta" :manager-id 3 POP
+           PUSH-{ :id 103 :name "Project Gamma" :manager-id 1 POP POP
+  POP
+POP
+
+PUSH-( defn find-by PUSH-[ coll pred POP
+  PUSH-( filter pred coll POP
+POP
+
+PUSH-( defn join PUSH-[ coll1 coll2 pred POP
+  PUSH-( for PUSH-[ x coll1
+                y coll2
+                :when PUSH-( pred x y POP POP
+    PUSH-[ x y POP
+  POP
+POP
+
+PUSH-( defn query-projects-with-managers PUSH-[ POP
+  PUSH-( let PUSH-[ people PUSH-( :people db POP
+                    projects PUSH-( :projects db POP
+                    managers PUSH-( find-by people PUSH-( fn PUSH-[ p POP PUSH-( = "manager" PUSH-( :role p POP POP POP POP
+                    joined PUSH-( join projects managers
+                                  PUSH-( fn PUSH-[ proj mgr POP
+                                    PUSH-( = PUSH-( :manager-id proj POP PUSH-( :id mgr POP POP
+                                  POP
+                             POP POP
+    PUSH-( map PUSH-( fn PUSH-[ PUSH-[ proj mgr POP POP
+              PUSH-{ :project PUSH-( :name proj POP
+                     :manager PUSH-( :name mgr POP POP
+           POP
+           joined
+    POP
+  POP
+POP

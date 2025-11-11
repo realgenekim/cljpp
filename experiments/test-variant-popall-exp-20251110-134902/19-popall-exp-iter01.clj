@@ -1,0 +1,5 @@
+(ns examples.program19)
+(def db {:projects [{:name "Project X", :manager-id 1, :id 101} {:name "Project Y", :manager-id 3, :id 102} {:name "Project Z", :manager-id 1, :id 103}], :people [{:role "Manager", :name "Alice", :id 1} {:role "Developer", :name "Bob", :id 2} {:role "Manager", :name "Carol", :id 3}]})
+(defn find-by [coll pred] (filter pred coll))
+(defn join [coll1 coll2 k1 k2] (for [x coll1 y coll2 :when (= (k1 x) (k2 y))] [x y]))
+(defn query-projects-with-managers [db] (map (fn [[person project]] {:project-name (:name project), :manager-name (:name person)}) (join (:people db) (:projects db) :id :manager-id)))

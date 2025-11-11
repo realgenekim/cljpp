@@ -1,0 +1,79 @@
+```clojure
+PUSH-( ns examples.program40 POP
+
+PUSH-( defn detect-cycle PUSH-[ graph POP
+  PUSH-( letfn PUSH-[
+    PUSH-( visit PUSH-[ node visited path POP
+      PUSH-( cond
+        PUSH-( contains? path node POP true
+        PUSH-( contains? visited node POP false
+        :else PUSH-( let PUSH-[
+          deps PUSH-( get-in graph PUSH-[ node :deps POP PUSH-[ POP POP
+          new-path PUSH-( conj path node POP
+        POP
+          PUSH-( some PUSH-( fn PUSH-[ dep POP
+            PUSH-( visit dep visited new-path POP
+          POP deps POP
+        POP
+      POP
+    POP
+  POP
+    PUSH-( some PUSH-( fn PUSH-[ node POP
+      PUSH-( visit node PUSH-{ POP PUSH-{ POP POP
+    POP PUSH-( keys graph POP POP
+  POP
+POP
+
+PUSH-( defn topological-sort PUSH-[ graph POP
+  PUSH-( loop PUSH-[
+    remaining PUSH-( set PUSH-( keys graph POP POP
+    result PUSH-[ POP
+    visited PUSH-{ POP
+  POP
+    PUSH-( if PUSH-( empty? remaining POP
+      result
+      PUSH-( let PUSH-[
+        node PUSH-( first
+          PUSH-( filter PUSH-( fn PUSH-[ n POP
+            PUSH-( let PUSH-[
+              deps PUSH-( get-in graph PUSH-[ n :deps POP PUSH-[ POP POP
+            POP
+              PUSH-( every? visited deps POP
+            POP
+          POP remaining POP
+        POP
+      POP
+        PUSH-( recur
+          PUSH-( disj remaining node POP
+          PUSH-( conj result node POP
+          PUSH-( assoc visited node true POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn execute-graph PUSH-[ graph POP
+  PUSH-( if PUSH-( detect-cycle graph POP
+    PUSH-( throw PUSH-( ex-info "Cycle detected in computation graph" PUSH-{ :graph graph POP POP POP
+    PUSH-( let PUSH-[
+      order PUSH-( topological-sort graph POP
+      cache PUSH-( atom PUSH-{ POP POP
+    POP
+      PUSH-( doseq PUSH-[ node order POP
+        PUSH-( let PUSH-[
+          node-def PUSH-( get graph node POP
+          deps PUSH-( get node-def :deps PUSH-[ POP POP
+          dep-values PUSH-( mapv PUSH-( fn PUSH-[ dep POP
+            PUSH-( get @cache dep POP
+          POP deps POP
+          result PUSH-( apply PUSH-( get node-def :fn POP dep-values POP
+        POP
+          PUSH-( swap! cache assoc node result POP
+        POP
+      POP
+      @cache
+    POP
+  POP
+POP
+```

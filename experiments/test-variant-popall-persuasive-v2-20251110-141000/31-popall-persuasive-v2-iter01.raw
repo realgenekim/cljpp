@@ -1,0 +1,45 @@
+```clojure
+PUSH-( ns examples.program31 POP-ALL
+
+PUSH-( defn from PUSH-[ data POP
+  PUSH-( fn PUSH-[ query POP
+    PUSH-( assoc query :data data POP-ALL
+
+PUSH-( defn where PUSH-[ pred POP
+  PUSH-( fn PUSH-[ query POP
+    PUSH-( update query :data PUSH-( partial filter pred POP POP-ALL
+
+PUSH-( defn select PUSH-[ fields POP
+  PUSH-( fn PUSH-[ query POP
+    PUSH-( update query :data
+      PUSH-( partial map PUSH-( fn PUSH-[ row POP
+        PUSH-( select-keys row fields POP-ALL
+
+PUSH-( defn order-by PUSH-[ field POP
+  PUSH-( fn PUSH-[ query POP
+    PUSH-( update query :data PUSH-( partial sort-by field POP POP-ALL
+
+PUSH-( defn execute PUSH-[ query POP
+  PUSH-( :data query POP-ALL
+
+PUSH-( def sample-data
+  PUSH-[
+    PUSH-{ :id 1 :name "Alice" :age 30 :dept "Engineering" POP
+    PUSH-{ :id 2 :name "Bob" :age 25 :dept "Sales" POP
+    PUSH-{ :id 3 :name "Carol" :age 35 :dept "Engineering" POP
+    PUSH-{ :id 4 :name "Dave" :age 28 :dept "Marketing" POP
+  POP-ALL
+
+PUSH-( defn -main PUSH-[ POP
+  PUSH-( let PUSH-[
+    result PUSH-( execute
+      PUSH-( -> PUSH-{ POP
+        PUSH-( from sample-data POP
+        PUSH-( where PUSH-( fn PUSH-[ x POP PUSH-( = PUSH-( :dept x POP "Engineering" POP POP POP
+        PUSH-( select PUSH-[ :name :age POP POP
+        PUSH-( order-by :age POP POP POP
+  POP
+    PUSH-( println "Query result:" POP
+    PUSH-( doseq PUSH-[ row result POP
+      PUSH-( println row POP POP-ALL
+```

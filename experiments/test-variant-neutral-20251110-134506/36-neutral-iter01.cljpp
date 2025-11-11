@@ -1,0 +1,79 @@
+PUSH-( ns examples.program36 POP
+
+PUSH-( defn m-return PUSH-[ x POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-[ PUSH-[ x input POP POP
+  POP
+POP
+
+PUSH-( defn m-bind PUSH-[ parser f POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( mapcat
+      PUSH-( fn PUSH-[ PUSH-[ v rest POP POP
+        PUSH-( PUSH-( f v POP rest POP
+      POP
+      PUSH-( parser input POP
+    POP
+  POP
+POP
+
+PUSH-( def mzero
+  PUSH-( fn PUSH-[ input POP
+    PUSH-[ POP
+  POP
+POP
+
+PUSH-( defn mplus PUSH-[ p1 p2 POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( concat PUSH-( p1 input POP PUSH-( p2 input POP POP
+  POP
+POP
+
+PUSH-( defn parse-char PUSH-[ pred POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( if PUSH-( and PUSH-( seq input POP PUSH-( pred PUSH-( first input POP POP POP
+      PUSH-[ PUSH-[ PUSH-( first input POP PUSH-( rest input POP POP POP
+      PUSH-[ POP
+    POP
+  POP
+POP
+
+PUSH-( def parse-digit
+  PUSH-( parse-char PUSH-( fn PUSH-[ c POP PUSH-( Character/isDigit c POP POP POP
+POP
+
+PUSH-( defn parse-number PUSH-[ POP
+  PUSH-( m-bind parse-digit
+    PUSH-( fn PUSH-[ d POP
+      PUSH-( m-bind
+        PUSH-( mplus PUSH-( parse-number POP PUSH-( m-return PUSH-[ POP POP POP
+        PUSH-( fn PUSH-[ rest-digits POP
+          PUSH-( m-return PUSH-( apply str d rest-digits POP POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn parse-expr PUSH-[ POP
+  PUSH-( mplus
+    PUSH-( m-bind PUSH-( parse-number POP
+      PUSH-( fn PUSH-[ n POP
+        PUSH-( m-bind PUSH-( parse-char PUSH-( fn PUSH-[ c POP PUSH-( = c \+ POP POP POP
+          PUSH-( fn PUSH-[ _ POP
+            PUSH-( m-bind PUSH-( parse-expr POP
+              PUSH-( fn PUSH-[ e POP
+                PUSH-( m-return PUSH-[ '+ PUSH-( Long/parseLong n POP e POP POP
+              POP
+            POP
+          POP
+        POP
+      POP
+    POP
+    PUSH-( m-bind PUSH-( parse-number POP
+      PUSH-( fn PUSH-[ n POP
+        PUSH-( m-return PUSH-( Long/parseLong n POP POP
+      POP
+    POP
+  POP
+POP

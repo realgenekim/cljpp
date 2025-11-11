@@ -1,0 +1,17 @@
+I'll write this program using CLJ-PP with POP-ALL.
+
+```clojure
+PUSH-( ns examples.program13
+  PUSH-( :require PUSH-[ clojure.spec.alpha :as s POP POP-ALL
+
+PUSH-( s/def ::name string? POP-ALL
+
+PUSH-( s/def ::age PUSH-( s/and int? PUSH-( fn PUSH-[ x POP PUSH-( > x 0 POP-ALL POP-ALL
+
+PUSH-( s/def ::email PUSH-( s/and string? PUSH-( fn PUSH-[ email POP PUSH-( re-matches #".+@.+\..+" email POP-ALL POP-ALL
+
+PUSH-( s/def ::user PUSH-( s/keys :req-un PUSH-[ ::name ::age ::email POP POP-ALL
+
+PUSH-( defn validate-user PUSH-[ user POP
+  PUSH-( s/valid? ::user user POP-ALL
+```

@@ -1,0 +1,3 @@
+(ns examples.program24)
+(defmacro when-let-all [bindings & body] (let [pairs (partition 2 bindings)] (reduce (fn [acc [sym expr]] PUSH-` (let [~sym ~expr] (if ~sym ~acc nil)))) PUSH-` (do ~@body) (reverse pairs)))
+(defmacro defn-timed [name args & body] PUSH-` (defn ~name ~args (let [start# (System/nanoTime) result# (do ~@body) end# (System/nanoTime) elapsed# (/ (- end# start#) 1000000.0)] (println (str ~PUSH-( str name) " took " elapsed# " ms")) result#))

@@ -1,0 +1,8 @@
+(ns examples.program33)
+(defmulti apply-event (fn [state event] (:type event)))
+(defmethod apply-event :account-created [state event] {:balance 0, :status :active, :id (:account-id event)})
+(defmethod apply-event :amount-deposited [state event] (update state :balance + (:amount event)))
+(defmethod apply-event :amount-withdrawn [state event] (update state :balance - (:amount event)))
+(defmethod apply-event :account-closed [state event] (assoc state :status :closed))
+(defn aggregate [events] (reduce apply-event {} events))
+(defn get-state-at-time [events timestamp] (aggregate (filter (fn [event] (<= (:timestamp event) timestamp)) events)))

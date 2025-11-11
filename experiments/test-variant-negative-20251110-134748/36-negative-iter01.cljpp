@@ -1,0 +1,66 @@
+(ns examples.program36)
+
+(defn m-return [v]
+  (fn [input]
+    [[v input]]))
+
+(defn m-bind [p f]
+  (fn [input]
+    (mapcat (fn [[v rest-input]]
+              ((f v) rest-input))
+            (p input))))
+
+(def mzero
+  (fn [input] []))
+
+(defn mplus [p1 p2]
+  (fn [input]
+    (concat (p1 input) (p2 input))))
+
+(defn parse-char [c]
+  (fn [input]
+    (if (and (seq input) (= (first input) c))
+      [[(first input) (rest input)]]
+      [])))
+
+(defn parse-pred [pred]
+  (fn [input]
+    (if (and (seq input) (pred (first input)))
+      [[(first input) (rest input)]]
+      [])))
+
+(def parse-digit
+  (parse-pred #(Character/isDigit %)))
+
+(defn parse-number []
+  (fn [input]
+    (let [digits (take-while #(Character/isDigit %) input)]
+      (if (seq digits)
+        [[(Long/parseLong (apply str digits)) (drop (count digits) input)]]
+        []))))
+
+(declare parse-expr)
+
+(defn parse-term []
+  (mplus
+    (parse-number)
+    (m-bind (parse-char \()
+            (fn [_]
+              (m-bind (parse-expr)
+                      (fn [e]
+                        (m-bind (parse-char \))
+                                (fn [_] (m-return e)))))))))
+
+(defn parse-expr []
+  (m-bind (parse-term)
+          (fn [left]
+            (mplus
+              (m-bind (parse-char \+)
+                      (fn [_]
+                        (m-bind (parse-expr)
+                                (fn [right]
+                                  (m-return (+ left right))))))
+              (m-return left)))))
+
+(defn run-parser [p input]
+  (p (seq input)))

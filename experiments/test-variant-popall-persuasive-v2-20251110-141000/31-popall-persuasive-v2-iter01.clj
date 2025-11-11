@@ -1,0 +1,8 @@
+(ns examples.program31)
+(defn from [data] (fn [query] (assoc query :data data)))
+(defn where [pred] (fn [query] (update query :data (partial filter pred))))
+(defn select [fields] (fn [query] (update query :data (partial map (fn [row] (select-keys row fields))))))
+(defn order-by [field] (fn [query] (update query :data (partial sort-by field))))
+(defn execute [query] (:data query))
+(def sample-data [{:age 30, :name "Alice", :id 1, :dept "Engineering"} {:age 25, :name "Bob", :id 2, :dept "Sales"} {:age 35, :name "Carol", :id 3, :dept "Engineering"} {:age 28, :name "Dave", :id 4, :dept "Marketing"}])
+(defn -main [] (let [result (execute (-> {} (from sample-data) (where (fn [x] (= (:dept x) "Engineering"))) (select [:name :age]) (order-by :age)))] (println "Query result:") (doseq [row result] (println row))))

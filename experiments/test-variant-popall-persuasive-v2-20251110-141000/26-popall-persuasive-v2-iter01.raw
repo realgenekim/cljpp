@@ -1,0 +1,28 @@
+```clojure
+PUSH-( ns examples.program26 POP-ALL
+
+PUSH-( defn wrap-json PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( handler PUSH-( assoc request :body PUSH-{ :parsed true POP POP POP-ALL
+
+PUSH-( defn wrap-cors PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( let PUSH-[ response PUSH-( handler request POP POP
+      PUSH-( assoc response :headers PUSH-{ "Access-Control-Allow-Origin" "*" POP POP POP-ALL
+
+PUSH-( defn wrap-session PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( if PUSH-( :token request POP
+      PUSH-( handler PUSH-( assoc request :authenticated true POP POP
+      PUSH-{ :status 401 :body "Unauthorized" POP POP-ALL
+
+PUSH-( def app
+  PUSH-( -> PUSH-( fn PUSH-[ req POP PUSH-{ :status 200 :body "OK" POP POP
+    wrap-json
+    wrap-cors
+    wrap-session POP-ALL
+
+PUSH-( def request PUSH-{ :token "abc123" :path "/api/data" POP POP-ALL
+
+PUSH-( app request POP-ALL
+```

@@ -1,0 +1,102 @@
+```clojure
+PUSH-( ns examples.program37
+  PUSH-( :require
+    PUSH-[ reagent.core :as r POP
+    PUSH-[ reagent.ratom :refer PUSH-[ reaction POP POP
+  POP
+POP
+
+PUSH-( defn use-state PUSH-[ initial-value POP
+  PUSH-( r/atom initial-value POP
+POP
+
+PUSH-( defn use-effect PUSH-[ effect-fn deps POP
+  PUSH-( let PUSH-[ prev-deps PUSH-( atom nil POP POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-( when PUSH-( not= @prev-deps deps POP
+        PUSH-( reset! prev-deps deps POP
+        PUSH-( effect-fn POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn use-fetch PUSH-[ url POP
+  PUSH-( let PUSH-[
+    loading PUSH-( r/atom true POP
+    error PUSH-( r/atom nil POP
+    data PUSH-( r/atom nil POP
+  POP
+    PUSH-( letfn PUSH-[
+      PUSH-( fetch-data PUSH-[ POP
+        PUSH-( reset! loading true POP
+        PUSH-( reset! error nil POP
+        PUSH-( -> PUSH-( js/fetch url POP
+          PUSH-( .then PUSH-( fn PUSH-[ response POP
+            PUSH-( if PUSH-( .-ok response POP
+              PUSH-( .json response POP
+              PUSH-( throw PUSH-( js/Error. PUSH-( str "HTTP error: " PUSH-( .-status response POP POP POP POP
+            POP
+          POP POP
+          PUSH-( .then PUSH-( fn PUSH-[ json POP
+            PUSH-( reset! data PUSH-( js->clj json :keywordize-keys true POP POP
+            PUSH-( reset! loading false POP
+          POP POP
+          PUSH-( .catch PUSH-( fn PUSH-[ err POP
+            PUSH-( reset! error PUSH-( .-message err POP POP
+            PUSH-( reset! loading false POP
+          POP POP
+        POP
+      POP
+    POP
+      PUSH-( fetch-data POP
+      PUSH-{ :loading loading
+         :error error
+         :data data
+         :refetch fetch-data POP
+    POP
+  POP
+POP
+
+PUSH-( defn user-profile PUSH-[ PUSH-{ :keys PUSH-[ user-id POP POP POP
+  PUSH-( let PUSH-[
+    count-state PUSH-( use-state 0 POP
+    PUSH-{ :keys PUSH-[ loading error data refetch POP POP PUSH-( use-fetch PUSH-( str "https://api.example.com/users/" user-id POP POP
+  POP
+    PUSH-( r/create-class
+      PUSH-{
+        :component-did-mount
+        PUSH-( fn PUSH-[ this POP
+          PUSH-( js/console.log "Component mounted" POP
+        POP
+
+        :reagent-render
+        PUSH-( fn PUSH-[ POP
+          PUSH-[ :div
+            PUSH-[ :h2 "User Profile" POP
+            PUSH-[ :div
+              PUSH-[ :button
+                PUSH-{ :on-click PUSH-( fn PUSH-[ POP PUSH-( swap! count-state inc POP POP POP
+                PUSH-( str "Clicked " @count-state " times" POP
+              POP
+            POP
+            PUSH-( cond
+              @loading PUSH-[ :p "Loading..." POP
+              @error PUSH-[ :div
+                PUSH-[ :p PUSH-( str "Error: " @error POP POP
+                PUSH-[ :button PUSH-{ :on-click refetch POP "Retry" POP
+              POP
+              @data PUSH-[ :div
+                PUSH-[ :h3 PUSH-( get-in @data PUSH-[ :name POP POP POP
+                PUSH-[ :p PUSH-( get-in @data PUSH-[ :email POP POP POP
+                PUSH-[ :button PUSH-{ :on-click refetch POP "Refresh" POP
+              POP
+              :else PUSH-[ :p "No data" POP
+            POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP
+```

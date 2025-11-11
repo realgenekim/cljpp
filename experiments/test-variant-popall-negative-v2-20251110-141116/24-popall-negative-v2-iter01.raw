@@ -1,0 +1,32 @@
+```clojure
+PUSH-( ns examples.program24 POP-ALL
+
+PUSH-( defmacro when-let-all PUSH-[ bindings & body POP
+  PUSH-( let PUSH-[
+    pairs PUSH-( partition 2 bindings POP
+  POP
+    PUSH-( if PUSH-( seq pairs POP
+      PUSH-( let PUSH-[
+        PUSH-[ sym expr POP PUSH-( first pairs POP
+      POP
+        PUSH-` PUSH-( let PUSH-[ ~~sym ~~expr POP
+             PUSH-( when ~~sym
+               PUSH-( when-let-all PUSH-[ ~~@PUSH-( apply concat PUSH-( rest pairs POP POP POP
+                 ~~@body POP POP POP POP
+      POP
+      PUSH-` PUSH-( do ~~@body POP POP POP POP-ALL
+
+PUSH-( defmacro defn-timed PUSH-[ name args & body POP
+  PUSH-` PUSH-( defn ~~name ~~args
+       PUSH-( let PUSH-[
+         start# PUSH-( System/nanoTime POP
+       POP
+         PUSH-( println PUSH-( str "Starting " '~~name "..." POP POP
+         PUSH-( let PUSH-[
+           result# PUSH-( do ~~@body POP
+           end# PUSH-( System/nanoTime POP
+           elapsed# PUSH-( / PUSH-( - end# start# POP 1000000.0 POP
+         POP
+           PUSH-( println PUSH-( str "Finished " '~~name " in " elapsed# "ms" POP POP
+           result# POP POP POP POP-ALL
+```

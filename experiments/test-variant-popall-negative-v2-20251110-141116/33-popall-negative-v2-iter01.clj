@@ -1,0 +1,7 @@
+(ns examples.program33)
+(defmulti apply-event (fn [state event] (:type event)))
+(defmethod apply-event :user-created [state event] (assoc state :id (:user-id event) :name (:name event) :email (:email event)))
+(defmethod apply-event :email-changed [state event] (assoc state :email (:email event)))
+(defmethod apply-event :name-changed [state event] (assoc state :name (:name event)))
+(defn aggregate [events] (reduce apply-event {} events))
+(defn get-state-at-time [events timestamp] (->> events (filter (fn [e] (<= (:timestamp e) timestamp))) aggregate))

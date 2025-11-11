@@ -1,0 +1,61 @@
+```clojure
+PUSH-( ns examples.program36 POP-ALL
+
+PUSH-( defn parser-return PUSH-[ v POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-[ PUSH-[ v input POP POP-ALL
+
+PUSH-( defn parser-bind PUSH-[ p f POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( let PUSH-[
+      results PUSH-( p input POP
+    POP
+      PUSH-( mapcat PUSH-( fn PUSH-[ PUSH-[ v rest POP POP
+        PUSH-( PUSH-( f v POP rest POP-ALL
+        results POP-ALL
+
+PUSH-( def mzero
+  PUSH-( fn PUSH-[ input POP
+    PUSH-[ POP-ALL
+
+PUSH-( defn mplus PUSH-[ p1 p2 POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( concat PUSH-( p1 input POP PUSH-( p2 input POP-ALL
+
+PUSH-( defn parse-char PUSH-[ pred POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( if PUSH-( and PUSH-( seq input POP PUSH-( pred PUSH-( first input POP POP POP
+      PUSH-[ PUSH-[ PUSH-( first input POP PUSH-( subs input 1 POP POP POP
+      PUSH-[ POP-ALL
+
+PUSH-( def parse-digit
+  PUSH-( parse-char PUSH-( fn PUSH-[ c POP PUSH-( Character/isDigit c POP-ALL
+
+PUSH-( def parse-number
+  PUSH-( parser-bind parse-digit
+    PUSH-( fn PUSH-[ d POP
+      PUSH-( parser-return PUSH-( Character/digit d 10 POP-ALL
+
+PUSH-( declare parse-expr POP-ALL
+
+PUSH-( defn parse-term PUSH-[ POP
+  PUSH-( mplus parse-number
+    PUSH-( parser-bind PUSH-( parse-char PUSH-( fn PUSH-[ c POP PUSH-( = c \( POP POP POP
+      PUSH-( fn PUSH-[ _ POP
+        PUSH-( parser-bind parse-expr
+          PUSH-( fn PUSH-[ e POP
+            PUSH-( parser-bind PUSH-( parse-char PUSH-( fn PUSH-[ c POP PUSH-( = c \) POP POP POP
+              PUSH-( fn PUSH-[ _ POP
+                PUSH-( parser-return e POP-ALL
+
+PUSH-( defn parse-expr PUSH-[ POP
+  PUSH-( parser-bind PUSH-( parse-term POP
+    PUSH-( fn PUSH-[ t POP
+      PUSH-( mplus
+        PUSH-( parser-bind PUSH-( parse-char PUSH-( fn PUSH-[ c POP PUSH-( = c \+ POP POP POP
+          PUSH-( fn PUSH-[ _ POP
+            PUSH-( parser-bind parse-expr
+              PUSH-( fn PUSH-[ e POP
+                PUSH-( parser-return PUSH-( + t e POP-ALL
+        PUSH-( parser-return t POP-ALL
+```

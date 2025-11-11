@@ -1,0 +1,4 @@
+(ns examples.program30)
+(defrecord SkipList [levels size])
+(defn skip-list [& elements] (let [sorted-elements (sort elements) level-map (into {} (map-indexed (fn [idx elem] [idx elem]) sorted-elements))] (->SkipList level-map (count sorted-elements))))
+(extend-type SkipList clojure.lang.ISeq (seq [this] (when (pos? (:size this)) (map second (sort-by first (:levels this))))) (first [this] (when-let [s (seq this)] (first s))) (next [this] (when-let [s (seq this)] (rest s))) clojure.lang.IPersistentCollection (cons [this elem] (skip-list elem (seq this))) (empty [this] (->SkipList {} 0)) (equiv [this other] (= (seq this) (seq other))) clojure.lang.Counted (count [this] (:size this)))

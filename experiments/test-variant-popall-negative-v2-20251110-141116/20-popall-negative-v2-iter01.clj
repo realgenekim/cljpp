@@ -1,0 +1,3 @@
+(ns examples.program20)
+(defn form-field [{:keys [label name value error]}] [:div.form-field [:label {:for name} label] [:input {:name name, :value value, :type "text", :id name}] [:span.error error]])
+(defn registration-form [] (let [errors {:email "Invalid email"} loading false submitted true] [:div.registration-form [:h2 "Register"] (form-field {:name "email", :value "user@example.com", :label "Email", :error (:email errors)}) (form-field {:name "password", :value "", :label "Password", :error nil}) (form-field {:name "confirm", :value "", :label "Confirm Password", :error nil}) [:div.actions [:button {:disabled loading} "Submit"] (when submitted [:p.success "Registration successful!"])]]))

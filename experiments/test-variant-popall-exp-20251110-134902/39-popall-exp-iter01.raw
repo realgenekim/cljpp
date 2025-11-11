@@ -1,0 +1,113 @@
+```clojure
+PUSH-( ns examples.program39 POP-ALL
+
+PUSH-( defrecord Node PUSH-[ keys children leaf? POP POP-ALL
+
+PUSH-( defn create-node PUSH-[ leaf? POP
+  PUSH-( ->Node PUSH-[ POP PUSH-[ POP leaf? POP-ALL
+
+PUSH-( defn full? PUSH-[ node t POP
+  PUSH-( >= PUSH-( count PUSH-( :keys node POP POP PUSH-( - PUSH-( * 2 t POP 1 POP POP-ALL
+
+PUSH-( defn split-child PUSH-[ parent idx t POP
+  PUSH-( let PUSH-[
+    full-child PUSH-( get PUSH-( :children parent POP idx POP
+    mid PUSH-( - t 1 POP
+    new-node PUSH-( ->Node
+      PUSH-( vec PUSH-( drop mid PUSH-( :keys full-child POP POP POP
+      PUSH-( if PUSH-( :leaf? full-child POP
+        PUSH-[ POP
+        PUSH-( vec PUSH-( drop mid PUSH-( :children full-child POP POP POP
+      POP
+      PUSH-( :leaf? full-child POP
+    POP
+    mid-key PUSH-( get PUSH-( :keys full-child POP mid POP
+    updated-child PUSH-( assoc full-child
+      :keys PUSH-( vec PUSH-( take mid PUSH-( :keys full-child POP POP POP
+      :children PUSH-( if PUSH-( :leaf? full-child POP
+        PUSH-[ POP
+        PUSH-( vec PUSH-( take mid PUSH-( :children full-child POP POP POP
+      POP
+    POP
+  POP
+    PUSH-( assoc parent
+      :keys PUSH-( vec PUSH-( concat
+        PUSH-( take idx PUSH-( :keys parent POP POP
+        PUSH-[ mid-key POP
+        PUSH-( drop idx PUSH-( :keys parent POP POP
+      POP POP
+      :children PUSH-( vec PUSH-( concat
+        PUSH-( take idx PUSH-( :children parent POP POP
+        PUSH-[ updated-child new-node POP
+        PUSH-( drop PUSH-( inc idx POP PUSH-( :children parent POP POP
+      POP POP
+    POP-ALL
+
+PUSH-( defn insert-non-full PUSH-[ node k t POP
+  PUSH-( if PUSH-( :leaf? node POP
+    PUSH-( let PUSH-[
+      keys PUSH-( :keys node POP
+      insert-pos PUSH-( count PUSH-( take-while PUSH-( fn PUSH-[ x POP PUSH-( < x k POP POP keys POP POP
+    POP
+      PUSH-( assoc node :keys
+        PUSH-( vec PUSH-( concat
+          PUSH-( take insert-pos keys POP
+          PUSH-[ k POP
+          PUSH-( drop insert-pos keys POP
+        POP POP
+      POP-ALL
+    PUSH-( let PUSH-[
+      keys PUSH-( :keys node POP
+      insert-pos PUSH-( count PUSH-( take-while PUSH-( fn PUSH-[ x POP PUSH-( < x k POP POP keys POP POP
+      child PUSH-( get PUSH-( :children node POP insert-pos POP
+      node2 PUSH-( if PUSH-( full? child t POP
+        PUSH-( let PUSH-[
+          split-node PUSH-( split-child node insert-pos t POP
+          new-pos PUSH-( if PUSH-( < k PUSH-( get PUSH-( :keys split-node POP insert-pos POP POP
+            insert-pos
+            PUSH-( inc insert-pos POP
+          POP
+        POP
+          PUSH-( assoc split-node :children
+            PUSH-( assoc PUSH-( :children split-node POP new-pos
+              PUSH-( insert-non-full PUSH-( get PUSH-( :children split-node POP new-pos POP k t POP
+            POP
+          POP-ALL
+        node
+      POP
+    POP
+      PUSH-( if PUSH-( full? child t POP
+        node2
+        PUSH-( assoc node :children
+          PUSH-( assoc PUSH-( :children node POP insert-pos
+            PUSH-( insert-non-full child k t POP
+          POP
+        POP-ALL
+
+PUSH-( defn b-tree-insert PUSH-[ root k t POP
+  PUSH-( if PUSH-( nil? root POP
+    PUSH-( ->Node PUSH-[ k POP PUSH-[ POP true POP
+    PUSH-( if PUSH-( full? root t POP
+      PUSH-( let PUSH-[
+        new-root PUSH-( ->Node PUSH-[ POP PUSH-[ root POP false POP
+        split-root PUSH-( split-child new-root 0 t POP
+      POP
+        PUSH-( insert-non-full split-root k t POP-ALL
+      PUSH-( insert-non-full root k t POP-ALL
+
+PUSH-( defn b-tree-search PUSH-[ node k POP
+  PUSH-( when node
+    PUSH-( let PUSH-[
+      keys PUSH-( :keys node POP
+      idx PUSH-( count PUSH-( take-while PUSH-( fn PUSH-[ x POP PUSH-( < x k POP POP keys POP POP
+    POP
+      PUSH-( cond
+        PUSH-( and PUSH-( < idx PUSH-( count keys POP POP PUSH-( = k PUSH-( get keys idx POP POP POP
+        true
+        
+        PUSH-( :leaf? node POP
+        false
+        
+        :else
+        PUSH-( b-tree-search PUSH-( get PUSH-( :children node POP idx POP k POP-ALL
+```

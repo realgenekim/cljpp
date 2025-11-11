@@ -1,0 +1,39 @@
+(ns examples.program26
+  (:require [clojure.data.json :as json]))
+
+(defn wrap-json [handler]
+  (fn [request]
+    (let [body (:body request)
+          parsed (when body (json/read-str body :key-fn keyword))
+          request' (assoc request :json-body parsed)]
+      (handler request'))))
+
+(defn wrap-cors [handler]
+  (fn [request]
+    (let [response (handler request)]
+      (assoc-in response [:headers "Access-Control-Allow-Origin"] "*"))))
+
+(defn wrap-session [handler]
+  (fn [request]
+    (let [token (get-in request [:headers "authorization"])]
+      (if token
+        (handler (assoc request :session {:token token}))
+        {:status 401 :body "Unauthorized"}))))
+
+(defn app-handler [request]
+  {:status 200
+   :body (str "Processed: " (:json-body request))})
+
+(def app
+  (-> app-handler
+      wrap-json
+      wrap-cors
+      wrap-session))
+
+(comment
+  (app {:headers {"authorization" "token123"}
+        :body "{\"name\":\"Alice\"}"})
+  ;; => {:status 200, 
+  ;;     :body "Processed: {:name \"Alice\"}", 
+  ;;     :headers {"Access-Control-Allow-Origin" "*"}}
+  )

@@ -1,0 +1,34 @@
+```clojure
+PUSH-( ns examples.program35
+  PUSH-( :require
+    PUSH-[ clojure.test.check :as tc POP
+    PUSH-[ clojure.test.check.generators :as gen POP
+    PUSH-[ clojure.test.check.properties :as prop POP-ALL
+
+PUSH-( def user-gen
+  PUSH-( gen/hash-map
+    :name PUSH-( gen/not-empty gen/string-alphanumeric POP
+    :age PUSH-( gen/choose 18 100 POP
+    :email PUSH-( gen/fmap
+      PUSH-( fn PUSH-[ s POP PUSH-( str s "@example.com" POP-ALL
+      gen/string-alphanumeric POP-ALL
+
+PUSH-( def age-invariant
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( and
+      PUSH-( >= PUSH-( :age user POP 18 POP
+      PUSH-( <= PUSH-( :age user POP 100 POP-ALL
+
+PUSH-( def name-invariant
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( not PUSH-( empty? PUSH-( :name user POP-ALL
+
+PUSH-( def email-invariant
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( clojure.string/includes? PUSH-( :email user POP "@example.com" POP-ALL
+
+PUSH-( defn run-tests PUSH-[ POP
+  PUSH-( println "Testing age invariant:" PUSH-( tc/quick-check 100 age-invariant POP POP
+  PUSH-( println "Testing name invariant:" PUSH-( tc/quick-check 100 name-invariant POP POP
+  PUSH-( println "Testing email invariant:" PUSH-( tc/quick-check 100 email-invariant POP-ALL
+```

@@ -1,0 +1,21 @@
+PUSH-( ns examples.program6 POP-ALL
+
+PUSH-( defn safe-divide PUSH-[ a b POP
+  PUSH-( try
+    PUSH-{ :status :ok :value PUSH-( / a b POP POP
+    PUSH-( catch Exception e
+      PUSH-{ :status :error :message PUSH-( .getMessage e POP POP-ALL
+
+PUSH-( defn validate-user PUSH-[ user POP
+  PUSH-( cond
+    PUSH-( nil? user POP
+    PUSH-{ :status :error :message "User is nil" POP
+    
+    PUSH-( empty? PUSH-( :name user POP POP
+    PUSH-{ :status :error :message "Name is empty" POP
+    
+    PUSH-( < PUSH-( :age user POP 0 POP
+    PUSH-{ :status :error :message "Age is negative" POP
+    
+    :else
+    PUSH-{ :status :ok :user user POP-ALL

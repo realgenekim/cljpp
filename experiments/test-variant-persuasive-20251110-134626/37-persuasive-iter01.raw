@@ -1,0 +1,80 @@
+```clojure
+PUSH-( ns examples.program37
+  PUSH-( :require
+    PUSH-[ reagent.core :as r POP
+    PUSH-[ cljs.core.async :refer PUSH-[ go <! POP POP
+    PUSH-[ cljs-http.client :as http POP
+  POP
+POP
+
+PUSH-( defn use-state PUSH-[ initial-value POP
+  PUSH-( r/atom initial-value POP
+POP
+
+PUSH-( defn use-effect PUSH-[ state-atom effect-fn POP
+  PUSH-( r/track! PUSH-( fn PUSH-[ POP
+    PUSH-( deref state-atom POP
+    PUSH-( effect-fn POP
+  POP POP
+POP
+
+PUSH-( defn use-fetch PUSH-[ url POP
+  PUSH-( let PUSH-[
+    loading PUSH-( r/atom true POP
+    error PUSH-( r/atom nil POP
+    data PUSH-( r/atom nil POP
+  POP
+    PUSH-( go
+      PUSH-( let PUSH-[
+        response PUSH-( <! PUSH-( http/get url POP POP
+      POP
+        PUSH-( if PUSH-( :success response POP
+          PUSH-( do
+            PUSH-( reset! data PUSH-( :body response POP POP
+            PUSH-( reset! loading false POP
+          POP
+          PUSH-( do
+            PUSH-( reset! error PUSH-( :error-text response POP POP
+            PUSH-( reset! loading false POP
+          POP
+        POP
+      POP
+    POP
+    PUSH-{ :loading loading :error error :data data POP
+  POP
+POP
+
+PUSH-( defn user-profile PUSH-[ POP
+  PUSH-( let PUSH-[
+    user-id PUSH-( use-state 1 POP
+    PUSH-{ :keys PUSH-[ loading error data POP POP PUSH-( use-fetch PUSH-( str "https://api.example.com/users/" PUSH-( deref user-id POP POP POP
+  POP
+    PUSH-( use-effect user-id
+      PUSH-( fn PUSH-[ POP
+        PUSH-( js/console.log "User ID changed:" PUSH-( deref user-id POP POP
+      POP
+    POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div
+        PUSH-[ :h2 "User Profile" POP
+        PUSH-( cond
+          PUSH-( deref loading POP PUSH-[ :p "Loading..." POP
+          PUSH-( deref error POP PUSH-[ :p.error PUSH-( str "Error: " PUSH-( deref error POP POP POP
+          PUSH-( deref data POP PUSH-[ :div
+            PUSH-[ :p PUSH-( str "Name: " PUSH-( :name PUSH-( deref data POP POP POP POP
+            PUSH-[ :p PUSH-( str "Email: " PUSH-( :email PUSH-( deref data POP POP POP POP
+          POP
+        POP
+        PUSH-[ :button
+          PUSH-{ :on-click PUSH-( fn PUSH-[ POP PUSH-( swap! user-id inc POP POP POP
+          "Next User"
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn mount-root PUSH-[ POP
+  PUSH-( r/render PUSH-[ user-profile POP PUSH-( js/document.getElementById "app" POP POP
+POP
+```

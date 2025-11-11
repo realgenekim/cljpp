@@ -1,0 +1,1199 @@
++ echo ==========================================
+==========================================
++ echo 'POP-ALL v2 Experiment: Preventing Underflow'
+POP-ALL v2 Experiment: Preventing Underflow
+++ date
++ echo 'Date: Mon Nov 10 14:08:41 PST 2025'
+Date: Mon Nov 10 14:08:41 PST 2025
++ echo ==========================================
+==========================================
++ bb bin/test-variant.clj popall-neutral-v2 all 1
+========================================
+Testing variant: popall-neutral-v2
+Programs: 1-40
+Iterations: 1
+Results dir: experiments/test-variant-popall-neutral-v2-20251110-140841
+========================================
+
+[05/popall-neutral-v2/iter01] Testing...
+
+[09/popall-neutral-v2/iter01] Testing...
+[06/popall-neutral-v2/iter01] Testing...
+
+[01/popall-neutral-v2/iter01] Testing...
+[02/popall-neutral-v2/iter01] Testing...
+
+[08/popall-neutral-v2/iter01] Testing...
+
+[11/popall-neutral-v2/iter01] Testing...
+
+[03/popall-neutral-v2/iter01] Testing...
+
+
+[10/popall-neutral-v2/iter01] Testing...
+
+[04/popall-neutral-v2/iter01] Testing...
+
+[07/popall-neutral-v2/iter01] Testing...
+
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "users",
+ :line 15,
+ :col 2}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ✓ SUCCESS
+
+[12/popall-neutral-v2/iter01] Testing...
+
+[14/popall-neutral-v2/iter01] Testing...
+
+[15/popall-neutral-v2/iter01] Testing...
+
+[13/popall-neutral-v2/iter01] Testing...
+  ✓ SUCCESS
+
+[16/popall-neutral-v2/iter01] Testing...
+  ❌ EXECUTION ERROR
+  ✓ SUCCESS
+
+[18/popall-neutral-v2/iter01] Testing...
+
+[17/popall-neutral-v2/iter01] Testing...
+
+[19/popall-neutral-v2/iter01] Testing...
+  ✓ SUCCESS
+
+[20/popall-neutral-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "step2-ch",
+ :line 19,
+ :col 4}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+
+[21/popall-neutral-v2/iter01] Testing...
+
+[22/popall-neutral-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 173,
+ :line 6,
+ :col 44,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :pop-all-empty-stack,
+ :msg "POP-ALL with empty stack",
+ :line 7,
+ :col 2}
+
+  ❌ ERROR: Transpile failed
+
+[25/popall-neutral-v2/iter01] Testing...
+
+[23/popall-neutral-v2/iter01] Testing...
+
+[24/popall-neutral-v2/iter01] Testing...
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ❌ EXECUTION ERROR
+  ✓ SUCCESS
+  ❌ EXECUTION ERROR
+
+[29/popall-neutral-v2/iter01] Testing...
+
+[26/popall-neutral-v2/iter01] Testing...
+
+[27/popall-neutral-v2/iter01] Testing...
+
+[28/popall-neutral-v2/iter01] Testing...
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 21, :col 2}
+
+  ❌ ERROR: Transpile failed
+
+[30/popall-neutral-v2/iter01] Testing...
+
+[31/popall-neutral-v2/iter01] Testing...
+
+[32/popall-neutral-v2/iter01] Testing...
+
+[33/popall-neutral-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "m",
+ :line 8,
+ :col 4}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+
+[34/popall-neutral-v2/iter01] Testing...
+  ❌ EXECUTION ERROR
+
+[35/popall-neutral-v2/iter01] Testing...
+
+[36/popall-neutral-v2/iter01] Testing...
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "aggregate",
+ :line 24,
+ :col 4}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+  ✓ SUCCESS
+
+[37/popall-neutral-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "out",
+ :line 37,
+ :col 4}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "clojure.lang.IPersistentCollection",
+ :line 16,
+ :col 2}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 566,
+ :line 15,
+ :col 37,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "gen/string-alphanumeric",
+ :line 13,
+ :col 6}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "#PUSH-(",
+ :line 13,
+ :col 56}
+
+  ❌ ERROR: Transpile failed
+
+[40/popall-neutral-v2/iter01] Testing...
+
+[38/popall-neutral-v2/iter01] Testing...
+
+[39/popall-neutral-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 1798,
+ :line 57,
+ :col 62,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 292,
+ :line 10,
+ :col 58,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom ":component-did-update",
+ :line 14,
+ :col 6}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 25, :col 12}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :pop-all-empty-stack,
+ :msg "POP-ALL with empty stack",
+ :line 64,
+ :col 59}
+
+  ❌ ERROR: Transpile failed
+
+========================================
+SUMMARY
+========================================
+EXPERIMENT: POP-ALL v2 Neutral (prevents underflow): 16/40 (40%)
+
+Failures:
+  - Program 08 iter 01: ----- Error --------------------------------------------------------------------
+Type:     java.lang.ClassCastException
+Message:  clojure.lang.PersistentArrayMap cannot be cast to clojure.lang.Named
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/08-popall-neutral-v2-iter01.clj:4:1
+Phase:    macroexpand
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program8)
+2: (defn process-user [{:as user, :keys [name age]}] {:age age, :full user, :name name})
+3: (defn process-items [[first second & rest]] {:second second, :first first, :rest rest})
+4: (defn nested-extract [{:keys [{:keys [{:as address, :keys [city]}]} :as nested]} {:address address, :nested nested, :city city}])
+   ^--- clojure.lang.PersistentArrayMap cannot be cast to clojure.lang.Named
+
+----- Stack trace --------------------------------------------------------------
+clojure.core/namespace - <built-in>
+examples.program8      - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/08-popall-neutral-v2-iter01.clj:4:1
+clojure.core/defn      - <built-in>
+examples.program8      - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/08-popall-neutral-v2-iter01.clj:4:1
+
+
+  - Program 14 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ExceptionInfo
+Message:  Could not resolve symbol: this
+Data:     {:type :sci/error, :line 4, :column 1, :file "/Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/14-popall-neutral-v2-iter01.clj", :phase "analysis"}
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/14-popall-neutral-v2-iter01.clj:4:1
+Phase:    analysis
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program14)
+2: (defprotocol Drawable (draw [this]) (bounds [this]))
+3: (defrecord Circle [x y radius] Drawable (draw [this] (str "Drawing circle at " (:x this) ", " (:y this) " with radius " (:radius this))))
+4: (bounds [this] {:max-x (+ (:x this) (:radius this)), :min-y (- (:y this) (:radius this)), :max-y (+ (:y this) (:radius this)), :min-x (- (:x this) (:radius this))})
+   ^--- Could not resolve symbol: this
+5: (defrecord Rectangle [x y width height] Drawable (draw [this] (str "Drawing rectangle at " (:x this) ", " (:y this) " with size " (:width this) "x" (:height this))))
+6: (bounds [this] {:max-x (+ (:x this) (:width this)), :min-y (:y this), :max-y (+ (:y this) (:height this)), :min-x (:x this)})
+
+----- Stack trace --------------------------------------------------------------
+examples.program14/bounds - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/14-popall-neutral-v2-iter01.clj:2:1
+examples.program14        - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/14-popall-neutral-v2-iter01.clj:4:1
+
+
+  - Program 15 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ExceptionInfo
+Message:  Unmatched delimiter: ], expected: } to match { at [2 60]
+Data:     {:type :edamame/error, :line 2, :column 61, :edamame/opened-delimiter "{", :edamame/opened-delimiter-loc {:row 2, :col 60}, :edamame/expected-delimiter "}"}
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/15-popall-neutral-v2-iter01.clj:2:61
+Phase:    parse
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program15)
+2: (defn dfs [graph start] (loop [stack [start] visited PUSH-#{] result []) (if (empty? stack) result (let [node (peek stack) new-stack (pop stack)] (if (contains? visited node) (recur new-stack visited result)))))
+                                                               ^--- Unmatched delimiter: ], expected: } to match { at [2 60]
+3: (recur (into new-stack (get graph node [])) (conj visited node) (conj result node))
+4: (defn bfs [graph start] (loop [queue [start] visited PUSH-#{] result []) (if (empty? queue) result (let [node (first queue) new-queue (vec (rest queue))] (if (contains? visited node) (recur new-queue visited result)))))
+5: (recur (into new-queue (get graph node [])) (conj visited node) (conj result node))
+
+----- Stack trace --------------------------------------------------------------
+edamame.impl.parser/throw-reader       - <built-in>
+edamame.impl.parser/dispatch           - <built-in>
+edamame.impl.parser/parse-next         - <built-in>
+edamame.impl.parser/parse-to-delimiter - <built-in>
+edamame.impl.parser/parse-map          - <built-in>
+... (run with --debug to see elided elements)
+edamame.impl.parser/parse-to-delimiter - <built-in>
+edamame.impl.parser/parse-list         - <built-in>
+edamame.impl.parser/dispatch           - <built-in>
+edamame.impl.parser/parse-next         - <built-in>
+edamame.core/parse-next                - <built-in>
+
+
+  - Program 17 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ExceptionInfo
+Message:  Could not resolve symbol: a
+Data:     {:type :sci/error, :line 3, :column 1, :file "/Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/17-popall-neutral-v2-iter01.clj", :phase "analysis"}
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/17-popall-neutral-v2-iter01.clj:3:1
+Phase:    analysis
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program17)
+2: (defn lazy-range [start end] (letfn [(step [n] (when (< n end) (lazy-seq (cons n (step (inc n))))))] (step start)))
+3: (defn lazy-fibonacci [] (lazy-fibonacci 0 1) [a b] (lazy-seq (cons a (lazy-fibonacci b (+ a b)))))
+   ^--- Could not resolve symbol: a
+4: (defn take-while-sum [pred coll] (letfn [(helper [remaining sum] (if (and (seq remaining) (pred (+ sum (first remaining)))) (lazy-seq (cons (first remaining) (helper (rest remaining) (+ sum (first remaining))))) []))] (helper coll 0)))
+
+----- Stack trace --------------------------------------------------------------
+examples.program17 - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/17-popall-neutral-v2-iter01.clj:3:1
+clojure.core/defn  - <built-in>
+examples.program17 - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/17-popall-neutral-v2-iter01.clj:3:1
+
+
+  - Program 24 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ExceptionInfo
+Message:  let requires an even number of forms in binding vector
+Data:     {:type :sci/error, :line 2, :column 61, :file "/Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/24-popall-neutral-v2-iter01.clj"}
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/24-popall-neutral-v2-iter01.clj:2:61
+Phase:    macroexpand
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program24)
+2: (defmacro when-let-all [bindings & body] (if (seq bindings) (let [[(first bindings) (second bindings)]] (if (first bindings) (when-let-all (into [] (drop 2 bindings)) & body) nil))))
+                                                               ^--- let requires an even number of forms in binding vector
+3: (do & body)
+4: (defmacro defn-timed [name args & body] (let [fname# (str (quote name))] `PUSH-( defn ~ name ~ args (let [start# (System/nanoTime)] (println (str "Starting " ~ fname#)) (let [result# (do ~@ body) end# (System/nanoTime) elapsed# (/ (- end# start#) 1000000.0)] (println (str "Finished " ~ fname# " in " elapsed# "ms")) result#))))
+
+----- Stack trace --------------------------------------------------------------
+clojure.core/let      - <built-in>
+examples.program24/fn - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/24-popall-neutral-v2-iter01.clj:2:61
+examples.program24/fn - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/24-popall-neutral-v2-iter01.clj:2:42
+clojure.core/fn       - <built-in>
+clojure.core/defn     - <built-in>
+
+
+  - Program 31 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ArityException
+Message:  Wrong number of args (2) passed to: examples.program31/from
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/31-popall-neutral-v2-iter01.clj:7:29
+
+----- Context ------------------------------------------------------------------
+3: (defn where [pred] (fn [data] (filter pred data)))
+4: (defn select [& fields] (fn [data] (map (fn [row] (select-keys row fields)) data)))
+5: (defn order-by [field] (fn [data] (sort-by field data)))
+6: (def sample-data [{:age 30, :name "Alice", :id 1} {:age 25, :name "Bob", :id 2} {:age 35, :name "Charlie", :id 3} {:age 28, :name "Diana", :id 4}])
+7: (def result (-> sample-data (from sample-data) (where (fn [x] (> (:age x) 26))) (select :name :age) (order-by :age)))
+                               ^--- Wrong number of args (2) passed to: examples.program31/from
+8: (println result)
+
+----- Stack trace --------------------------------------------------------------
+examples.program31/from     - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/31-popall-neutral-v2-iter01.clj:2:1
+examples.program31/where    - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/31-popall-neutral-v2-iter01.clj:7:29
+examples.program31/where    - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/31-popall-neutral-v2-iter01.clj:3:1
+examples.program31/select   - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/31-popall-neutral-v2-iter01.clj:7:48
+examples.program31/select   - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/31-popall-neutral-v2-iter01.clj:4:1
+examples.program31/order-by - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/31-popall-neutral-v2-iter01.clj:7:81
+examples.program31/order-by - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/31-popall-neutral-v2-iter01.clj:5:1
+examples.program31          - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/31-popall-neutral-v2-iter01.clj:7:101
+
+
+  - Program 34 iter 01: ----- Error --------------------------------------------------------------------
+Type:     java.io.FileNotFoundException
+Message:  Could not locate compojure/core.bb, compojure/core.clj or compojure/core.cljc on classpath.
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/34-popall-neutral-v2-iter01.clj:1:24
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program34 (:require [compojure.core :refer [defroutes GET POST]] [compojure.route :as route] [ring.util.response :refer [response]]))
+                          ^--- Could not locate compojure/core.bb, compojure/core.clj or compojure/core.cljc on classpath.
+2: (defn users-handler [request] (response {:users [{:name "Alice", :id 1} {:name "Bob", :id 2}]}))
+3: (defn user-handler [{{:keys [id]} :params}])
+4: (response {:name (str "User " id), :id id})
+5: (defn user-posts-handler [{{:keys [id]} :params}])
+6: (response {:user-id id, :posts [{:title "First Post", :id 1} {:title "Second Post", :id 2}]})
+
+----- Stack trace --------------------------------------------------------------
+babashka.main/exec/fn--32036/load-fn--32047 - <built-in>
+examples.program34                          - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-neutral-v2-20251110-140841/34-popall-neutral-v2-iter01.clj:1:24
+
+
+  - Program 04 iter 01: Transpile failed
+  - Program 11 iter 01: Transpile failed
+  - Program 12 iter 01: Transpile failed
+  - Program 13 iter 01: Transpile failed
+  - Program 19 iter 01: Transpile failed
+  - Program 25 iter 01: Transpile failed
+  - Program 27 iter 01: Transpile failed
+  - Program 29 iter 01: Transpile failed
+  - Program 30 iter 01: Transpile failed
+  - Program 32 iter 01: Transpile failed
+  - Program 33 iter 01: Transpile failed
+  - Program 35 iter 01: Transpile failed
+  - Program 36 iter 01: Transpile failed
+  - Program 37 iter 01: Transpile failed
+  - Program 38 iter 01: Transpile failed
+  - Program 39 iter 01: Transpile failed
+  - Program 40 iter 01: Transpile failed
+
+Results saved to: experiments/test-variant-popall-neutral-v2-20251110-140841
++ bb bin/test-variant.clj popall-persuasive-v2 all 1
+========================================
+Testing variant: popall-persuasive-v2
+Programs: 1-40
+Iterations: 1
+Results dir: experiments/test-variant-popall-persuasive-v2-20251110-141000
+========================================
+
+[02/popall-persuasive-v2/iter01] Testing...
+[09/popall-persuasive-v2/iter01] Testing...
+
+[11/popall-persuasive-v2/iter01] Testing...
+[04/popall-persuasive-v2/iter01] Testing...
+[05/popall-persuasive-v2/iter01] Testing...
+
+[08/popall-persuasive-v2/iter01] Testing...
+
+[10/popall-persuasive-v2/iter01] Testing...
+
+[03/popall-persuasive-v2/iter01] Testing...
+[06/popall-persuasive-v2/iter01] Testing...
+
+
+[07/popall-persuasive-v2/iter01] Testing...
+
+
+
+[01/popall-persuasive-v2/iter01] Testing...
+
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "users",
+ :line 12,
+ :col 77}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ✓ SUCCESS
+
+[12/popall-persuasive-v2/iter01] Testing...
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "step2-ch",
+ :line 21,
+ :col 4}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+
+[13/popall-persuasive-v2/iter01] Testing...
+  ✓ SUCCESS
+  ✓ SUCCESS
+
+[18/popall-persuasive-v2/iter01] Testing...
+
+[15/popall-persuasive-v2/iter01] Testing...
+
+[14/popall-persuasive-v2/iter01] Testing...
+
+[17/popall-persuasive-v2/iter01] Testing...
+
+[16/popall-persuasive-v2/iter01] Testing...
+  ❌ EXECUTION ERROR
+
+[20/popall-persuasive-v2/iter01] Testing...
+
+[19/popall-persuasive-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "users",
+ :line 16,
+ :col 8}
+
+  ❌ ERROR: Transpile failed
+
+[21/popall-persuasive-v2/iter01] Testing...
+
+[22/popall-persuasive-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 256,
+ :line 8,
+ :col 67,
+ :char \]}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :pop-all-empty-stack,
+ :msg "POP-ALL with empty stack",
+ :line 6,
+ :col 59}
+
+  ❌ ERROR: Transpile failed
+
+[23/popall-persuasive-v2/iter01] Testing...
+
+[24/popall-persuasive-v2/iter01] Testing...
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 274,
+ :line 9,
+ :col 37,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 9, :col 2}
+
+  ❌ ERROR: Transpile failed
+
+[25/popall-persuasive-v2/iter01] Testing...
+  ❌ EXECUTION ERROR
+
+[26/popall-persuasive-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "results",
+ :line 13,
+ :col 8}
+
+  ❌ ERROR: Transpile failed
+
+[27/popall-persuasive-v2/iter01] Testing...
+
+[28/popall-persuasive-v2/iter01] Testing...
+
+[29/popall-persuasive-v2/iter01] Testing...
+  ✓ SUCCESS
+  ✓ SUCCESS
+
+[30/popall-persuasive-v2/iter01] Testing...
+  ✓ SUCCESS
+
+[31/popall-persuasive-v2/iter01] Testing...
+
+[32/popall-persuasive-v2/iter01] Testing...
+
+[33/popall-persuasive-v2/iter01] Testing...
+  ✓ SUCCESS
+
+[34/popall-persuasive-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "m",
+ :line 8,
+ :col 4}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+
+[35/popall-persuasive-v2/iter01] Testing...
+
+[36/popall-persuasive-v2/iter01] Testing...
+  ❌ EXECUTION ERROR
+  ✓ SUCCESS
+
+[37/popall-persuasive-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :pop-all-empty-stack,
+ :msg "POP-ALL with empty stack",
+ :line 6,
+ :col 0}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 1456,
+ :line 42,
+ :col 64,
+ :char \}}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 11, :col 94}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "clojure.lang.IPersistentCollection",
+ :line 22,
+ :col 2}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "Map has odd arity",
+ :code :map-odd-arity,
+ :kvs [{:params {:id id}} :as request],
+ :count 3}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 9, :col 94}
+
+  ❌ ERROR: Transpile failed
+
+[38/popall-persuasive-v2/iter01] Testing...
+
+[39/popall-persuasive-v2/iter01] Testing...
+
+[40/popall-persuasive-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "gen/string-alphanumeric",
+ :line 13,
+ :col 6}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 1917,
+ :line 55,
+ :col 45,
+ :char \)}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "Map has odd arity",
+ :code :map-odd-arity,
+ :kvs
+ [:data
+  data
+  :loading
+  loading
+  :error
+  error
+  :refetch
+  (fn)
+  (reset! data nil)
+  (reset! loading true)
+  (reset! error nil)],
+ :count 11}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom ":+",
+ :line 13,
+ :col 8}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 606,
+ :line 18,
+ :col 34,
+ :char \}}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+
+========================================
+SUMMARY
+========================================
+EXPERIMENT: POP-ALL v2 Persuasive (we built this for you!): 14/40 (35%)
+
+Failures:
+  - Program 08 iter 01: ----- Error --------------------------------------------------------------------
+Type:     java.lang.ClassCastException
+Message:  clojure.lang.PersistentArrayMap cannot be cast to clojure.lang.Named
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/08-popall-persuasive-v2-iter01.clj:4:1
+Phase:    macroexpand
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program8)
+2: (defn process-user [{:as user, :keys [name age]}] {:full-user user, :info (str "Age: " age), :greeting (str "Hello, " name)})
+3: (defn process-items [[first second & rest]] {:second second, :remaining rest, :count (+ 2 (count rest)), :first first})
+4: (defn nested-extract [{:as nested, :keys [{:as address, :keys [city state]}]}] {:address address, :full nested, :location (str city ", " state)})
+   ^--- clojure.lang.PersistentArrayMap cannot be cast to clojure.lang.Named
+
+----- Stack trace --------------------------------------------------------------
+clojure.core/namespace - <built-in>
+examples.program8      - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/08-popall-persuasive-v2-iter01.clj:4:1
+clojure.core/defn      - <built-in>
+examples.program8      - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/08-popall-persuasive-v2-iter01.clj:4:1
+
+
+  - Program 14 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ExceptionInfo
+Message:  Could not resolve symbol: this
+Data:     {:type :sci/error, :line 4, :column 1, :file "/Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/14-popall-persuasive-v2-iter01.clj", :phase "analysis"}
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/14-popall-persuasive-v2-iter01.clj:4:1
+Phase:    analysis
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program14)
+2: (defprotocol Drawable (draw [this] "Draw the shape") (bounds [this] "Return bounding box"))
+3: (defrecord Circle [x y radius] Drawable (draw [this] (str "Circle at " (:x this) ", " (:y this) " radius " (:radius this))))
+4: (bounds [this] {:max-x (+ (:x this) (:radius this)), :min-y (- (:y this) (:radius this)), :max-y (+ (:y this) (:radius this)), :min-x (- (:x this) (:radius this))})
+   ^--- Could not resolve symbol: this
+5: (defrecord Rectangle [x y width height] Drawable (draw [this] (str "Rectangle at " (:x this) ", " (:y this) " size " (:width this) "x" (:height this))))
+6: (bounds [this] {:max-x (+ (:x this) (:width this)), :min-y (:y this), :max-y (+ (:y this) (:height this)), :min-x (:x this)})
+
+----- Stack trace --------------------------------------------------------------
+examples.program14/bounds - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/14-popall-persuasive-v2-iter01.clj:2:1
+examples.program14        - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/14-popall-persuasive-v2-iter01.clj:4:1
+
+
+  - Program 15 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ExceptionInfo
+Message:  let requires an even number of forms in binding vector
+Data:     {:type :sci/error, :line 2, :column 25, :file "/Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/15-popall-persuasive-v2-iter01.clj"}
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/15-popall-persuasive-v2-iter01.clj:2:25
+Phase:    macroexpand
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program15)
+2: (defn dfs [graph start] (loop [stack [start] visited PUSH-# {} result []] (if (empty? stack) result (let [node (peek stack) new-stack (pop stack)] (if (visited node) (recur new-stack visited result) (recur (into new-stack (remove visited (graph node))) (conj visited node) (conj result node)))))))
+                           ^--- let requires an even number of forms in binding vector
+3: (defn bfs [graph start] (loop [queue [start] visited PUSH-# {} result []] (if (empty? queue) result (let [node (first queue) new-queue (subvec (vec queue) 1)] (if (visited node) (recur new-queue visited result) (recur (into new-queue (remove visited (graph node))) (conj visited node) (conj result node)))))))
+
+----- Stack trace --------------------------------------------------------------
+clojure.core/loop     - <built-in>
+examples.program15/fn - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/15-popall-persuasive-v2-iter01.clj:2:25
+clojure.core/fn       - <built-in>
+examples.program15    - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/15-popall-persuasive-v2-iter01.clj:2:1
+clojure.core/defn     - <built-in>
+examples.program15    - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/15-popall-persuasive-v2-iter01.clj:2:1
+
+
+  - Program 24 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ExceptionInfo
+Message:  Could not resolve symbol: PUSH-
+Data:     {:type :sci/error, :line 2, :column 1, :file "/Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/24-popall-persuasive-v2-iter01.clj", :phase "analysis"}
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/24-popall-persuasive-v2-iter01.clj:2:86
+Phase:    analysis
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program24)
+2: (defmacro when-let-all [bindings & body] (let [pairs (partition 2 bindings)] (reduce (fn [acc [sym expr]] PUSH-` (let [~sym ~expr] (if ~sym ~acc nil)))) PUSH-` (do ~@body) (reverse pairs)))
+                                                                                        ^--- Could not resolve symbol: PUSH-
+3: (defmacro defn-timed [name args & body] PUSH-` (defn ~name ~args (let [start# (System/nanoTime) result# (do ~@body) end# (System/nanoTime) elapsed# (/ (- end# start#) 1000000.0)] (println (str ~PUSH-( str name) " took " elapsed# " ms")) result#))
+
+----- Stack trace --------------------------------------------------------------
+examples.program24        - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/24-popall-persuasive-v2-iter01.clj:2:86
+clojure.core/fn           - <built-in>
+examples.program24/reduce - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/24-popall-persuasive-v2-iter01.clj:2:86
+examples.program24        - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/24-popall-persuasive-v2-iter01.clj:2:86
+clojure.core/reduce       - <built-in>
+... (run with --debug to see elided elements)
+examples.program24        - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/24-popall-persuasive-v2-iter01.clj:2:42
+clojure.core/let          - <built-in>
+examples.program24/fn     - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/24-popall-persuasive-v2-iter01.clj:2:42
+clojure.core/fn           - <built-in>
+clojure.core/defn         - <built-in>
+
+
+  - Program 28 iter 01: ----- Error --------------------------------------------------------------------
+Type:     java.lang.AssertionError
+Message:  Pattern row 1: Pattern rows must be wrapped in []. Try changing {:type :user, :data {:role :admin}} to [{:type :user, :data {:role :admin}}].
+
+
+  - Program 39 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ExceptionInfo
+Message:  Unmatched delimiter: ], expected: ) to match ( at [5 53]
+Data:     {:type :edamame/error, :line 5, :column 102, :edamame/opened-delimiter "(", :edamame/opened-delimiter-loc {:row 5, :col 53}, :edamame/expected-delimiter ")"}
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-persuasive-v2-20251110-141000/39-popall-persuasive-v2-iter01.clj:5:102
+Phase:    parse
+
+----- Context ------------------------------------------------------------------
+1: (ns examples.program39)
+2: (defrecord Node [keys children leaf?])
+3: (defn make-node [leaf?] (->Node [] [] leaf?))
+4: (defn split-node [node t] (let [mid (quot (count (:keys node)) 2) left-keys (subvec (:keys node) 0 mid) right-keys (subvec (:keys node) (inc mid)) mid-key (get (:keys node) mid)] (if (:leaf? node) {:mid mid-key, :right (->Node right-keys [] true), :left (->Node left-keys [] true)} (let [left-children (subvec (:children node) 0 (inc mid)) right-children (subvec (:children node) (inc mid))] {:mid mid-key, :right (->Node right-keys right-children false), :left (->Node left-keys left-children false)}))))
+5: (defn b-tree-search [node key] (when node (let [idx (count (take-while PUSH-#( < % key) (:keys node))]) (cond (and (< idx (count (:keys node))) (= key (get (:keys node) idx))) true (:leaf? node) false :else (b-tree-search (get (:children node) idx) key))))
+                                                                                                        ^--- Unmatched delimiter: ], expected: ) to match ( at [5 53]
+6: (defn insert-non-full [node key t] (if (:leaf? node) (let [keys (:keys node) idx (count (take-while PUSH-#( < % key) keys)] new-keys (vec (concat (take idx keys) [key] (drop idx keys)))) (assoc node :keys new-keys)))
+7: (let [keys (:keys node) idx (count (take-while PUSH-#( < % key) keys)] child (get (:children node) idx))
+8: (if (>= (count (:keys child)) (* 2 t)) (let [split-result (split-node child t) new-keys (vec (concat (take idx keys) [(:mid split-result)] (drop idx keys))) new-children (vec (concat (take idx (:children node)) [(:left split-result) (:right split-result)] (drop (inc idx) (:children node)))) new-node (assoc node :keys new-keys :children new-children) new-idx (if (< key (:mid split-result)) idx (inc idx))] (insert-non-full new-node key t)))
+9: (let [new-child (insert-non-full child key t) new-children (assoc (:children node) idx new-child)] (assoc node :children new-children))
+10: (defn b-tree-insert [root key t] (if (nil? root) (->Node [key] [] true) (if (>= (count (:keys root)) (* 2 t)) (let [split-result (split-node root t) new-root (->Node [(:mid split-result)] [(:left split-result) (:right split-result)] false)] (insert-non-full new-root key t)))))
+
+----- Stack trace --------------------------------------------------------------
+edamame.impl.parser/throw-reader       - <built-in>
+edamame.impl.parser/dispatch           - <built-in>
+edamame.impl.parser/parse-next         - <built-in>
+edamame.impl.parser/parse-to-delimiter - <built-in>
+edamame.impl.parser/parse-list         - <built-in>
+... (run with --debug to see elided elements)
+edamame.impl.parser/parse-to-delimiter - <built-in>
+edamame.impl.parser/parse-list         - <built-in>
+edamame.impl.parser/dispatch           - <built-in>
+edamame.impl.parser/parse-next         - <built-in>
+edamame.core/parse-next                - <built-in>
+
+
+  - Program 04 iter 01: Transpile failed
+  - Program 10 iter 01: Transpile failed
+  - Program 11 iter 01: Transpile failed
+  - Program 12 iter 01: Transpile failed
+  - Program 13 iter 01: Transpile failed
+  - Program 16 iter 01: Transpile failed
+  - Program 17 iter 01: Transpile failed
+  - Program 21 iter 01: Transpile failed
+  - Program 25 iter 01: Transpile failed
+  - Program 27 iter 01: Transpile failed
+  - Program 29 iter 01: Transpile failed
+  - Program 30 iter 01: Transpile failed
+  - Program 32 iter 01: Transpile failed
+  - Program 33 iter 01: Transpile failed
+  - Program 34 iter 01: Transpile failed
+  - Program 35 iter 01: Transpile failed
+  - Program 36 iter 01: Transpile failed
+  - Program 37 iter 01: Transpile failed
+  - Program 38 iter 01: Transpile failed
+  - Program 40 iter 01: Transpile failed
+
+Results saved to: experiments/test-variant-popall-persuasive-v2-20251110-141000
++ bb bin/test-variant.clj popall-negative-v2 all 1
+========================================
+Testing variant: popall-negative-v2
+Programs: 1-40
+Iterations: 1
+Results dir: experiments/test-variant-popall-negative-v2-20251110-141116
+========================================
+
+[03/popall-negative-v2/iter01] Testing...
+
+[06/popall-negative-v2/iter01] Testing...
+
+[07/popall-negative-v2/iter01] Testing...
+
+[04/popall-negative-v2/iter01] Testing...
+[05/popall-negative-v2/iter01] Testing...
+
+[08/popall-negative-v2/iter01] Testing...
+
+[11/popall-negative-v2/iter01] Testing...
+
+[01/popall-negative-v2/iter01] Testing...
+
+
+[10/popall-negative-v2/iter01] Testing...
+
+[09/popall-negative-v2/iter01] Testing...
+
+[02/popall-negative-v2/iter01] Testing...
+  ✓ SUCCESS
+  ✓ SUCCESS
+
+[13/popall-negative-v2/iter01] Testing...
+
+[12/popall-negative-v2/iter01] Testing...
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ✓ SUCCESS
+
+[14/popall-negative-v2/iter01] Testing...
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ✓ SUCCESS
+
+[16/popall-negative-v2/iter01] Testing...
+
+[15/popall-negative-v2/iter01] Testing...
+  ✓ SUCCESS
+
+[17/popall-negative-v2/iter01] Testing...
+
+[18/popall-negative-v2/iter01] Testing...
+
+[19/popall-negative-v2/iter01] Testing...
+
+[20/popall-negative-v2/iter01] Testing...
+  ✓ SUCCESS
+
+[21/popall-negative-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "step2-ch",
+ :line 21,
+ :col 4}
+
+  ❌ ERROR: Transpile failed
+
+[22/popall-negative-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 266,
+ :line 8,
+ :col 69,
+ :char \]}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :pop-all-empty-stack,
+ :msg "POP-ALL with empty stack",
+ :line 7,
+ :col 2}
+
+  ❌ ERROR: Transpile failed
+
+[25/popall-negative-v2/iter01] Testing...
+
+[24/popall-negative-v2/iter01] Testing...
+
+[23/popall-negative-v2/iter01] Testing...
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :pop-all-empty-stack,
+ :msg "POP-ALL with empty stack",
+ :line 17,
+ :col 73}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 20, :col 60}
+
+  ❌ ERROR: Transpile failed
+
+[26/popall-negative-v2/iter01] Testing...
+  ✓ SUCCESS
+
+[29/popall-negative-v2/iter01] Testing...
+
+[27/popall-negative-v2/iter01] Testing...
+
+[28/popall-negative-v2/iter01] Testing...
+  ✓ SUCCESS
+
+[30/popall-negative-v2/iter01] Testing...
+
+[31/popall-negative-v2/iter01] Testing...
+
+[32/popall-negative-v2/iter01] Testing...
+
+[33/popall-negative-v2/iter01] Testing...
+  ✓ SUCCESS
+
+[34/popall-negative-v2/iter01] Testing...
+  ✓ SUCCESS
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 16, :col 39}
+
+  ❌ ERROR: Transpile failed
+
+[35/popall-negative-v2/iter01] Testing...
+
+[36/popall-negative-v2/iter01] Testing...
+  ✓ SUCCESS
+
+[37/popall-negative-v2/iter01] Testing...
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "out",
+ :line 41,
+ :col 4}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom "clojure.lang.IPersistentCollection",
+ :line 11,
+ :col 2}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "Map has odd arity",
+ :code :map-odd-arity,
+ :kvs [{:keys [id]} :as params],
+ :count 3}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 11, :col 94}
+
+  ❌ ERROR: Transpile failed
+  ✓ SUCCESS
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "Map has odd arity",
+ :code :map-odd-arity,
+ :kvs
+ [:on-click
+  (fn
+   [_]
+   (swap!
+    todos
+    (fn [ts] (vec (remove (fn [t] (= (:id t) (:id todo))) ts)))))
+  "Delete"],
+ :count 3}
+
+  ❌ ERROR: Transpile failed
+
+[38/popall-negative-v2/iter01] Testing...
+
+[40/popall-negative-v2/iter01] Testing...
+
+[39/popall-negative-v2/iter01] Testing...
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 30, :col 104}
+
+  ❌ ERROR: Transpile failed
+  ❌ EXECUTION ERROR
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :no-container,
+ :msg "Atom at top-level without container (v1 disallows loose atoms)",
+ :atom ":*",
+ :line 19,
+ :col 6}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:msg "CLJP only allows POP to close containers",
+ :code :tokenize,
+ :pos 594,
+ :line 15,
+ :col 62,
+ :char \}}
+
+  ❌ ERROR: Transpile failed
+  ❌ TRANSPILE ERROR
+     CLJP transpile error:
+{:code :underflow, :msg "POP with empty stack", :line 50, :col 57}
+
+  ❌ ERROR: Transpile failed
+
+========================================
+SUMMARY
+========================================
+EXPERIMENT: POP-ALL v2 Negative (cognitive overhead): 23/40 (57%)
+
+Failures:
+  - Program 31 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ArityException
+Message:  Wrong number of args (2) passed to: examples.program31/where
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-negative-v2-20251110-141116/31-popall-negative-v2-iter01.clj:7:33
+
+----- Context ------------------------------------------------------------------
+3: (defn where [pred] (fn [data] (filter pred data)))
+4: (defn select [& keys] (fn [data] (map (fn [row] (select-keys row keys)) data)))
+5: (defn order-by [key-fn] (fn [data] (sort-by key-fn data)))
+6: (def test-data [{:age 30, :name "Alice", :dept "Engineering"} {:age 25, :name "Bob", :dept "Sales"} {:age 35, :name "Carol", :dept "Engineering"} {:age 28, :name "Dave", :dept "Sales"}])
+7: (def query (-> (from test-data) (where (fn [x] (> (:age x) 26))) (select :name :dept) (order-by :name)))
+                                   ^--- Wrong number of args (2) passed to: examples.program31/where
+8: (defn -main [& args] (println (query)))
+
+----- Stack trace --------------------------------------------------------------
+examples.program31/where    - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-negative-v2-20251110-141116/31-popall-negative-v2-iter01.clj:3:1
+examples.program31/select   - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-negative-v2-20251110-141116/31-popall-negative-v2-iter01.clj:7:33
+examples.program31/select   - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-negative-v2-20251110-141116/31-popall-negative-v2-iter01.clj:4:1
+examples.program31/order-by - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-negative-v2-20251110-141116/31-popall-negative-v2-iter01.clj:7:66
+examples.program31/order-by - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-negative-v2-20251110-141116/31-popall-negative-v2-iter01.clj:5:1
+examples.program31          - /Users/genekim/src.local/cljpp/experiments/test-variant-popall-negative-v2-20251110-141116/31-popall-negative-v2-iter01.clj:7:87
+
+
+  - Program 36 iter 01: ----- Error --------------------------------------------------------------------
+Type:     clojure.lang.ExceptionInfo
+Message:  [line 10, col 80] Unsupported character: PUSH-.
+Data:     {:type :reader-exception, :ex-kind :reader-error, :file nil, :line 10, :col 80}
+Location: /Users/genekim/src.local/cljpp/experiments/test-variant-popall-negative-v2-20251110-141116/36-popall-negative-v2-iter01.clj:10:
+Phase:    parse
+
+----- Stack trace --------------------------------------------------------------
+clojure.tools.reader.impl.errors/throw-ex                    - <built-in>
+clojure.tools.reader.impl.errors/reader-error                - <built-in>
+clojure.tools.reader.impl.errors/throw-unsupported-character - <built-in>
+clojure.tools.reader.edn/read-char*                          - <built-in>
+edamame.impl.parser/dispatch                                 - <built-in>
+... (run with --debug to see elided elements)
+edamame.impl.parser/parse-to-delimiter                       - <built-in>
+edamame.impl.parser/parse-list                               - <built-in>
+edamame.impl.parser/dispatch                                 - <built-in>
+edamame.impl.parser/parse-next                               - <built-in>
+edamame.core/parse-next                                      - <built-in>
+
+
+  - Program 11 iter 01: Transpile failed
+  - Program 12 iter 01: Transpile failed
+  - Program 13 iter 01: Transpile failed
+  - Program 15 iter 01: Transpile failed
+  - Program 17 iter 01: Transpile failed
+  - Program 24 iter 01: Transpile failed
+  - Program 27 iter 01: Transpile failed
+  - Program 29 iter 01: Transpile failed
+  - Program 30 iter 01: Transpile failed
+  - Program 32 iter 01: Transpile failed
+  - Program 34 iter 01: Transpile failed
+  - Program 37 iter 01: Transpile failed
+  - Program 38 iter 01: Transpile failed
+  - Program 39 iter 01: Transpile failed
+  - Program 40 iter 01: Transpile failed
+
+Results saved to: experiments/test-variant-popall-negative-v2-20251110-141116
++ echo ==========================================
+==========================================
++ echo 'Experiment complete!'
+Experiment complete!
++ echo ==========================================
+==========================================

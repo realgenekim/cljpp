@@ -1,0 +1,115 @@
+```clojure
+PUSH-( ns examples.program27
+  PUSH-( :require PUSH-[ reagent.core :as r POP POP
+POP
+
+PUSH-( defn counter POP
+  PUSH-( let PUSH-[ count PUSH-( r/atom 0 POP POP
+    PUSH-( fn POP
+      PUSH-[ :div
+        PUSH-[ :h3 "Counter: " @count POP
+        PUSH-[ :button PUSH-{ :on-click PUSH-( fn POP PUSH-( swap! count inc POP POP POP "+" POP
+        PUSH-[ :button PUSH-{ :on-click PUSH-( fn POP PUSH-( swap! count dec POP POP POP "-" POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn todo-list POP
+  PUSH-( let PUSH-[
+    todos PUSH-( r/atom PUSH-[ POP POP
+    input PUSH-( r/atom "" POP
+  POP
+    PUSH-( fn POP
+      PUSH-[ :div
+        PUSH-[ :h3 "Todo List" POP
+        PUSH-[ :input PUSH-{
+          :type "text"
+          :value @input
+          :on-change PUSH-( fn PUSH-[ e POP PUSH-( reset! input PUSH-( .. e -target -value POP POP POP
+        POP POP
+        PUSH-[ :button PUSH-{
+          :on-click PUSH-( fn POP
+            PUSH-( when PUSH-( seq @input POP
+              PUSH-( swap! todos conj PUSH-{ :id PUSH-( random-uuid POP :text @input :done? false POP POP
+              PUSH-( reset! input "" POP
+            POP
+          POP
+        POP "Add" POP
+        PUSH-[ :ul
+          PUSH-( for PUSH-[ todo @todos POP
+            PUSH-[ :li PUSH-{ :key PUSH-( :id todo POP POP
+              PUSH-[ :input PUSH-{
+                :type "checkbox"
+                :checked PUSH-( :done? todo POP
+                :on-change PUSH-( fn POP
+                  PUSH-( swap! todos
+                    PUSH-( fn PUSH-[ ts POP
+                      PUSH-( mapv
+                        PUSH-( fn PUSH-[ t POP
+                          PUSH-( if PUSH-( = PUSH-( :id t POP PUSH-( :id todo POP POP
+                            PUSH-( update t :done? not POP
+                            t
+                          POP
+                        POP
+                        ts
+                      POP
+                    POP
+                  POP
+                POP
+              POP POP
+              PUSH-[ :span PUSH-{ :style PUSH-{ :text-decoration PUSH-( if PUSH-( :done? todo POP "line-through" "none" POP POP POP
+                PUSH-( :text todo POP
+              POP
+              PUSH-[ :button PUSH-{
+                :on-click PUSH-( fn POP
+                  PUSH-( swap! todos PUSH-( fn PUSH-[ ts POP PUSH-( filterv PUSH-( fn PUSH-[ t POP PUSH-( not= PUSH-( :id t POP PUSH-( :id todo POP POP POP ts POP POP POP
+                POP
+              POP "Remove" POP
+            POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn filtered-list POP
+  PUSH-( let PUSH-[
+    items PUSH-( r/atom PUSH-[ "apple" "banana" "cherry" "date" "elderberry" "fig" "grape" POP POP
+    search PUSH-( r/atom "" POP
+  POP
+    PUSH-( fn POP
+      PUSH-( let PUSH-[
+        query PUSH-( clojure.string/lower-case @search POP
+        filtered PUSH-( if PUSH-( seq query POP
+                   PUSH-( filter PUSH-( fn PUSH-[ item POP
+                              PUSH-( clojure.string/includes?
+                                PUSH-( clojure.string/lower-case item POP
+                                query
+                              POP
+                            POP
+                            @items
+                   POP
+                   @items
+                 POP
+      POP
+        PUSH-[ :div
+          PUSH-[ :h3 "Filtered List" POP
+          PUSH-[ :input PUSH-{
+            :type "text"
+            :placeholder "Search..."
+            :value @search
+            :on-change PUSH-( fn PUSH-[ e POP PUSH-( reset! search PUSH-( .. e -target -value POP POP POP
+          POP POP
+          PUSH-[ :ul
+            PUSH-( for PUSH-[ item filtered POP
+              PUSH-[ :li PUSH-{ :key item POP item POP
+            POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP
+```

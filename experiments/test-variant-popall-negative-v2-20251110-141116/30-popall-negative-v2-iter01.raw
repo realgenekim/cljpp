@@ -1,0 +1,35 @@
+```clojure
+PUSH-( ns examples.program30 POP-ALL
+
+PUSH-( defrecord SkipNode PUSH-[ value next down POP POP-ALL
+
+PUSH-( defrecord SkipList PUSH-[ head height size POP
+  clojure.lang.ISeq
+  PUSH-( seq PUSH-[ this POP
+    PUSH-( when-let PUSH-[ node PUSH-( :next head POP POP
+      PUSH-( map :value PUSH-( take-while some? PUSH-( iterate :next node POP POP POP-ALL
+
+  clojure.lang.IPersistentCollection
+  PUSH-( cons PUSH-[ this val POP
+    PUSH-( let PUSH-[
+      new-node PUSH-{ :value val :next PUSH-( :next head POP :down nil POP
+      new-head PUSH-( assoc head :next new-node POP
+    POP
+      PUSH-( ->SkipList new-head height PUSH-( inc size POP POP-ALL
+
+  PUSH-( count PUSH-[ this POP
+    size POP
+
+  PUSH-( empty PUSH-[ this POP
+    PUSH-( ->SkipList PUSH-{ :next nil :down nil :value nil POP 0 0 POP-ALL
+
+  PUSH-( equiv PUSH-[ this other POP
+    PUSH-( and PUSH-( instance? SkipList other POP
+         PUSH-( = size PUSH-( :size other POP POP
+         PUSH-( = PUSH-( seq this POP PUSH-( seq other POP POP-ALL
+
+  clojure.lang.Counted POP-ALL
+
+PUSH-( defn make-skip-list PUSH-[ POP
+  PUSH-( ->SkipList PUSH-{ :next nil :down nil :value nil POP 0 0 POP-ALL
+```

@@ -1,0 +1,47 @@
+(ns examples.program37
+  (:require [reagent.core :as r]))
+
+(defn use-state [initial-value]
+  (let [state (r/atom initial-value)]
+    [state #(reset! state %)]))
+
+(defn use-effect [effect-fn deps]
+  (let [prev-deps (atom nil)]
+    (r/track!
+     (fn []
+       (when (not= @prev-deps deps)
+         (reset! prev-deps deps)
+         (let [cleanup (effect-fn)]
+           (when (fn? cleanup)
+             (r/dispose! cleanup))))))))
+
+(defn use-fetch [url]
+  (let [[data set-data] (use-state nil)
+        [loading set-loading] (use-state true)
+        [error set-error] (use-state nil)]
+    (use-effect
+     (fn []
+       (set-loading true)
+       (set-error nil)
+       (-> (js/fetch url)
+           (.then #(.json %))
+           (.then (fn [result]
+                    (set-data result)
+                    (set-loading false)))
+           (.catch (fn [err]
+                      (set-error (.-message err))
+                      (set-loading false))))
+       nil)
+     [url])
+    {:data @data
+     :loading @loading
+     :error @error}))
+
+(defn example-component []
+  (let [{:keys [data loading error]} (use-fetch "https://api.example.com/data")]
+    [:div
+     (cond
+       loading [:p "Loading..."]
+       error [:p "Error: " error]
+       data [:pre (pr-str data)]
+       :else [:p "No data"])]))

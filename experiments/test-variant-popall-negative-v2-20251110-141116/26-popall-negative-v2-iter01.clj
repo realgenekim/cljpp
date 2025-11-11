@@ -1,0 +1,6 @@
+(ns examples.program26)
+(defn wrap-json [handler] (fn [request] (let [parsed-request (assoc request :body {:data "parsed-json"})] (handler parsed-request))))
+(defn wrap-cors [handler] (fn [request] (let [response (handler request)] (assoc response :headers {"Access-Control-Allow-Origin" "*"}))))
+(defn wrap-session [handler] (fn [request] (if (get request :token) (handler request) {:status 401, :body "Unauthorized"})))
+(def app (-> (fn [request] {:status 200, :body "OK"}) wrap-json wrap-cors wrap-session))
+(defn -main [] (let [request {:token "abc123"} response (app request)] (println response)))

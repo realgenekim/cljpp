@@ -1,0 +1,65 @@
+```clojure
+PUSH-( ns examples.program38 POP
+
+PUSH-( defn diff PUSH-[ expr var POP
+  PUSH-( let PUSH-[ PUSH-[ tag & args POP expr POP
+    PUSH-( case tag
+      :const PUSH-[ :const 0 POP
+      :var PUSH-( if PUSH-( = PUSH-( second expr POP var POP
+             PUSH-[ :const 1 POP
+             PUSH-[ :const 0 POP
+           POP
+      :+ PUSH-( let PUSH-[ PUSH-[ a b POP args
+                   da PUSH-( diff a var POP
+                   db PUSH-( diff b var POP
+               POP
+           PUSH-( simplify PUSH-[ :+ da db POP POP
+         POP
+      :* PUSH-( let PUSH-[ PUSH-[ a b POP args
+                   da PUSH-( diff a var POP
+                   db PUSH-( diff b var POP
+               POP
+           PUSH-( simplify PUSH-[ :+ PUSH-[ :* da b POP PUSH-[ :* a db POP POP POP
+         POP
+      :exp PUSH-( let PUSH-[ PUSH-[ a POP args
+                     da PUSH-( diff a var POP
+                 POP
+             PUSH-( simplify PUSH-[ :* PUSH-[ :exp a POP da POP POP
+           POP
+    POP
+  POP
+POP
+
+PUSH-( defn simplify PUSH-[ expr POP
+  PUSH-( if PUSH-( vector? expr POP
+    PUSH-( let PUSH-[ PUSH-[ tag & args POP expr POP
+      PUSH-( case tag
+        :const expr
+        :var expr
+        :+ PUSH-( let PUSH-[ PUSH-[ a b POP args POP
+             PUSH-( cond
+               PUSH-( and PUSH-( = PUSH-( first a POP :const POP PUSH-( = PUSH-( second a POP 0 POP POP b
+               PUSH-( and PUSH-( = PUSH-( first b POP :const POP PUSH-( = PUSH-( second b POP 0 POP POP a
+               PUSH-( and PUSH-( = PUSH-( first a POP :const POP PUSH-( = PUSH-( first b POP :const POP POP
+                 PUSH-[ :const PUSH-( + PUSH-( second a POP PUSH-( second b POP POP POP
+               :else PUSH-[ :+ a b POP
+             POP
+           POP
+        :* PUSH-( let PUSH-[ PUSH-[ a b POP args POP
+             PUSH-( cond
+               PUSH-( and PUSH-( = PUSH-( first a POP :const POP PUSH-( = PUSH-( second a POP 0 POP POP PUSH-[ :const 0 POP
+               PUSH-( and PUSH-( = PUSH-( first b POP :const POP PUSH-( = PUSH-( second b POP 0 POP POP PUSH-[ :const 0 POP
+               PUSH-( and PUSH-( = PUSH-( first a POP :const POP PUSH-( = PUSH-( second a POP 1 POP POP b
+               PUSH-( and PUSH-( = PUSH-( first b POP :const POP PUSH-( = PUSH-( second b POP 1 POP POP a
+               PUSH-( and PUSH-( = PUSH-( first a POP :const POP PUSH-( = PUSH-( first b POP :const POP POP
+                 PUSH-[ :const PUSH-( * PUSH-( second a POP PUSH-( second b POP POP POP
+               :else PUSH-[ :* a b POP
+             POP
+           POP
+        :exp expr
+      POP
+    POP
+    expr
+  POP
+POP
+```

@@ -1,0 +1,44 @@
+PUSH-( ns examples.program30 POP-ALL
+
+PUSH-( defrecord SkipListNode PUSH-[ value next down POP POP-ALL
+
+PUSH-( deftype SkipList PUSH-[ head height cnt POP
+  clojure.lang.ISeq
+  PUSH-( seq PUSH-[ this POP
+    PUSH-( when head
+      PUSH-( loop PUSH-[ node head
+             result PUSH-[ POP POP
+        PUSH-( if node
+          PUSH-( recur PUSH-( :next node POP
+                 PUSH-( conj result PUSH-( :value node POP POP POP
+          PUSH-( seq PUSH-( reverse result POP POP-ALL
+  
+  clojure.lang.IPersistentCollection
+  PUSH-( cons PUSH-[ this value POP
+    PUSH-( SkipList. 
+      PUSH-( ->SkipListNode value head nil POP
+      PUSH-( inc height POP
+      PUSH-( inc cnt POP POP-ALL
+  
+  PUSH-( empty PUSH-[ this POP
+    PUSH-( SkipList. nil 0 0 POP-ALL
+  
+  PUSH-( equiv PUSH-[ this other POP
+    PUSH-( and PUSH-( instance? SkipList other POP
+         PUSH-( = cnt PUSH-( .-cnt other POP POP
+         PUSH-( = PUSH-( seq this POP PUSH-( seq other POP POP POP-ALL
+  
+  clojure.lang.Counted
+  PUSH-( count PUSH-[ this POP
+    cnt POP-ALL
+
+PUSH-( defn skip-list
+  PUSH-[ & elements POP
+  PUSH-( if PUSH-( seq elements POP
+    PUSH-( loop PUSH-[ sl PUSH-( SkipList. nil 0 0 POP
+           els elements POP
+      PUSH-( if PUSH-( seq els POP
+        PUSH-( recur PUSH-( cons sl PUSH-( first els POP POP
+               PUSH-( rest els POP POP
+        sl POP-ALL
+    PUSH-( SkipList. nil 0 0 POP-ALL

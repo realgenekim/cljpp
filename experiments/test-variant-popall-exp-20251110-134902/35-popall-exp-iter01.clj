@@ -1,0 +1,6 @@
+(ns examples.program35 (:require [clojure.test.check :as tc] [clojure.test.check.generators :as gen] [clojure.test.check.properties :as prop]))
+(def user-gen (gen/hash-map :id (gen/large-integer* {:min 1}) :name (gen/not-empty gen/string-alphanumeric) :age (gen/large-integer* {:min 0, :max 120}) :email (gen/fmap (fn [s] (str s "@example.com")) gen/string-alphanumeric)))
+(def id-positive-prop (prop/for-all [user user-gen] (pos? (:id user))))
+(def age-valid-prop (prop/for-all [user user-gen] (and (>= (:age user) 0) (<= (:age user) 120))))
+(def name-non-empty-prop (prop/for-all [user user-gen] (not (empty? (:name user)))))
+(defn run-tests [] (println "Testing ID positivity:") (println (tc/quick-check 100 id-positive-prop)) (println "\nTesting age validity:") (println (tc/quick-check 100 age-valid-prop)) (println "\nTesting name non-empty:") (println (tc/quick-check 100 name-non-empty-prop)))

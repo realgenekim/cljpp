@@ -1,0 +1,31 @@
+```clojure
+PUSH-( ns examples.program20 POP-ALL
+
+PUSH-( defn form-field PUSH-[ id label error POP
+  PUSH-[ :div PUSH-{ :class "field" POP
+    PUSH-[ :label PUSH-{ :for id POP label POP
+    PUSH-[ :input PUSH-{ :id id :type "text" :class PUSH-( if error "error" "" POP POP POP
+    PUSH-[ :span PUSH-{ :class "error-message" POP error POP
+  POP
+POP-ALL
+
+PUSH-( defn registration-form PUSH-[ POP
+  PUSH-( let PUSH-[
+    errors PUSH-{ :email "Invalid email" :password nil :username "" POP
+    loading false
+    submitted true
+  POP
+    PUSH-[ :div PUSH-{ :class "registration-form" POP
+      PUSH-[ :h2 "Register" POP
+      PUSH-( form-field "email" "Email" PUSH-( :email errors POP POP
+      PUSH-( form-field "password" "Password" PUSH-( :password errors POP POP
+      PUSH-( form-field "username" "Username" PUSH-( :username errors POP POP
+      PUSH-[ :div PUSH-{ :class "actions" POP
+        PUSH-[ :button PUSH-{ :disabled loading POP "Submit" POP
+        PUSH-( when submitted
+          PUSH-[ :div PUSH-{ :class "success" POP "Registration successful!" POP
+        POP
+      POP
+    POP
+  POP-ALL
+```

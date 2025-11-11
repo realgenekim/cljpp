@@ -1,0 +1,20 @@
+(ns examples.program24)
+
+(defmacro when-let-all
+  [bindings & body]
+  (if (seq bindings)
+    (let [[sym expr & rest] bindings]
+      `(when-let [~sym ~expr]
+         ~(if (seq rest)
+            `(when-let-all ~(vec rest) ~@body)
+            `(do ~@body))))
+    `(do ~@body)))
+
+(defmacro defn-timed
+  [name args & body]
+  `(defn ~name ~args
+     (let [start# (System/nanoTime)
+           result# (do ~@body)
+           elapsed# (/ (- (System/nanoTime) start#) 1000000.0)]
+       (println ~(str name) "took" elapsed# "ms")
+       result#)))

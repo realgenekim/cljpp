@@ -1,0 +1,39 @@
+```clojure
+(ns examples.program31)
+
+(defn from [data]
+  (fn [query]
+    (assoc query :data data)))
+
+(defn where [pred]
+  (fn [query]
+    (update query :data #(filter pred %))))
+
+(defn select [fields]
+  (fn [query]
+    (update query :data
+            (fn [rows]
+              (map #(select-keys % fields) rows)))))
+
+(defn order-by [field]
+  (fn [query]
+    (update query :data #(sort-by field %))))
+
+(defn execute [query-fn]
+  (:data (query-fn {})))
+
+(def data
+  [{:name "Alice" :age 30 :dept "Engineering"}
+   {:name "Bob" :age 25 :dept "Sales"}
+   {:name "Charlie" :age 35 :dept "Engineering"}
+   {:name "Diana" :age 28 :dept "Sales"}])
+
+(def result
+  (execute
+   (-> (from data)
+       (where #(= (:dept %) "Engineering"))
+       (select [:name :age])
+       (order-by :age))))
+
+(println result)
+```

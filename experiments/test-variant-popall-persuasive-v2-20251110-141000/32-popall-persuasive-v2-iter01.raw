@@ -1,0 +1,34 @@
+```clojure
+PUSH-( ns examples.program32 POP-ALL
+
+PUSH-( defn get-box PUSH-[ board row col POP
+  PUSH-( for PUSH-[ r PUSH-( range PUSH-( * 3 PUSH-( quot row 3 POP POP PUSH-( + 3 PUSH-( * 3 PUSH-( quot row 3 POP POP POP POP
+              c PUSH-( range PUSH-( * 3 PUSH-( quot col 3 POP POP PUSH-( + 3 PUSH-( * 3 PUSH-( quot col 3 POP POP POP POP POP
+    PUSH-( get-in board PUSH-[ r c POP POP-ALL
+
+PUSH-( defn valid? PUSH-[ board row col num POP
+  PUSH-( and
+    PUSH-( not PUSH-( some #PUSH-( = % num POP PUSH-( get board row POP POP POP
+    PUSH-( not PUSH-( some #PUSH-( = % num POP PUSH-( map #PUSH-( get % col POP board POP POP POP
+    PUSH-( not PUSH-( some #PUSH-( = % num POP PUSH-( get-box board row col POP POP POP-ALL
+
+PUSH-( defn find-empty PUSH-[ board POP
+  PUSH-( first
+    PUSH-( for PUSH-[ r PUSH-( range 9 POP
+                c PUSH-( range 9 POP
+                :when PUSH-( zero? PUSH-( get-in board PUSH-[ r c POP POP POP POP
+      PUSH-[ r c POP-ALL
+
+PUSH-( defn solve PUSH-[ board POP
+  PUSH-( if-let PUSH-[ PUSH-[ row col POP PUSH-( find-empty board POP POP
+    PUSH-( loop PUSH-[ num 1 POP
+      PUSH-( when PUSH-( <= num 9 POP
+        PUSH-( if PUSH-( valid? board row col num POP
+          PUSH-( let PUSH-[ new-board PUSH-( assoc-in board PUSH-[ row col POP num POP POP
+            PUSH-( or PUSH-( solve new-board POP PUSH-( recur PUSH-( inc num POP POP POP POP
+          PUSH-( recur PUSH-( inc num POP POP-ALL
+    board POP-ALL
+
+PUSH-( defn solve-sudoku PUSH-[ board POP
+  PUSH-( solve board POP-ALL
+```

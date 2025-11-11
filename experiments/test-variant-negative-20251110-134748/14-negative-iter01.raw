@@ -1,0 +1,27 @@
+```clojure
+(ns examples.program14)
+
+(defprotocol Drawable
+  (draw [this])
+  (bounds [this]))
+
+(defrecord Circle [x y radius]
+  Drawable
+  (draw [this]
+    (str "Drawing circle at (" x "," y ") with radius " radius))
+  (bounds [this]
+    {:x (- x radius)
+     :y (- y radius)
+     :width (* 2 radius)
+     :height (* 2 radius)}))
+
+(defrecord Rectangle [x y width height]
+  Drawable
+  (draw [this]
+    (str "Drawing rectangle at (" x "," y ") with size " width "x" height))
+  (bounds [this]
+    {:x x
+     :y y
+     :width width
+     :height height}))
+```

@@ -1,0 +1,3 @@
+(ns examples.program15)
+(defn dfs [graph start] (loop [stack [start] visited {} result []] (if (empty? stack) result (let [node (peek stack) rest-stack (pop stack)] (if (visited node) (recur rest-stack visited result) (let [neighbors (get graph node [])] (recur (into rest-stack neighbors) (conj visited node) (conj result node))))))))
+(defn bfs [graph start] (loop [queue (conj clojure.lang.PersistentQueue/EMPTY start) visited {} result []] (if (empty? queue) result (let [node (peek queue) rest-queue (pop queue)] (if (visited node) (recur rest-queue visited result) (let [neighbors (get graph node [])] (recur (into rest-queue neighbors) (conj visited node) (conj result node))))))))

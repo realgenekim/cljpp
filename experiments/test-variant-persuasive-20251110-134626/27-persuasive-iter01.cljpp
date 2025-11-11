@@ -1,0 +1,110 @@
+PUSH-( ns examples.program27
+  PUSH-( :require PUSH-[ reagent.core :as r POP POP
+POP
+
+PUSH-( defn counter PUSH-[ POP
+  PUSH-( let PUSH-[ count PUSH-( r/atom 0 POP POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div
+        PUSH-[ :h3 "Counter" POP
+        PUSH-[ :p "Count: " @count POP
+        PUSH-[ :button PUSH-{ :on-click PUSH-( fn PUSH-[ _ POP PUSH-( swap! count inc POP POP POP "+" POP
+        PUSH-[ :button PUSH-{ :on-click PUSH-( fn PUSH-[ _ POP PUSH-( swap! count dec POP POP POP "-" POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn todo-list PUSH-[ POP
+  PUSH-( let PUSH-[
+    todos PUSH-( r/atom PUSH-[ PUSH-{ :id 1 :text "First task" :done false POP POP POP
+    input-val PUSH-( r/atom "" POP
+    next-id PUSH-( r/atom 2 POP
+  POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div
+        PUSH-[ :h3 "Todo List" POP
+        PUSH-[ :div
+          PUSH-[ :input PUSH-{ :type "text"
+                   :value @input-val
+                   :on-change PUSH-( fn PUSH-[ e POP PUSH-( reset! input-val PUSH-( .. e -target -value POP POP POP POP POP
+          PUSH-[ :button PUSH-{
+            :on-click PUSH-( fn PUSH-[ _ POP
+                        PUSH-( when-not PUSH-( empty? @input-val POP
+                          PUSH-( swap! todos conj PUSH-{ :id @next-id :text @input-val :done false POP POP
+                          PUSH-( swap! next-id inc POP
+                          PUSH-( reset! input-val "" POP
+                        POP
+                      POP POP
+            "Add" POP
+        POP
+        PUSH-[ :ul
+          PUSH-( for PUSH-[ todo @todos POP
+            PUSH-[ :li PUSH-{ :key PUSH-( :id todo POP POP
+              PUSH-[ :input PUSH-{ :type "checkbox"
+                       :checked PUSH-( :done todo POP
+                       :on-change PUSH-( fn PUSH-[ _ POP
+                                     PUSH-( swap! todos
+                                       PUSH-( fn PUSH-[ ts POP
+                                         PUSH-( mapv PUSH-( fn PUSH-[ t POP
+                                                       PUSH-( if PUSH-( = PUSH-( :id t POP PUSH-( :id todo POP POP
+                                                         PUSH-( update t :done not POP
+                                                         t
+                                                       POP
+                                                     POP ts POP
+                                       POP
+                                     POP
+                                   POP POP POP
+              PUSH-[ :span PUSH-{ :style PUSH-{ :text-decoration PUSH-( if PUSH-( :done todo POP "line-through" "none" POP POP POP
+                PUSH-( :text todo POP
+              POP
+              PUSH-[ :button PUSH-{ :on-click PUSH-( fn PUSH-[ _ POP
+                                       PUSH-( swap! todos
+                                         PUSH-( fn PUSH-[ ts POP
+                                           PUSH-( vec PUSH-( remove PUSH-( fn PUSH-[ t POP PUSH-( = PUSH-( :id t POP PUSH-( :id todo POP POP POP ts POP POP
+                                         POP
+                                       POP
+                                     POP POP
+                "Remove" POP
+            POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn filtered-list PUSH-[ POP
+  PUSH-( let PUSH-[
+    items PUSH-( r/atom PUSH-[ "Apple" "Banana" "Cherry" "Date" "Elderberry" "Fig" "Grape" POP POP
+    search PUSH-( r/atom "" POP
+  POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-( let PUSH-[
+        query PUSH-( clojure.string/lower-case @search POP
+        filtered PUSH-( if PUSH-( empty? query POP
+                     @items
+                     PUSH-( filter PUSH-( fn PUSH-[ item POP
+                                     PUSH-( clojure.string/includes?
+                                       PUSH-( clojure.string/lower-case item POP
+                                       query
+                                     POP
+                                   POP @items POP
+                   POP
+      POP
+        PUSH-[ :div
+          PUSH-[ :h3 "Filtered List" POP
+          PUSH-[ :input PUSH-{ :type "text"
+                   :placeholder "Search..."
+                   :value @search
+                   :on-change PUSH-( fn PUSH-[ e POP PUSH-( reset! search PUSH-( .. e -target -value POP POP POP POP POP
+          PUSH-[ :ul
+            PUSH-( for PUSH-[ item filtered POP
+              PUSH-[ :li PUSH-{ :key item POP item POP
+            POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP

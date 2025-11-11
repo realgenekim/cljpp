@@ -1,0 +1,24 @@
+```clojure
+PUSH-( ns examples.program10 POP
+
+PUSH-( defn user-badge PUSH-[ PUSH-{ :keys PUSH-[ name verified? role POP POP POP
+  PUSH-[ :div.badge
+    PUSH-[ :span.name name POP
+    PUSH-( when verified?
+      PUSH-[ :span.verified "✓" POP POP
+    PUSH-[ :span.role role POP POP-ALL
+
+PUSH-( defn user-list PUSH-[ users POP
+  PUSH-[ :div.users
+    PUSH-( for PUSH-[ user users POP
+      PUSH-( user-badge user POP POP POP-ALL
+
+PUSH-( defn stats-panel PUSH-[ stats POP
+  PUSH-( let PUSH-[
+    total PUSH-( reduce + PUSH-( vals stats POP POP
+  POP
+    PUSH-[ :div.stats
+      PUSH-[ :div.total total POP
+      PUSH-( for PUSH-[ PUSH-[ k v POP stats POP
+        PUSH-[ :div.stat k v POP POP POP POP-ALL
+```

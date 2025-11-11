@@ -1,0 +1,129 @@
+```clojure
+PUSH-( ns examples.program36 POP
+
+PUSH-( defn parser-return PUSH-[ value POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-[ PUSH-[ value input POP POP
+  POP
+POP
+
+PUSH-( defn parser-bind PUSH-[ parser f POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( let PUSH-[
+      results PUSH-( parser input POP
+    POP
+      PUSH-( when PUSH-( seq results POP
+        PUSH-( let PUSH-[
+          PUSH-[ value remaining POP PUSH-( first results POP
+        POP
+          PUSH-( PUSH-( f value POP remaining POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( def mzero
+  PUSH-( fn PUSH-[ input POP PUSH-[ POP POP
+POP
+
+PUSH-( defn mplus PUSH-[ p1 p2 POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( let PUSH-[
+      r1 PUSH-( p1 input POP
+    POP
+      PUSH-( if PUSH-( seq r1 POP
+        r1
+        PUSH-( p2 input POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn parse-char PUSH-[ pred POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( if PUSH-( and PUSH-( seq input POP PUSH-( pred PUSH-( first input POP POP POP
+      PUSH-[ PUSH-[ PUSH-( first input POP PUSH-( rest input POP POP POP
+      PUSH-[ POP
+    POP
+  POP
+POP
+
+PUSH-( defn parse-digit PUSH-[ POP
+  PUSH-( parse-char PUSH-( fn PUSH-[ c POP PUSH-( Character/isDigit c POP POP POP
+POP
+
+PUSH-( defn parse-number PUSH-[ POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( let PUSH-[
+      digits PUSH-( take-while PUSH-( fn PUSH-[ c POP PUSH-( Character/isDigit c POP POP input POP
+    POP
+      PUSH-( if PUSH-( seq digits POP
+        PUSH-[ PUSH-[ PUSH-( Integer/parseInt PUSH-( apply str digits POP POP PUSH-( drop PUSH-( count digits POP input POP POP POP
+        PUSH-[ POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( declare parse-expr POP
+
+PUSH-( defn parse-term PUSH-[ POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( let PUSH-[
+      num-result PUSH-( PUSH-( parse-number POP input POP
+    POP
+      PUSH-( if PUSH-( seq num-result POP
+        num-result
+        PUSH-( when PUSH-( and PUSH-( seq input POP PUSH-( = PUSH-( first input POP \( POP POP
+          PUSH-( let PUSH-[
+            expr-result PUSH-( PUSH-( parse-expr POP PUSH-( rest input POP POP
+          POP
+            PUSH-( when PUSH-( seq expr-result POP
+              PUSH-( let PUSH-[
+                PUSH-[ value remaining POP PUSH-( first expr-result POP
+              POP
+                PUSH-( when PUSH-( and PUSH-( seq remaining POP PUSH-( = PUSH-( first remaining POP \) POP POP
+                  PUSH-[ PUSH-[ value PUSH-( rest remaining POP POP POP
+                POP
+              POP
+            POP
+          POP
+        POP
+      POP
+    POP
+  POP
+POP
+
+PUSH-( defn parse-expr PUSH-[ POP
+  PUSH-( fn PUSH-[ input POP
+    PUSH-( let PUSH-[
+      term-result PUSH-( PUSH-( parse-term POP input POP
+    POP
+      PUSH-( if PUSH-( seq term-result POP
+        PUSH-( let PUSH-[
+          PUSH-[ left remaining POP PUSH-( first term-result POP
+        POP
+          PUSH-( if PUSH-( and PUSH-( seq remaining POP PUSH-( or PUSH-( = PUSH-( first remaining POP \+ POP PUSH-( = PUSH-( first remaining POP \- POP POP POP
+            PUSH-( let PUSH-[
+              op PUSH-( first remaining POP
+              right-result PUSH-( PUSH-( parse-expr POP PUSH-( rest remaining POP POP
+            POP
+              PUSH-( if PUSH-( seq right-result POP
+                PUSH-( let PUSH-[
+                  PUSH-[ right final-remaining POP PUSH-( first right-result POP
+                POP
+                  PUSH-[ PUSH-[ PUSH-( if PUSH-( = op \+ POP PUSH-( + left right POP PUSH-( - left right POP POP final-remaining POP POP
+                POP
+                term-result
+              POP
+            POP
+            term-result
+          POP
+        POP
+        PUSH-[ POP
+      POP
+    POP
+  POP
+POP
+```

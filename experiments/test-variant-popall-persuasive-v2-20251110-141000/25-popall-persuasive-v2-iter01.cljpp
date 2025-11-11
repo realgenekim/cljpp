@@ -1,0 +1,17 @@
+PUSH-( ns examples.program25
+  PUSH-( :require PUSH-[ clojure.walk :refer PUSH-[ postwalk POP POP POP-ALL
+
+PUSH-( defn update-in-multi PUSH-[ m paths f POP
+  PUSH-( reduce
+    PUSH-( fn PUSH-[ acc path POP
+      PUSH-( update-in acc path f POP-ALL
+    m
+    paths POP-ALL
+
+PUSH-( defn transform-tree PUSH-[ tree pred f POP
+  PUSH-( postwalk
+    PUSH-( fn PUSH-[ node POP
+      PUSH-( if PUSH-( and PUSH-( map? node POP PUSH-( pred node POP POP
+        PUSH-( f node POP
+        node POP-ALL
+    tree POP-ALL

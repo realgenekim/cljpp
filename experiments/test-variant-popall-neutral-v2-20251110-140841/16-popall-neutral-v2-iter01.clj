@@ -1,0 +1,6 @@
+(ns examples.program16)
+(defn parse-char [expected] (fn [input] (if (and (seq input) (= expected (first input))) [[(first input) (rest input)]] nil)))
+(defn return [value] (fn [input] [[value input]]))
+(defn bind [parser f] (fn [input] (when-let [[v rest-input] (parser input)] ((f v) rest-input))))
+(defn choice [p1 p2] (fn [input] (or (p1 input) (p2 input))))
+(defn many [parser] (fn [input] (loop [results [] inp input] (if-let [[v rest-inp] (parser inp)] (recur (conj results v) rest-inp) [results inp]))))

@@ -1,0 +1,35 @@
+```clojure
+PUSH-( ns examples.program12 POP
+
+PUSH-( def custom-transducer
+  PUSH-( comp
+    PUSH-( filter even? POP
+    PUSH-( map PUSH-( fn PUSH-[ x POP PUSH-( * 2 x POP POP POP
+  POP
+POP
+
+PUSH-( defn stateful-transducer PUSH-[ POP
+  PUSH-( let PUSH-[ seen PUSH-( atom PUSH-{ POP POP POP
+    PUSH-( filter PUSH-( fn PUSH-[ x POP
+      PUSH-( let PUSH-[ already-seen? PUSH-( contains? PUSH-( deref seen POP x POP POP
+        PUSH-( when-not already-seen?
+          PUSH-( swap! seen conj x POP
+        POP
+        PUSH-( not already-seen? POP
+      POP
+    POP POP
+  POP
+POP
+
+PUSH-( defn process-with-transducers PUSH-[ coll POP
+  PUSH-( let PUSH-[
+    xf PUSH-( comp
+      PUSH-( filter odd? POP
+      PUSH-( map inc POP
+      PUSH-( stateful-transducer POP
+    POP
+  POP
+    PUSH-( into PUSH-[ POP xf coll POP
+  POP
+POP
+```

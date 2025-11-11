@@ -1,0 +1,35 @@
+```clojure
+PUSH-( ns examples.program35
+  PUSH-( :require
+    PUSH-[ clojure.test.check :as tc POP
+    PUSH-[ clojure.test.check.generators :as gen POP
+    PUSH-[ clojure.test.check.properties :as prop POP POP POP
+
+PUSH-( def user-gen
+  PUSH-( gen/hash-map
+    :id PUSH-( gen/large-integer* PUSH-{ :min 1 POP POP
+    :name PUSH-( gen/not-empty gen/string-alphanumeric POP
+    :age PUSH-( gen/large-integer* PUSH-{ :min 0 :max 120 POP POP
+    :email PUSH-( gen/fmap
+      PUSH-( fn PUSH-[ name POP PUSH-( str name "@example.com" POP POP
+      gen/string-alphanumeric POP POP POP
+
+PUSH-( def user-id-positive
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( pos? PUSH-( :id user POP POP POP POP
+
+PUSH-( def user-age-valid
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( and
+      PUSH-( >= PUSH-( :age user POP 0 POP
+      PUSH-( <= PUSH-( :age user POP 120 POP POP POP POP
+
+PUSH-( def user-name-not-empty
+  PUSH-( prop/for-all PUSH-[ user user-gen POP
+    PUSH-( not PUSH-( empty? PUSH-( :name user POP POP POP POP POP
+
+PUSH-( defn run-tests PUSH-[ POP
+  PUSH-( println "Testing user-id-positive:" PUSH-( tc/quick-check 100 user-id-positive POP POP
+  PUSH-( println "Testing user-age-valid:" PUSH-( tc/quick-check 100 user-age-valid POP POP
+  PUSH-( println "Testing user-name-not-empty:" PUSH-( tc/quick-check 100 user-name-not-empty POP POP POP-ALL
+```

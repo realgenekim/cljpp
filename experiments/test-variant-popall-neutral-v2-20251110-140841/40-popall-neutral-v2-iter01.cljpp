@@ -1,0 +1,61 @@
+PUSH-( ns examples.program40 POP-ALL
+
+PUSH-( defn- detect-cycle PUSH-[ graph POP
+  PUSH-( loop PUSH-[ nodes PUSH-( keys graph POP
+              visited PUSH-{ POP
+              rec-stack PUSH-{ POP POP
+    PUSH-( if PUSH-( empty? nodes POP
+      false
+      PUSH-( let PUSH-[ node PUSH-( first nodes POP POP
+        PUSH-( if PUSH-( visited node POP
+          PUSH-( recur PUSH-( rest nodes POP visited rec-stack POP
+          PUSH-( let PUSH-[ result PUSH-( loop PUSH-[ current node
+                                          v visited
+                                          rs PUSH-( assoc rec-stack node true POP POP
+                          PUSH-( if PUSH-( rs current POP
+                            true
+                            PUSH-( let PUSH-[ deps PUSH-( get-in graph PUSH-[ current :deps POP PUSH-[ POP POP POP
+                              PUSH-( if PUSH-( some rs deps POP
+                                true
+                                PUSH-( if PUSH-( empty? deps POP
+                                  false
+                                  PUSH-( recur PUSH-( first deps POP
+                                          PUSH-( assoc v current true POP
+                                          rs POP-ALL
+            POP
+            PUSH-( if result
+              true
+              PUSH-( recur PUSH-( rest nodes POP
+                      PUSH-( assoc visited node true POP
+                      PUSH-( dissoc rec-stack node POP-ALL
+POP-ALL
+
+PUSH-( defn- topological-sort PUSH-[ graph POP
+  PUSH-( loop PUSH-[ result PUSH-[ POP
+              remaining PUSH-( set PUSH-( keys graph POP POP POP
+    PUSH-( if PUSH-( empty? remaining POP
+      result
+      PUSH-( let PUSH-[ no-deps PUSH-( filter
+                              PUSH-( fn PUSH-[ node POP
+                                PUSH-( let PUSH-[ deps PUSH-( get-in graph PUSH-[ node :deps POP PUSH-[ POP POP POP
+                                  PUSH-( every? result deps POP-ALL
+                              remaining POP POP
+        PUSH-( if PUSH-( empty? no-deps POP
+          PUSH-( throw PUSH-( ex-info "Cycle detected" PUSH-{ :remaining remaining POP POP POP
+          PUSH-( recur PUSH-( into result no-deps POP
+                  PUSH-( apply disj remaining no-deps POP-ALL
+POP-ALL
+
+PUSH-( defn execute-graph PUSH-[ graph POP
+  PUSH-( if PUSH-( detect-cycle graph POP
+    PUSH-( throw PUSH-( ex-info "Cycle detected in graph" PUSH-{ POP POP POP
+    PUSH-( let PUSH-[ order PUSH-( topological-sort graph POP POP
+      PUSH-( reduce
+        PUSH-( fn PUSH-[ cache node POP
+          PUSH-( let PUSH-[ node-def PUSH-( get graph node POP
+                  deps PUSH-( :deps node-def POP
+                  f PUSH-( :fn node-def POP
+                  args PUSH-( mapv cache deps POP POP
+            PUSH-( assoc cache node PUSH-( apply f args POP-ALL
+        PUSH-{ POP
+        order POP-ALL

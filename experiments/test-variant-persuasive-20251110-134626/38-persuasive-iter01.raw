@@ -1,0 +1,61 @@
+```clojure
+PUSH-( ns examples.program38 POP
+
+PUSH-( defn diff PUSH-[ expr var POP
+  PUSH-( let PUSH-[ PUSH-[ op & args POP expr POP
+    PUSH-( case op
+      :const 0
+      :var PUSH-( if PUSH-( = PUSH-( second expr POP var POP 1 0 POP POP
+      :+ PUSH-( vec PUSH-( cons :+ PUSH-( map #PUSH-( diff % var POP args POP POP POP
+      :* PUSH-( let PUSH-[
+           PUSH-[ a b POP args
+           da PUSH-( diff a var POP
+           db PUSH-( diff b var POP
+         POP
+         PUSH-[ :+ PUSH-[ :* da b POP PUSH-[ :* a db POP POP
+       POP POP
+      :exp PUSH-( let PUSH-[
+             base PUSH-( first args POP
+             db PUSH-( diff base var POP
+           POP
+           PUSH-[ :* PUSH-[ :exp base POP db POP
+         POP POP
+    POP
+  POP
+POP POP
+
+PUSH-( defn simplify PUSH-[ expr POP
+  PUSH-( if PUSH-( vector? expr POP
+    PUSH-( let PUSH-[ PUSH-[ op & args POP expr
+           simpl-args PUSH-( map simplify args POP
+         POP
+      PUSH-( case op
+        :const expr
+        :var expr
+        :+ PUSH-( let PUSH-[ terms PUSH-( remove #PUSH-( = % 0 POP simpl-args POP POP
+             PUSH-( cond
+               PUSH-( empty? terms POP 0
+               PUSH-( = PUSH-( count terms POP 1 POP PUSH-( first terms POP
+               :else PUSH-( vec PUSH-( cons :+ terms POP POP
+             POP
+           POP POP
+        :* PUSH-( let PUSH-[ PUSH-[ a b POP simpl-args POP
+             PUSH-( cond
+               PUSH-( or PUSH-( = a 0 POP PUSH-( = b 0 POP POP POP 0
+               PUSH-( = a 1 POP b
+               PUSH-( = b 1 POP a
+               :else PUSH-[ :* a b POP
+             POP
+           POP POP
+        :exp PUSH-( let PUSH-[ base PUSH-( first simpl-args POP POP
+             PUSH-( cond
+               PUSH-( = base 0 POP 1
+               :else PUSH-[ :exp base POP
+             POP
+           POP POP
+      POP
+    POP
+    expr
+  POP
+POP POP
+```

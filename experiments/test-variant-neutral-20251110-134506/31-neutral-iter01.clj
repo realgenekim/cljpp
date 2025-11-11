@@ -1,0 +1,8 @@
+(ns examples.program31)
+(defn from [data] (fn [query] (query data)))
+(defn where [pred] (fn [data] (filter pred data)))
+(defn select [& fields] (fn [data] (map (fn [row] (select-keys row fields)) data)))
+(defn order-by [field] (fn [data] (sort-by field data)))
+(def sample-data [{:age 30, :name "Alice", :id 1, :dept "Engineering"} {:age 25, :name "Bob", :id 2, :dept "Sales"} {:age 35, :name "Charlie", :id 3, :dept "Engineering"} {:age 28, :name "Diana", :id 4, :dept "Marketing"}])
+(def result (-> sample-data (where (fn [r] (>= (:age r) 28))) (select :name :dept) (order-by :name)))
+(defn -main [& args] (println "Query result:") (doseq [row result] (println row)))

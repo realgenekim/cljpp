@@ -1,0 +1,15 @@
+```clojure
+PUSH-( ns examples.program3 POP-ALL
+
+PUSH-( defn factorial PUSH-[ n POP
+  PUSH-( if PUSH-( <= n 1 POP
+    1
+    PUSH-( * n PUSH-( factorial PUSH-( - n 1 POP-ALL
+
+PUSH-( defn fibonacci PUSH-[ n POP
+  PUSH-( cond
+    PUSH-( = n 0 POP 0
+    PUSH-( = n 1 POP 1
+    :else PUSH-( + PUSH-( fibonacci PUSH-( - n 1 POP POP
+              PUSH-( fibonacci PUSH-( - n 2 POP-ALL
+```

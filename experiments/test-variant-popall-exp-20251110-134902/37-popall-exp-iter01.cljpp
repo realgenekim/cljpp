@@ -1,0 +1,77 @@
+PUSH-( ns examples.program37
+  PUSH-( :require
+    PUSH-[ reagent.core :as r POP
+    PUSH-[ reagent.dom :as rdom POP
+POP POP
+
+PUSH-( defn use-state PUSH-[ initial-value POP
+  PUSH-( r/atom initial-value POP-ALL
+
+PUSH-( defn use-effect PUSH-[ effect-fn deps POP
+  PUSH-( let PUSH-[
+    prev-deps PUSH-( r/atom nil POP
+  POP
+    PUSH-( r/track!
+      PUSH-( fn PUSH-[ POP
+        PUSH-( when PUSH-( not= @prev-deps deps POP
+          PUSH-( reset! prev-deps deps POP
+          PUSH-( effect-fn POP
+POP POP POP POP-ALL
+
+PUSH-( defn use-fetch PUSH-[ url POP
+  PUSH-( let PUSH-[
+    state PUSH-( r/atom PUSH-{ :loading true :error nil :data nil POP POP
+  POP
+    PUSH-( r/create-class
+      PUSH-{
+        :component-did-mount
+        PUSH-( fn PUSH-[ this POP
+          PUSH-( -> PUSH-( js/fetch url POP
+            PUSH-( .then PUSH-( fn PUSH-[ response POP
+              PUSH-( .json response POP-ALL
+            PUSH-( .then PUSH-( fn PUSH-[ data POP
+              PUSH-( reset! state PUSH-{ :loading false :error nil :data PUSH-( js->clj data :keywordize-keys true POP POP POP-ALL
+            PUSH-( .catch PUSH-( fn PUSH-[ error POP
+              PUSH-( reset! state PUSH-{ :loading false :error PUSH-( .-message error POP :data nil POP POP-ALL
+        :reagent-render
+        PUSH-( fn PUSH-[ POP
+          PUSH-[ :div @state POP
+POP POP POP POP-ALL
+
+PUSH-( defn user-profile PUSH-[ PUSH-{ :keys PUSH-[ user-id POP POP POP
+  PUSH-( let PUSH-[
+    user-data PUSH-( use-fetch PUSH-( str "https://api.example.com/users/" user-id POP POP
+  POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div
+        PUSH-( if PUSH-( :loading @user-data POP
+          PUSH-[ :p "Loading..." POP
+          PUSH-( if-let PUSH-[ error PUSH-( :error @user-data POP POP
+            PUSH-[ :p.error PUSH-( str "Error: " error POP POP
+            PUSH-[ :div
+              PUSH-[ :h2 PUSH-( get-in @user-data PUSH-[ :data :name POP POP POP
+              PUSH-[ :p PUSH-( get-in @user-data PUSH-[ :data :email POP POP POP
+POP POP POP POP POP POP POP-ALL
+
+PUSH-( defn counter PUSH-[ POP
+  PUSH-( let PUSH-[
+    count PUSH-( use-state 0 POP
+  POP
+    PUSH-( use-effect
+      PUSH-( fn PUSH-[ POP
+        PUSH-( js/console.log PUSH-( str "Count changed to: " @count POP POP-ALL
+      PUSH-[ @count POP
+    PUSH-( fn PUSH-[ POP
+      PUSH-[ :div
+        PUSH-[ :p PUSH-( str "Count: " @count POP POP
+        PUSH-[ :button
+          PUSH-{ :on-click PUSH-( fn PUSH-[ POP PUSH-( swap! count inc POP POP POP
+          "Increment"
+POP POP POP POP POP-ALL
+
+PUSH-( defn app PUSH-[ POP
+  PUSH-[ :div
+    PUSH-[ :h1 "React Hooks Pattern" POP
+    PUSH-[ counter POP
+    PUSH-[ user-profile PUSH-{ :user-id 1 POP POP
+POP POP-ALL

@@ -1,0 +1,39 @@
+PUSH-( ns examples.program15 POP-ALL
+
+PUSH-( defn dfs PUSH-[ graph start POP
+  PUSH-( loop PUSH-[
+    stack PUSH-[ start POP
+    visited PUSH-# PUSH-{ POP
+    result PUSH-[ POP
+  POP
+    PUSH-( if PUSH-( empty? stack POP
+      result
+      PUSH-( let PUSH-[
+        node PUSH-( peek stack POP
+        new-stack PUSH-( pop stack POP
+      POP
+        PUSH-( if PUSH-( visited node POP
+          PUSH-( recur new-stack visited result POP
+          PUSH-( recur
+            PUSH-( into new-stack PUSH-( remove visited PUSH-( graph node POP POP POP
+            PUSH-( conj visited node POP
+            PUSH-( conj result node POP-ALL
+
+PUSH-( defn bfs PUSH-[ graph start POP
+  PUSH-( loop PUSH-[
+    queue PUSH-[ start POP
+    visited PUSH-# PUSH-{ POP
+    result PUSH-[ POP
+  POP
+    PUSH-( if PUSH-( empty? queue POP
+      result
+      PUSH-( let PUSH-[
+        node PUSH-( first queue POP
+        new-queue PUSH-( subvec PUSH-( vec queue POP 1 POP
+      POP
+        PUSH-( if PUSH-( visited node POP
+          PUSH-( recur new-queue visited result POP
+          PUSH-( recur
+            PUSH-( into new-queue PUSH-( remove visited PUSH-( graph node POP POP POP
+            PUSH-( conj visited node POP
+            PUSH-( conj result node POP-ALL

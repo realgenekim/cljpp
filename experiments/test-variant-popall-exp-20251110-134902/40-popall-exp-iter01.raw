@@ -1,0 +1,71 @@
+```clojure
+PUSH-( ns examples.program40 POP-ALL
+
+PUSH-( defn detect-cycle PUSH-[ graph POP
+  PUSH-( letfn PUSH-[
+    PUSH-( visit PUSH-[ node visited visiting POP
+      PUSH-( cond
+        PUSH-( visiting node POP true
+        PUSH-( visited node POP false
+        :else
+        PUSH-( let PUSH-[
+          visiting' PUSH-( conj visiting node POP
+          deps PUSH-( get-in graph PUSH-[ node :deps POP PUSH-[ POP POP
+        POP
+          PUSH-( some PUSH-( fn PUSH-[ dep POP
+            PUSH-( visit dep visited visiting' POP-ALL
+            deps POP-ALL
+  POP-ALL
+  POP
+    PUSH-( some PUSH-( fn PUSH-[ node POP
+      PUSH-( visit node #{} #{} POP-ALL
+      PUSH-( keys graph POP-ALL
+
+PUSH-( defn topological-sort PUSH-[ graph POP
+  PUSH-( loop PUSH-[
+    remaining PUSH-( set PUSH-( keys graph POP POP
+    result PUSH-[ POP
+  POP
+    PUSH-( if PUSH-( empty? remaining POP
+      result
+      PUSH-( let PUSH-[
+        available PUSH-( filter
+          PUSH-( fn PUSH-[ node POP
+            PUSH-( let PUSH-[
+              deps PUSH-( get-in graph PUSH-[ node :deps POP PUSH-[ POP POP
+            POP
+              PUSH-( every? PUSH-( set result POP deps POP-ALL
+          remaining POP
+        next-node PUSH-( first available POP
+      POP
+        PUSH-( if next-node
+          PUSH-( recur
+            PUSH-( disj remaining next-node POP
+            PUSH-( conj result next-node POP-ALL
+          nil POP-ALL
+
+PUSH-( defn execute-graph PUSH-[ graph POP
+  PUSH-( if PUSH-( detect-cycle graph POP
+    PUSH-{ :error "Cycle detected in graph" POP
+    PUSH-( let PUSH-[
+      order PUSH-( topological-sort graph POP
+    POP
+      PUSH-( if-not order
+        PUSH-{ :error "Cannot compute topological order" POP
+        PUSH-( loop PUSH-[
+          nodes order
+          cache PUSH-{ POP
+        POP
+          PUSH-( if PUSH-( empty? nodes POP
+            cache
+            PUSH-( let PUSH-[
+              node PUSH-( first nodes POP
+              node-def PUSH-( get graph node POP
+              deps PUSH-( :deps node-def PUSH-[ POP POP
+              dep-vals PUSH-( mapv cache deps POP
+              result PUSH-( apply PUSH-( :fn node-def POP dep-vals POP
+            POP
+              PUSH-( recur
+                PUSH-( rest nodes POP
+                PUSH-( assoc cache node result POP-ALL
+```

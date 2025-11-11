@@ -1,0 +1,52 @@
+PUSH-( ns examples.program26 POP
+
+PUSH-( defn wrap-json PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( let PUSH-[
+      parsed-body PUSH-{ :data "parsed-json" POP
+      updated-request PUSH-( assoc request :body parsed-body POP
+    POP
+      PUSH-( handler updated-request POP
+    POP
+  POP
+POP
+
+PUSH-( defn wrap-cors PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( let PUSH-[
+      response PUSH-( handler request POP
+    POP
+      PUSH-( assoc response :headers PUSH-{ "Access-Control-Allow-Origin" "*" POP POP
+    POP
+  POP
+POP
+
+PUSH-( defn wrap-session PUSH-[ handler POP
+  PUSH-( fn PUSH-[ request POP
+    PUSH-( if PUSH-( :token request POP
+      PUSH-( handler request POP
+      PUSH-{ :status 401 :body "Unauthorized" POP
+    POP
+  POP
+POP
+
+PUSH-( defn base-handler PUSH-[ request POP
+  PUSH-{ :status 200 :body PUSH-( str "Processed: " PUSH-( :body request POP POP POP
+POP
+
+PUSH-( def app
+  PUSH-( -> base-handler
+    wrap-json
+    wrap-cors
+    wrap-session
+  POP
+POP
+
+PUSH-( defn -main PUSH-[ & args POP
+  PUSH-( let PUSH-[
+    request PUSH-{ :token "secret-123" :raw-body "{}" POP
+    response PUSH-( app request POP
+  POP
+    PUSH-( println "Response:" response POP
+  POP
+POP

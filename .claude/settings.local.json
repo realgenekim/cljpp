@@ -21,7 +21,10 @@
       "Bash(jar tf:*)",
       "Bash(jar xf:*)",
       "Bash(java:*)",
-      "Bash(unzip:*)"
+      "Bash(unzip:*)",
+      "Bash(./monday-experiment-v2.sh:*)",
+      "Bash(tee:*)",
+      "Bash(./popall-v2-experiment.sh:*)"
     ],
     "deny": [],
     "ask": []

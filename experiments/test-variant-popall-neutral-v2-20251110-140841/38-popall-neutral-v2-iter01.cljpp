@@ -1,0 +1,21 @@
+PUSH-( ns examples.program38 POP-ALL
+
+PUSH-( defn diff PUSH-[ expr var POP
+  PUSH-( let PUSH-[
+    PUSH-[ op & args POP expr
+  POP
+    PUSH-( case op
+      :const 0
+      :var PUSH-( if PUSH-( = PUSH-[ op var POP expr var POP 1 0 POP
+      :+ PUSH-( vec PUSH-( cons :+ PUSH-( map #(diff % var) args POP POP POP
+      :* PUSH-( let PUSH-[
+        PUSH-[ a b POP args
+        da PUSH-( diff a var POP
+        db PUSH-( diff b var POP
+      POP
+        PUSH-[ :+ PUSH-[ :* da b POP PUSH-[ :* a db POP POP POP
+      :exp PUSH-( let PUSH-[
+        PUSH-[ base POP args
+        dbase PUSH-( diff base var POP
+      POP
+        PUSH-[ :* PUSH-[ :exp base POP dbase POP POP-ALL

@@ -1,0 +1,41 @@
+```clojure
+PUSH-( ns examples.program33 POP
+
+PUSH-( defmulti apply-event
+  PUSH-( fn PUSH-[ state event POP PUSH-( :type event POP POP
+POP
+
+PUSH-( defmethod apply-event :account-created
+  PUSH-[ state event POP
+  PUSH-{ :id PUSH-( :account-id event POP
+     :balance 0
+     :status :active POP
+POP
+
+PUSH-( defmethod apply-event :amount-deposited
+  PUSH-[ state event POP
+  PUSH-( update state :balance + PUSH-( :amount event POP POP
+POP
+
+PUSH-( defmethod apply-event :amount-withdrawn
+  PUSH-[ state event POP
+  PUSH-( update state :balance - PUSH-( :amount event POP POP
+POP
+
+PUSH-( defmethod apply-event :account-closed
+  PUSH-[ state event POP
+  PUSH-( assoc state :status :closed POP
+POP
+
+PUSH-( defn aggregate
+  PUSH-[ events POP
+  PUSH-( reduce apply-event PUSH-{ POP events POP
+POP
+
+PUSH-( defn get-state-at-time
+  PUSH-[ events timestamp POP
+  PUSH-( aggregate
+    PUSH-( filter PUSH-( fn PUSH-[ event POP PUSH-( <= PUSH-( :timestamp event POP timestamp POP POP events POP
+  POP
+POP
+```

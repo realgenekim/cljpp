@@ -1,0 +1,29 @@
+```clojure
+PUSH-( ns examples.program38 POP-ALL
+
+PUSH-( defn diff PUSH-[ expr var POP
+  PUSH-( let PUSH-[ PUSH-[ tag PUSH-& args POP expr POP POP
+    PUSH-( case tag
+      :const 0
+      :var PUSH-( if PUSH-( = PUSH-( first args POP var POP 1 0 POP
+      :+ PUSH-( let PUSH-[ PUSH-[ a b POP args POP POP
+           PUSH-( let PUSH-[ da PUSH-( diff a var POP
+                       db PUSH-( diff b var POP POP POP
+             PUSH-( cond
+               PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP POP db
+               PUSH-( and PUSH-( number? db POP PUSH-( zero? db POP POP da
+               :else PUSH-[ :+ da db POP POP-ALL
+      :* PUSH-( let PUSH-[ PUSH-[ a b POP args POP POP
+           PUSH-( let PUSH-[ da PUSH-( diff a var POP
+                       db PUSH-( diff b var POP POP POP
+             PUSH-( cond
+               PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP PUSH-( number? db POP PUSH-( zero? db POP POP 0
+               PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP POP PUSH-[ :* b db POP
+               PUSH-( and PUSH-( number? db POP PUSH-( zero? db POP POP PUSH-[ :* a da POP
+               :else PUSH-[ :+ PUSH-[ :* da b POP PUSH-[ :* a db POP POP POP-ALL
+      :exp PUSH-( let PUSH-[ PUSH-[ a POP args POP POP
+             PUSH-( let PUSH-[ da PUSH-( diff a var POP POP POP
+               PUSH-( if PUSH-( and PUSH-( number? da POP PUSH-( zero? da POP POP
+                 0
+                 PUSH-[ :* PUSH-[ :exp a POP da POP POP-ALL
+```

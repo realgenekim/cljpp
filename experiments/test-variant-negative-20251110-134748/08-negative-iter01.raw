@@ -1,0 +1,24 @@
+```clojure
+(ns examples.program8)
+
+(defn process-user
+  [{:keys [name age] :as user}]
+  {:processed true
+   :user user
+   :name name
+   :age age})
+
+(defn process-items
+  [[first second & rest]]
+  {:first first
+   :second second
+   :rest rest
+   :total (+ 2 (count rest))})
+
+(defn nested-extract
+  [{:keys [address] :as user}]
+  (let [{:keys [street city state zip]} address]
+    {:user-summary (select-keys user [:name :email])
+     :location (str street ", " city ", " state " " zip)
+     :full-address address}))
+```

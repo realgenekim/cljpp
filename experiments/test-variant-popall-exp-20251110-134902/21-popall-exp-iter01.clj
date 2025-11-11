@@ -1,0 +1,4 @@
+(ns examples.program21 (:require [clojure.string :as str]))
+(defn split-words [s] (str/split s #"\s+"))
+(defn reverse-words [s] (->> (split-words s) (map str/reverse) (str/join " ")))
+(defn title-case [s] (->> (split-words s) (map (fn [word] (str (str/upper-case (first word)) (subs word 1)))) (str/join " ")))

@@ -1,0 +1,6 @@
+(ns examples.program34 (:require [compojure.core :refer [defroutes GET POST]] [compojure.route :as route] [ring.util.response :refer [response]]))
+(defn get-users [] (response {:users ["Alice" "Bob" "Charlie"]}))
+(defn get-user [{:keys [id]}] (response {:details {:name "User", :id id}, :user id}))
+(defn get-user-posts [{:keys [id]}] (response {:user-id id, :posts [{:title "First Post", :id 1} {:title "Second Post", :id 2}]}))
+(defn create-user [{:keys [body]}] (response {:created true, :user body}))
+(defroutes app-routes (GET "/users" [] (get-users)) (GET "/users/:id" [id] (get-user {:id id})) (GET "/users/:id/posts" [id] (get-user-posts {:id id})) (POST "/users" {:keys [body]} (create-user {:body body})) (route/not-found (response {:error "Not Found"})))

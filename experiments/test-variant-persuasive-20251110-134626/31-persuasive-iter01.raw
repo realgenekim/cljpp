@@ -1,0 +1,50 @@
+```clojure
+PUSH-( ns examples.program31 POP
+
+PUSH-( defn from PUSH-[ data POP
+  PUSH-( fn PUSH-[ POP data POP
+POP
+
+PUSH-( defn where PUSH-[ pred POP
+  PUSH-( fn PUSH-[ data POP
+    PUSH-( filter pred data POP
+  POP
+POP
+
+PUSH-( defn select PUSH-[ & keys POP
+  PUSH-( fn PUSH-[ data POP
+    PUSH-( map PUSH-( fn PUSH-[ row POP
+      PUSH-( select-keys row keys POP
+    POP data POP
+  POP
+POP
+
+PUSH-( defn order-by PUSH-[ key-fn POP
+  PUSH-( fn PUSH-[ data POP
+    PUSH-( sort-by key-fn data POP
+  POP
+POP
+
+PUSH-( def sample-data
+  PUSH-[ PUSH-{ :name "Alice" :age 30 :dept "Engineering" POP
+     PUSH-{ :name "Bob" :age 25 :dept "Sales" POP
+     PUSH-{ :name "Carol" :age 35 :dept "Engineering" POP
+     PUSH-{ :name "Dave" :age 28 :dept "Sales" POP
+  POP
+POP
+
+PUSH-( defn -main PUSH-[ & args POP
+  PUSH-( let PUSH-[
+    result PUSH-( -> PUSH-( from sample-data POP
+              PUSH-( where PUSH-( fn PUSH-[ x POP PUSH-( >= PUSH-( :age x POP 28 POP POP POP
+              PUSH-( select :name :age POP
+              PUSH-( order-by :age POP
+           POP
+  POP
+    PUSH-( println "Query result:" POP
+    PUSH-( doseq PUSH-[ row result POP
+      PUSH-( println row POP
+    POP
+  POP
+POP
+```

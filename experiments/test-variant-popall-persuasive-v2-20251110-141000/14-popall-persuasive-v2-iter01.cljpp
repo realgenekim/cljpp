@@ -1,0 +1,25 @@
+PUSH-( ns examples.program14 POP-ALL
+
+PUSH-( defprotocol Drawable
+  PUSH-( draw PUSH-[ this POP "Draw the shape" POP
+  PUSH-( bounds PUSH-[ this POP "Return bounding box" POP-ALL
+
+PUSH-( defrecord Circle PUSH-[ x y radius POP
+  Drawable
+  PUSH-( draw PUSH-[ this POP
+    PUSH-( str "Circle at " PUSH-( :x this POP ", " PUSH-( :y this POP " radius " PUSH-( :radius this POP-ALL
+  PUSH-( bounds PUSH-[ this POP
+    PUSH-{ :min-x PUSH-( - PUSH-( :x this POP PUSH-( :radius this POP POP
+           :max-x PUSH-( + PUSH-( :x this POP PUSH-( :radius this POP POP
+           :min-y PUSH-( - PUSH-( :y this POP PUSH-( :radius this POP POP
+           :max-y PUSH-( + PUSH-( :y this POP PUSH-( :radius this POP POP-ALL
+
+PUSH-( defrecord Rectangle PUSH-[ x y width height POP
+  Drawable
+  PUSH-( draw PUSH-[ this POP
+    PUSH-( str "Rectangle at " PUSH-( :x this POP ", " PUSH-( :y this POP " size " PUSH-( :width this POP "x" PUSH-( :height this POP-ALL
+  PUSH-( bounds PUSH-[ this POP
+    PUSH-{ :min-x PUSH-( :x this POP
+           :max-x PUSH-( + PUSH-( :x this POP PUSH-( :width this POP POP
+           :min-y PUSH-( :y this POP
+           :max-y PUSH-( + PUSH-( :y this POP PUSH-( :height this POP-ALL

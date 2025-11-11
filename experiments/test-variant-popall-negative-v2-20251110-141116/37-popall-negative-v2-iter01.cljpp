@@ -1,0 +1,51 @@
+PUSH-( ns examples.program37
+  PUSH-( :require
+    PUSH-[ reagent.core :as r POP
+    PUSH-[ cljs.core.async :refer PUSH-[ go <! POP POP
+    PUSH-[ cljs-http.client :as http POP POP-ALL
+
+PUSH-( defn use-state PUSH-[ initial-value POP
+  PUSH-( r/atom initial-value POP-ALL
+
+PUSH-( defn use-effect PUSH-[ deps effect-fn POP
+  PUSH-( r/track!
+    PUSH-( fn POP
+      PUSH-( effect-fn POP
+      PUSH-( doseq PUSH-[ d deps POP
+        @d POP-ALL
+
+PUSH-( defn use-fetch PUSH-[ url POP
+  PUSH-( let PUSH-[
+    state PUSH-( r/atom PUSH-{ :loading true :error nil :data nil POP POP
+  POP
+    PUSH-( go
+      PUSH-( try
+        PUSH-( let PUSH-[
+          response PUSH-( <! PUSH-( http/get url POP POP
+        POP
+          PUSH-( if PUSH-( :success response POP
+            PUSH-( reset! state PUSH-{ :loading false :error nil :data PUSH-( :body response POP POP POP
+            PUSH-( reset! state PUSH-{ :loading false :error "Request failed" :data nil POP POP POP-ALL
+        PUSH-( catch js/Error e
+          PUSH-( reset! state PUSH-{ :loading false :error PUSH-( .-message e POP :data nil POP POP POP POP
+    state POP-ALL
+
+PUSH-( defn user-component POP
+  PUSH-( let PUSH-[
+    count PUSH-( use-state 0 POP
+    user-state PUSH-( use-fetch "https://api.example.com/user" POP
+  POP
+    PUSH-( fn POP
+      PUSH-[ :div
+        PUSH-[ :h2 "Counter: " @count POP
+        PUSH-[ :button PUSH-{ :on-click #PUSH-( swap! count inc POP POP "Increment" POP
+        
+        PUSH-[ :div
+          PUSH-( if PUSH-( :loading @user-state POP
+            PUSH-[ :p "Loading..." POP
+            PUSH-( if-let PUSH-[ err PUSH-( :error @user-state POP POP
+              PUSH-[ :p PUSH-{ :style PUSH-{ :color "red" POP POP "Error: " err POP
+              PUSH-( when-let PUSH-[ data PUSH-( :data @user-state POP POP
+                PUSH-[ :div
+                  PUSH-[ :h3 "User Data:" POP
+                  PUSH-[ :pre PUSH-( pr-str data POP POP POP POP POP POP POP POP-ALL
